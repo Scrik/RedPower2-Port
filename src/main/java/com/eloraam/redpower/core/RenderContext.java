@@ -399,10 +399,10 @@ public class RenderContext {
 			//this.cornerList[s][1].setUV(v2, u1);
 			//this.cornerList[s][2].setUV(v2, u2);
 			//this.cornerList[s][3].setUV(v1, u2);
-			this.cornerList[s][0].setUV(u2, v2);
-			this.cornerList[s][1].setUV(u2, v1);
-			this.cornerList[s][2].setUV(u1, v1);
-			this.cornerList[s][3].setUV(u1, v2);
+			this.cornerList[s][0].setUV(u1, v1);
+			this.cornerList[s][1].setUV(u1, v2);
+			this.cornerList[s][2].setUV(u2, v2);
+			this.cornerList[s][3].setUV(u2, v1);
 		//} else {
 			//u1 += tx;
 			//u2 += tx;
