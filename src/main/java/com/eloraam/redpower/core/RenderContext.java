@@ -329,45 +329,7 @@ public class RenderContext {
 		double u1 = ti.getMinU(), u2 = ti.getMaxU(), v1 = ti.getMinV(), v2 = ti.getMaxV();
 		
 		//int txl = this.texFlags >> s * 3;
-		
-		//switch(this.rotation) {
-			//default: {
-				this.cornerList[s][0].setUV(u2, v1);
-				this.cornerList[s][1].setUV(u2, v2);
-				this.cornerList[s][2].setUV(u1, v2);
-				this.cornerList[s][3].setUV(u1, v1);
-			//}
-			//case 1: {
-			//	this.cornerList[s][0].setUV(u2, v2);
-			//	this.cornerList[s][1].setUV(u2, v1);
-			//	this.cornerList[s][2].setUV(u1, v1);
-			//	this.cornerList[s][3].setUV(u1, v2);
-			//}
-			//case 2: {
-			//	this.cornerList[s][0].setUV(u2, v1);
-			//	this.cornerList[s][1].setUV(u2, v2);
-			//	this.cornerList[s][2].setUV(u1, v2);
-			//	this.cornerList[s][3].setUV(u1, v1);
-			//}
-			//case 3: {
-			//	this.cornerList[s][0].setUV(u1, v2);
-			//	this.cornerList[s][1].setUV(u2, v1);
-			//	this.cornerList[s][2].setUV(u2, v1);
-			//	this.cornerList[s][3].setUV(u1, v2);
-			//}
-			//case 4: {
-			//	this.cornerList[s][0].setUV(u1, v1);
-			//	this.cornerList[s][1].setUV(u2, v2);
-			//	this.cornerList[s][2].setUV(u2, v2);
-			//	this.cornerList[s][3].setUV(u1, v1);
-			//}
-			//case 5: {
-			//	this.cornerList[s][0].setUV(u1, v1);
-			//	this.cornerList[s][1].setUV(u2, v2);
-			//	this.cornerList[s][2].setUV(u2, v2);
-			//	this.cornerList[s][3].setUV(u1, v1);
-			//}
-		//}
+
 		/*if (!this.exactTextureCoordinates) {
 			u1 += 0.001D;
 			v1 += 0.001D;
