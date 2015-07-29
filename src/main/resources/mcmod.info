@@ -1,0 +1,136 @@
+[
+{
+	"modid": "RedPowerCore",
+	"name": "RedPower",
+	"description": "Power your world, comrade!",
+	"version": "2.0 Prerelease 6",
+	"credits": "By Eloraam",
+	"logoFile": "/eloraam/base/rpbanner.png",
+
+	"url": "http://www.eloraam.com/",
+	"authors": [ "Eloraam" ],
+	"dependencies": [
+		"mod_MinecraftForge"
+	]
+},
+{
+	"modid": "RedPowerBase",
+	"name": "RP Base",
+	"description": "Power your world, comrade! (Core items)",
+	"version": "",
+	"credits": "By Eloraam",
+	"logoFile": "/eloraam/base/rpbanner.png",
+
+	"url": "http://www.eloraam.com/",
+	"authors": [ "Eloraam" ],
+	"parent": "RedPowerCore",
+	"dependencies": [
+		"mod_MinecraftForge"
+	]
+},
+{
+	"modid": "RedPowerWiring",
+	"name": "RP Wiring",
+	"description": "Power your world, comrade! (Wires)",
+	"version": "",
+	"credits": "By Eloraam",
+	"logoFile": "/eloraam/base/rpbanner.png",
+
+	"url": "http://www.eloraam.com/",
+	"authors": [ "Eloraam" ],
+	"parent": "RedPowerCore",
+	"dependencies": [
+		"mod_MinecraftForge"
+	]
+},
+{
+	"modid": "RedPowerLogic",
+	"name": "RP Logic",
+	"description": "Power your world, comrade! (Logic Gates)",
+	"version": "",
+	"credits": "By Eloraam",
+	"logoFile": "/eloraam/base/rpbanner.png",
+
+	"url": "http://www.eloraam.com/",
+	"authors": [ "Eloraam" ],
+	"parent": "RedPowerCore",
+	"dependencies": [
+		"mod_MinecraftForge"
+	]
+},
+{
+	"modid": "RedPowerLighting",
+	"name": "RP Lighting",
+	"description": "Power your world, comrade! (Lighting)",
+	"version": "",
+	"credits": "By Eloraam",
+	"logoFile": "/eloraam/base/rpbanner.png",
+
+	"url": "http://www.eloraam.com/",
+	"authors": [ "Eloraam" ],
+	"parent": "RedPowerCore",
+	"dependencies": [
+		"mod_MinecraftForge"
+	]
+},
+{
+	"modid": "RedPowerWorld",
+	"name": "RP World",
+	"description": "Power your world, comrade! (World Gen)",
+	"version": "",
+	"credits": "By Eloraam",
+	"logoFile": "/eloraam/base/rpbanner.png",
+
+	"url": "http://www.eloraam.com/",
+	"authors": [ "Eloraam" ],
+	"parent": "RedPowerCore",
+	"dependencies": [
+		"mod_MinecraftForge"
+	]
+},
+{
+	"modid": "RedPowerMachine",
+	"name": "RP Machine",
+	"description": "Power your world, comrade! (Machines)",
+	"version": "",
+	"credits": "By Eloraam",
+	"logoFile": "/eloraam/base/rpbanner.png",
+
+	"url": "http://www.eloraam.com/",
+	"authors": [ "Eloraam" ],
+	"parent": "RedPowerCore",
+	"dependencies": [
+		"mod_MinecraftForge"
+	]
+},
+{
+	"modid": "RedPowerControl",
+	"name": "RP Control",
+	"description": "Power your world, comrade! (Computers)",
+	"version": "",
+	"credits": "By Eloraam",
+	"logoFile": "/eloraam/base/rpbanner.png",
+
+	"url": "http://www.eloraam.com/",
+	"authors": [ "Eloraam" ],
+	"parent": "RedPowerCore",
+	"dependencies": [
+		"mod_MinecraftForge"
+	]
+},
+{
+	"modid": "RedPowerCompat",
+	"name": "RP Compat",
+	"description": "Power your world, comrade! (Compatibility)",
+	"version": "",
+	"credits": "By Eloraam",
+	"logoFile": "/eloraam/base/rpbanner.png",
+
+	"url": "http://www.eloraam.com/",
+	"authors": [ "Eloraam" ],
+	"parent": "RedPowerCore",
+	"dependencies": [
+		"mod_MinecraftForge"
+	]
+}
+]
