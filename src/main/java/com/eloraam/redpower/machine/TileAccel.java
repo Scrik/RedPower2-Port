@@ -152,7 +152,6 @@ public class TileAccel extends TileMachinePanel implements IBluePowerConnectable
 					this.conCache |= 8;
 				}
 			}
-			
 		}
 	}
 	
@@ -199,14 +198,12 @@ public class TileAccel extends TileMachinePanel implements IBluePowerConnectable
 			if (!CoreLib.isClient(super.worldObj)) {
 				this.sendItemUpdate();
 			}
-			
 			this.markDirty();
 		}
 		
 		if (!CoreLib.isClient(super.worldObj)) {
 			if (this.ConMask < 0) {
-				this.ConMask = RedPowerLib.getConnections(super.worldObj, this,
-						super.xCoord, super.yCoord, super.zCoord);
+				this.ConMask = RedPowerLib.getConnections(super.worldObj, this, super.xCoord, super.yCoord, super.zCoord);
 				this.cond.recache(this.ConMask, 0);
 			}
 			
@@ -223,13 +220,14 @@ public class TileAccel extends TileMachinePanel implements IBluePowerConnectable
 				this.updateBlock();
 				this.updateLight();
 			}
-			
 		}
 	}
 	
 	@Override
 	public void onBlockPlaced(ItemStack ist, int side, EntityLivingBase ent) {
 		super.Rotation = this.getFacing(ent);
+		RedPowerLib.updateIndirectNeighbors(this.worldObj, this.xCoord, this.yCoord, this.zCoord, this.blockType);
+		this.sendPacket();
 	}
 	
 	@Override
@@ -270,12 +268,15 @@ public class TileAccel extends TileMachinePanel implements IBluePowerConnectable
 		//CoreProxy.sendPacketToPosition(super.worldObj, pkt, super.xCoord, super.zCoord);
 	}
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	protected void writeToPacket(ArrayList data) {
+		data.add(0);
+		super.writeToPacket(data);
+	}
+	
 	@Override
 	protected void readFromPacket(ByteBuf buffer) {
-		int subId = 0;
-		try {
-			subId = buffer.readInt();
-		} catch(Throwable t) {}
+		int subId = buffer.readInt();
 		if (subId == 10) {
 			this.flow.contents.clear();
 			int cs = buffer.readInt();
@@ -286,6 +287,5 @@ public class TileAccel extends TileMachinePanel implements IBluePowerConnectable
 			super.readFromPacket(buffer);
 			this.updateBlock();
 		}
-		
 	}
 }

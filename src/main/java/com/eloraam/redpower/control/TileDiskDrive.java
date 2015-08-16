@@ -7,11 +7,11 @@ import com.eloraam.redpower.control.ItemDisk;
 import com.eloraam.redpower.core.CoreLib;
 import com.eloraam.redpower.core.DiskLib;
 import com.eloraam.redpower.core.IFrameSupport;
+import com.eloraam.redpower.core.IHandlePackets;
 import com.eloraam.redpower.core.IRedbusConnectable;
 import com.eloraam.redpower.core.MachineLib;
 import com.eloraam.redpower.core.TileExtended;
 import com.eloraam.redpower.core.WorldCoord;
-import com.eloraam.redpower.network.IHandlePackets;
 
 import io.netty.buffer.ByteBuf;
 
@@ -94,7 +94,7 @@ public class TileDiskDrive extends TileExtended implements IRedbusConnectable, I
 	
 	@Override
 	public int getConnectableMask() {
-		return 16777215;
+		return 0xFFFFFF;
 	}
 	
 	@Override
@@ -109,7 +109,10 @@ public class TileDiskDrive extends TileExtended implements IRedbusConnectable, I
 	
 	@Override
 	public void onBlockPlaced(ItemStack ist, int side, EntityLivingBase ent) {
-		this.Rotation = (int) Math.floor(ent.rotationYaw * 4.0F / 360.0F + 0.5D) + 1 & 3;
+		//this.Rotation = MathHelper.floor_double((double)(ent.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
+		this.Rotation = (int) Math.floor(ent.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+		this.sendPacket();
+		this.markDirty();
 	}
 	
 	@Override
@@ -124,8 +127,7 @@ public class TileDiskDrive extends TileExtended implements IRedbusConnectable, I
 				} else if (!(ist.getItem() instanceof ItemScrewdriver)) {
 					return false;
 				} else {
-					player.openGui(RedPowerBase.instance, 3, super.worldObj,
-							super.xCoord, super.yCoord, super.zCoord);
+					player.openGui(RedPowerBase.instance, 3, super.worldObj, super.xCoord, super.yCoord, super.zCoord);
 					return true;
 				}
 			}
@@ -438,8 +440,7 @@ public class TileDiskDrive extends TileExtended implements IRedbusConnectable, I
 	
 	private void ejectDisk() {
 		if (this.contents[0] != null) {
-			MachineLib.ejectItem(super.worldObj, new WorldCoord(this),
-					this.contents[0], CoreLib.rotToSide(this.Rotation) ^ 1);
+			MachineLib.ejectItem(super.worldObj, new WorldCoord(this), this.contents[0], /*CoreLib.rotToSide(*/CoreLib.getFacing(this.Rotation)/*) ^ 1*/);
 			this.contents[0] = null;
 			this.hasDisk = false;
 			this.updateBlock();
@@ -449,8 +450,7 @@ public class TileDiskDrive extends TileExtended implements IRedbusConnectable, I
 	@Override
 	public void markDirty() {
 		super.markDirty();
-		if (this.contents[0] != null
-				&& !(this.contents[0].getItem() instanceof ItemDisk)) {
+		if (this.contents[0] != null && !(this.contents[0].getItem() instanceof ItemDisk)) {
 			this.ejectDisk();
 		}
 		
@@ -467,6 +467,11 @@ public class TileDiskDrive extends TileExtended implements IRedbusConnectable, I
 			this.updateBlock();
 		}
 		
+		updateDelay--;
+		if(updateDelay == 0) {
+			this.sendPacket();
+			updateDelay = 20;
+		}
 	}
 	
 	@Override

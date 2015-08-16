@@ -3,9 +3,7 @@ package com.eloraam.redpower.core;
 import com.eloraam.redpower.core.CoverLib;
 import com.eloraam.redpower.core.IFrameSupport;
 import com.eloraam.redpower.core.TileCoverable;
-import com.eloraam.redpower.network.IHandlePackets;
 
-import io.netty.buffer.AbstractByteBuf;
 import io.netty.buffer.ByteBuf;
 
 import java.util.ArrayList;
@@ -21,13 +19,13 @@ public class TileCovered extends TileCoverable implements IHandlePackets, IFrame
 	public short[] Covers = new short[29];
 	
 	public void replaceWithCovers() {
-		CoverLib.replaceWithCovers(super.worldObj, super.xCoord, super.yCoord,
-				super.zCoord, this.CoverSides, this.Covers);
+		CoverLib.replaceWithCovers(super.worldObj, super.xCoord, super.yCoord, super.zCoord, this.CoverSides, this.Covers);
+		this.sendPacket();
 	}
 	
 	@Override
 	public boolean canUpdate() {
-		return false;
+		return true;
 	}
 	
 	@Override
@@ -40,7 +38,8 @@ public class TileCovered extends TileCoverable implements IHandlePackets, IFrame
 		if (this.CoverSides == 0) {
 			this.deleteBlock();
 		}
-		
+		this.markDirty();
+		this.sendPacket();
 	}
 	
 	@Override
@@ -55,8 +54,7 @@ public class TileCovered extends TileCoverable implements IHandlePackets, IFrame
 		} else {
 			short[] test = Arrays.copyOf(this.Covers, 29);
 			test[side] = (short) cover;
-			return CoverLib.checkPlacement(this.CoverSides | 1 << side, test,
-					0, false);
+			return CoverLib.checkPlacement(this.CoverSides | 1 << side, test, 0, false);
 		}
 	}
 	
@@ -115,7 +113,7 @@ public class TileCovered extends TileCoverable implements IHandlePackets, IFrame
 	@Override
 	public void readFromNBT(NBTTagCompound nbttagcompound) {
 		super.readFromNBT(nbttagcompound);
-		int cs2 = nbttagcompound.getInteger("cvm") & 536870911;
+		int cs2 = nbttagcompound.getInteger("cvm") & 0x1FFFFFFF;
 		this.CoverSides |= cs2;
 		byte[] cov = nbttagcompound.getByteArray("cvs");
 		if (cov != null && cs2 > 0) {
@@ -128,7 +126,6 @@ public class TileCovered extends TileCoverable implements IHandlePackets, IFrame
 				}
 			}
 		}
-		
 	}
 	
 	@Override
@@ -145,7 +142,6 @@ public class TileCovered extends TileCoverable implements IHandlePackets, IFrame
 				dp += 2;
 			}
 		}
-		
 		nbttagcompound.setByteArray("cvs", cov);
 	}
 
@@ -174,11 +170,12 @@ public class TileCovered extends TileCoverable implements IHandlePackets, IFrame
 				}
 			}
 		}
+		this.markDirty();
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	protected void writeToPacket(ArrayList data) {
-		data.add((int)5);
+		data.add(5);
 		data.add(this.CoverSides);
 		for (int i = 0; i < 29; ++i) {
 			if ((this.CoverSides & 1 << i) > 0) {

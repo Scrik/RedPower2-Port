@@ -1,11 +1,9 @@
-package com.eloraam.redpower.network;
+package com.eloraam.redpower.core;
 
 import io.netty.buffer.ByteBuf;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-
-import com.eloraam.redpower.core.Range4D;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayerMP;

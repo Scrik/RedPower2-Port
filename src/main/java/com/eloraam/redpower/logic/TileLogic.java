@@ -5,22 +5,22 @@ import com.eloraam.redpower.core.BlockMultipart;
 import com.eloraam.redpower.core.CoreLib;
 import com.eloraam.redpower.core.CoverLib;
 import com.eloraam.redpower.core.IFrameSupport;
+import com.eloraam.redpower.core.IHandlePackets;
 import com.eloraam.redpower.core.IRedPowerConnectable;
 import com.eloraam.redpower.core.IRotatable;
 import com.eloraam.redpower.core.RedPowerLib;
 import com.eloraam.redpower.core.TileCoverable;
 import com.eloraam.redpower.logic.BlockLogic;
-import com.eloraam.redpower.network.IHandlePackets;
 
 import io.netty.buffer.ByteBuf;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.IBlockAccess;
 
 public class TileLogic extends TileCoverable implements IHandlePackets, IRedPowerConnectable, IRotatable, IFrameSupport {
@@ -121,7 +121,7 @@ public class TileLogic extends TileCoverable implements IHandlePackets, IRedPowe
 	}
 	
 	@Override
-	public void addHarvestContents(ArrayList<ItemStack> ist) {
+	public void addHarvestContents(List<ItemStack> ist) {
 		super.addHarvestContents(ist);
 		ist.add(new ItemStack(this.getBlockType(), 1, this.getExtendedID() * 256 + this.SubId));
 	}

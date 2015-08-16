@@ -1,17 +1,11 @@
 package com.eloraam.redpower.core;
 
-import com.eloraam.redpower.core.BlockExtended;
-import com.eloraam.redpower.core.CoreLib;
-import com.eloraam.redpower.core.TileMultipart;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.MovingObjectPosition.MovingObjectType;
@@ -102,7 +96,6 @@ public class BlockMultipart extends BlockExtended {
 				tl.setPartBounds(this, pt);
 				super.addCollisionBoxesToList(world, i, j, k, box, list, ent);
 			}
-			
 		}
 	}
 	
@@ -121,8 +114,7 @@ public class BlockMultipart extends BlockExtended {
 				int pt = Integer.numberOfTrailingZeros(pm);
 				pm &= ~(1 << pt);
 				tl.setPartBounds(this, pt);
-				MovingObjectPosition p2 = super.collisionRayTrace(world, i, j,
-						k, vec3d, vec3d1);
+				MovingObjectPosition p2 = super.collisionRayTrace(world, i, j, k, vec3d, vec3d1);
 				if (p2 != null) {
 					double d2 = p2.hitVec.squareDistanceTo(vec3d);
 					if (p1 == null || d2 < d1) {
@@ -155,7 +147,6 @@ public class BlockMultipart extends BlockExtended {
 		return super.collisionRayTrace(world, i, j, k, src, dest);
 	}
 	
-	
 	public void setPartBounds(World world, int i, int j, int k, int part) {
 		TileMultipart tl = (TileMultipart) CoreLib.getTileEntity(world, i, j, k, TileMultipart.class);
 		if (tl == null) {
@@ -175,16 +166,4 @@ public class BlockMultipart extends BlockExtended {
 			super.addCollisionBoxesToList(world, i, j, k, box, list, (Entity) null);
 		}
 	}
-	
-	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z, EntityPlayer player) {
-		TileMultipart tile = (TileMultipart)CoreLib.getTileEntity(world, x, y, z, TileMultipart.class);
-		if(tile != null) {
-			ArrayList<ItemStack> drops = new ArrayList<ItemStack>();
-			tile.addHarvestContents(drops);
-			if(drops.size() >= 1) {
-				return drops.get(0);
-			}
-		}
-        return null;
-    }
 }

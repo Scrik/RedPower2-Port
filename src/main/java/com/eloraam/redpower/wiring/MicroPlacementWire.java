@@ -55,8 +55,7 @@ public class MicroPlacementWire implements IMicroPlacement {
 		if (bid != Block.getBlockFromItem(ist.getItem())) {
 			return this.initialPlace(ist, player, world, wc, l);
 		} else {
-			TileCovered tc = (TileCovered) CoreLib.getTileEntity(world, wc,
-					TileCovered.class);
+			TileCovered tc = (TileCovered) CoreLib.getTileEntity(world, wc, TileCovered.class);
 			if (tc == null) {
 				return false;
 			} else {
@@ -66,7 +65,7 @@ public class MicroPlacementWire implements IMicroPlacement {
 				} else {
 					int hb = ist.getItemDamage();
 					//int lb = hb & 255;
-					//hb >>= 8; //TODO Look on this!!!
+					//hb >>= 8;
 					if (!CoverLib.tryMakeCompatible(world, wc, Block.getBlockFromItem(ist.getItem()), hb)) {
 						return false;
 					} else {
@@ -113,7 +112,6 @@ public class MicroPlacementWire implements IMicroPlacement {
 				if (lb == 0) {
 					return "tile.rpcable";
 				}
-				
 				return "tile.rpcable." + CoreLib.rawColorNames[lb - 1];
 			case 4:
 			default:
@@ -135,9 +133,8 @@ public class MicroPlacementWire implements IMicroPlacement {
 		return null;
 	}
 	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	public void addCreativeItems(int hb, CreativeTabs tab, List itemList) {
+	public void addCreativeItems(int hb, CreativeTabs tab, List<ItemStack> itemList) {
 		if (tab == CreativeExtraTabs.tabWires) {
 			int i;
 			switch (hb) {

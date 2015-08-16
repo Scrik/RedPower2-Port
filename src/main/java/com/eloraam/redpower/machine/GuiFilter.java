@@ -2,11 +2,10 @@ package com.eloraam.redpower.machine;
 
 import java.util.ArrayList;
 
-import com.eloraam.redpower.core.DimCoord;
 import com.eloraam.redpower.core.CoreProxy;
+import com.eloraam.redpower.core.PacketGuiEvent;
 import com.eloraam.redpower.machine.ContainerFilter;
 import com.eloraam.redpower.machine.TileFilter;
-import com.eloraam.redpower.network.PacketGuiEvent;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.Tessellator;

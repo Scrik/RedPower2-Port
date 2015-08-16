@@ -2,9 +2,6 @@ package com.eloraam.redpower.core;
 
 import com.eloraam.redpower.RedPowerBase;
 import com.eloraam.redpower.RedPowerCore;
-import com.eloraam.redpower.network.IHandlePackets;
-import com.eloraam.redpower.network.INetworkDataProvider;
-import com.eloraam.redpower.network.PacketTileEntityUpdate;
 
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import io.netty.buffer.ByteBuf;
@@ -25,7 +22,7 @@ public class TileMultiblock extends TileEntity implements IHandlePackets, INetwo
 	
 	@Override
 	public boolean canUpdate() {
-		return false;
+		return true;
 	}
 	
 	@Override

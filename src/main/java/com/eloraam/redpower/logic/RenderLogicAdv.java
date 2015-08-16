@@ -22,7 +22,7 @@ public class RenderLogicAdv extends RenderLogic {
 	
 	@Override
 	protected int getTorchState(TileLogic tl) {
-		int md = tl.getExtendedMetadata();
+		//int md = tl.getExtendedMetadata();
 		return 0;
 	}
 	
@@ -33,7 +33,7 @@ public class RenderLogicAdv extends RenderLogic {
 	
 	@Override
 	protected RenderLogic.TorchPos[] getTorchVectors(TileLogic tl) {
-		int md = tl.getExtendedMetadata();
+		//int md = tl.getExtendedMetadata();
 		return null;
 	}
 	

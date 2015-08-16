@@ -4,13 +4,14 @@ import com.eloraam.redpower.RedPowerControl;
 import com.eloraam.redpower.core.BlockMultipart;
 import com.eloraam.redpower.core.CoreLib;
 import com.eloraam.redpower.core.IFrameSupport;
+import com.eloraam.redpower.core.IHandlePackets;
 import com.eloraam.redpower.core.TileMultipart;
 import com.eloraam.redpower.core.WorldCoord;
-import com.eloraam.redpower.network.IHandlePackets;
 
 import io.netty.buffer.ByteBuf;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -58,7 +59,7 @@ public class TileBackplane extends TileMultipart implements IHandlePackets, IFra
 	}
 	
 	@Override
-	public void addHarvestContents(ArrayList<ItemStack> ist) {
+	public void addHarvestContents(List<ItemStack> ist) {
 		//super.addHarvestContents(ist);
 		ist.add(new ItemStack(RedPowerControl.blockBackplane, 1, 0));
 	}

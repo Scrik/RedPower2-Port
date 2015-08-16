@@ -1,6 +1,5 @@
 package com.eloraam.redpower.logic;
 
-import com.eloraam.redpower.core.CoreProxyClient;
 import com.eloraam.redpower.core.Quat;
 import com.eloraam.redpower.core.RenderLib;
 import com.eloraam.redpower.core.Vector3;
@@ -9,7 +8,6 @@ import com.eloraam.redpower.logic.TileLogic;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 
 public class RenderLogicPointer extends RenderLogic {

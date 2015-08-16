@@ -22,13 +22,11 @@ public class RenderRibbon extends RenderWiring {
 	}
 	
 	@Override
-	public void randomDisplayTick(World world, int i, int j, int k,
-			Random random) {
+	public void randomDisplayTick(World world, int i, int j, int k, Random random) {
 	}
 	
 	@Override
 	public void renderWorldBlock(RenderBlocks renderblocks, IBlockAccess iba, int i, int j, int k, int md) {
-		Tessellator tessellator = Tessellator.instance;
 		super.context.setBrightness(super.block.getMixedBrightnessForBlock(iba, i, j, k));
 		TileCovered tc = (TileCovered) iba.getTileEntity(i, j, k);
 		if (tc != null) {

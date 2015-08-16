@@ -9,10 +9,13 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.BlockFlower;
+import net.minecraft.block.BlockSapling;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
@@ -47,8 +50,7 @@ public class BlockCustomFlower extends BlockFlower {
 	public void updateTick(World world, int i, int j, int k, Random random) {
 		int md = world.getBlockMetadata(i, j, k);
 		if (md == 1 || md == 2) {
-			if (world.getBlockLightValue(i, j + 1, k) >= 9
-					&& random.nextInt(300) == 0) {
+			if (world.getBlockLightValue(i, j + 1, k) >= 9 && random.nextInt(300) == 0) {
 				if (md == 1) {
 					Chunk chunk = new Chunk(world, i >> 4, k >> 4);
 					chunk.setBlockMetadata(i, j, k, 2);
@@ -81,4 +83,14 @@ public class BlockCustomFlower extends BlockFlower {
 		itemList.add(new ItemStack(this, 1, 0));
 		itemList.add(new ItemStack(this, 1, 1));
 	}
+	
+	@Override
+	public AxisAlignedBB getCollisionBoundingBoxFromPool(World worldObj, int x, int y, int z) {
+		int meta = worldObj.getBlockMetadata(x, y, z);
+		if(meta == 0) {
+			return super.getCollisionBoundingBoxFromPool(worldObj, x, y, z);
+		} else {
+			return ((BlockSapling)Blocks.sapling).getCollisionBoundingBoxFromPool(worldObj, x, y, z);
+		}
+    }
 }

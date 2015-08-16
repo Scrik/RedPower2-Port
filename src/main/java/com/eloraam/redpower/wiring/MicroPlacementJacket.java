@@ -66,8 +66,7 @@ public class MicroPlacementJacket implements IMicroPlacement {
 			return false;
 		} else if ((tw.ConSides & 64) > 0) {
 			return false;
-		} else if (!CoverLib.checkPlacement(tw.CoverSides, tw.Covers,
-				tw.ConSides, true)) {
+		} else if (!CoverLib.checkPlacement(tw.CoverSides, tw.Covers, tw.ConSides, true)) {
 			return false;
 		} else {
 			tw.CenterPost = (short) (ist.getItemDamage() & 255);
@@ -131,7 +130,6 @@ public class MicroPlacementJacket implements IMicroPlacement {
 					if (CoverLib.isTransparent(lb)) {
 						return null;
 					}
-					
 					return "tile.rparmbwire." + nm;
 				}
 			default:
@@ -151,6 +149,7 @@ public class MicroPlacementJacket implements IMicroPlacement {
 					break;
 				case 66:
 					itemList.add(new ItemStack(CoverLib.blockCoverPlate, 1, 16902));
+					break;
 			}
 		}
 	}

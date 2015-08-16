@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -30,12 +31,12 @@ public class CoverLib {
 	private static String[] names = new String[256];
 	private static String[] descs = new String[256];
 	private static int[] hardness = new int[256];
-	private static ArrayList materialHandlers = new ArrayList();
+	private static ArrayList<IMaterialHandler> materialHandlers = new ArrayList<IMaterialHandler>();
 	private static boolean[] transparency = new boolean[256];
 	public static IIcon[][] coverIcons = new IIcon[256][];
 	//public static String[] coverTextureFiles = new String[256];
 	private static float[] miningHardness = new float[256];
-	private static HashMap coverIndex = new HashMap();
+	private static HashMap<List<Integer>, Integer> coverIndex = new HashMap<List<Integer>, Integer>();
 	
 	public static void addMaterialHandler(CoverLib.IMaterialHandler handler) {
 		for (int i = 0; i < 256; ++i) {
@@ -50,8 +51,7 @@ public class CoverLib {
 		return (Integer) coverIndex.get(Arrays.asList(new Integer[] { Integer.valueOf(Item.getIdFromItem(ist.getItem())), Integer.valueOf(ist.getItemDamage()) }));
 	}
 	
-	public static void addMaterial(int n, int hard, Block bl, String name,
-			String desc) {
+	public static void addMaterial(int n, int hard, Block bl, String name, String desc) {
 		addMaterial(n, hard, false, bl, 0, name, desc);
 	}
 	
@@ -73,10 +73,6 @@ public class CoverLib {
 			coverIcons[n][i] = bl.getIcon(i, md);
 		}
 		
-		/*if (!bl.isDefaultTexture) {
-			coverTextureFiles[n] = bl.getTextureFile();
-		}*/
-		
 		if (bl instanceof IBlockHardness) {
 			miningHardness[n] = ((IBlockHardness) bl).getPrototypicalHardness(md);
 		} else {
@@ -88,26 +84,20 @@ public class CoverLib {
 		descs[n] = desc;
 		hardness[n] = hard;
 		transparency[n] = tpar;
-		coverIndex.put(Arrays.asList(new Integer[] { Integer
-				.valueOf(Item.getIdFromItem(ist.getItem())), Integer.valueOf(md) }), Integer
-				.valueOf(n));
-		Iterator i$ = materialHandlers.iterator();
+		coverIndex.put(Arrays.asList(new Integer[] {Item.getIdFromItem(ist.getItem()), md }), n);
+		Iterator<IMaterialHandler> i$ = materialHandlers.iterator();
 		
 		while (i$.hasNext()) {
-			CoverLib.IMaterialHandler imh = (CoverLib.IMaterialHandler) i$
-					.next();
+			CoverLib.IMaterialHandler imh = (CoverLib.IMaterialHandler) i$.next();
 			imh.addMaterial(n);
 		}
 		
 		Config.addName("tile.rpcover." + name + ".name", desc + " Cover");
 		Config.addName("tile.rppanel." + name + ".name", desc + " Panel");
 		Config.addName("tile.rpslab." + name + ".name", desc + " Slab");
-		Config.addName("tile.rphcover." + name + ".name", "Hollow " + desc
-				+ " Cover");
-		Config.addName("tile.rphpanel." + name + ".name", "Hollow " + desc
-				+ " Panel");
-		Config.addName("tile.rphslab." + name + ".name", "Hollow " + desc
-				+ " Slab");
+		Config.addName("tile.rphcover." + name + ".name", "Hollow " + desc + " Cover");
+		Config.addName("tile.rphpanel." + name + ".name", "Hollow " + desc + " Panel");
+		Config.addName("tile.rphslab." + name + ".name", "Hollow " + desc + " Slab");
 		Config.addName("tile.rpcovc." + name + ".name", desc + " Cover Corner");
 		Config.addName("tile.rppanc." + name + ".name", desc + " Panel Corner");
 		Config.addName("tile.rpslabc." + name + ".name", desc + " Slab Corner");
@@ -118,30 +108,18 @@ public class CoverLib {
 		Config.addName("tile.rpcov5." + name + ".name", desc + " Cover Slab");
 		Config.addName("tile.rpcov6." + name + ".name", desc + " Triple Panel");
 		Config.addName("tile.rpcov7." + name + ".name", desc + " Anticover");
-		Config.addName("tile.rphcov3." + name + ".name", desc
-				+ " Hollow Triple Cover");
-		Config.addName("tile.rphcov5." + name + ".name", desc
-				+ " Hollow Cover Slab");
-		Config.addName("tile.rphcov6." + name + ".name", desc
-				+ " Hollow Triple Panel");
-		Config.addName("tile.rphcov7." + name + ".name", desc
-				+ " Hollow Anticover");
-		Config.addName("tile.rpcov3c." + name + ".name", desc
-				+ " Triple Cover Corner");
-		Config.addName("tile.rpcov5c." + name + ".name", desc
-				+ " Cover Slab Corner");
-		Config.addName("tile.rpcov6c." + name + ".name", desc
-				+ " Triple Panel Corner");
-		Config.addName("tile.rpcov7c." + name + ".name", desc
-				+ " Anticover Corner");
-		Config.addName("tile.rpcov3s." + name + ".name", desc
-				+ " Triple Cover Strip");
-		Config.addName("tile.rpcov5s." + name + ".name", desc
-				+ " Cover Slab Strip");
-		Config.addName("tile.rpcov6s." + name + ".name", desc
-				+ " Triple Panel Strip");
-		Config.addName("tile.rpcov7s." + name + ".name", desc
-				+ " Anticover Strip");
+		Config.addName("tile.rphcov3." + name + ".name", desc + " Hollow Triple Cover");
+		Config.addName("tile.rphcov5." + name + ".name", desc + " Hollow Cover Slab");
+		Config.addName("tile.rphcov6." + name + ".name", desc + " Hollow Triple Panel");
+		Config.addName("tile.rphcov7." + name + ".name", desc + " Hollow Anticover");
+		Config.addName("tile.rpcov3c." + name + ".name", desc + " Triple Cover Corner");
+		Config.addName("tile.rpcov5c." + name + ".name", desc + " Cover Slab Corner");
+		Config.addName("tile.rpcov6c." + name + ".name", desc + " Triple Panel Corner");
+		Config.addName("tile.rpcov7c." + name + ".name", desc + " Anticover Corner");
+		Config.addName("tile.rpcov3s." + name + ".name", desc + " Triple Cover Strip");
+		Config.addName("tile.rpcov5s." + name + ".name", desc + " Cover Slab Strip");
+		Config.addName("tile.rpcov6s." + name + ".name", desc + " Triple Panel Strip");
+		Config.addName("tile.rpcov7s." + name + ".name", desc + " Anticover Strip");
 		Config.addName("tile.rppole1." + name + ".name", desc + " Post");
 		Config.addName("tile.rppole2." + name + ".name", desc + " Pillar");
 		Config.addName("tile.rppole3." + name + ".name", desc + " Column");
@@ -259,13 +237,13 @@ public class CoverLib {
 				break;
 			case 45:
 				cn |= 50725376;
+				break;
 		}
-		
 		return cn;
 	}
 	
 	public static int damageToCoverValue(int dmg) {
-		return damageToCoverData(dmg) & '\uffff';
+		return damageToCoverData(dmg) & 0xFFFF;
 	}
 	
 	public static int coverValueToDamage(int side, int cov) {
@@ -311,6 +289,7 @@ public class CoverLib {
 					break;
 				case 13:
 					cn |= 8704;
+					break;
 			}
 		} else if (side < 14) {
 			switch (hd) {
@@ -334,6 +313,7 @@ public class CoverLib {
 					break;
 				case 6:
 					cn |= 9728;
+					break;
 			}
 		} else if (side < 26) {
 			switch (hd) {
@@ -357,6 +337,7 @@ public class CoverLib {
 					break;
 				case 6:
 					cn |= 10752;
+					break;
 			}
 		} else if (side < 29) {
 			switch (hd) {
@@ -368,15 +349,14 @@ public class CoverLib {
 					break;
 				case 2:
 					cn |= 11520;
+					break;
 			}
 		}
-		
 		return cn;
 	}
 	
 	public static ItemStack convertCoverPlate(int side, int cov) {
-		return blockCoverPlate == null ? null : new ItemStack(blockCoverPlate,
-				1, coverValueToDamage(side, cov));
+		return blockCoverPlate == null ? null : new ItemStack(blockCoverPlate, 1, coverValueToDamage(side, cov));
 	}
 	
 	public static int cornerToCoverMask(int cn) {
@@ -626,12 +606,10 @@ public class CoverLib {
 		}
 	}
 	
-	public static boolean checkPlacement(int covm, short[] covs, int cons,
-			boolean jacket) {
-		boolean scm = false;
-		boolean sm = false;
-		CoverLib.PlacementValidator pv = new CoverLib.PlacementValidator(covm,
-				covs);
+	public static boolean checkPlacement(int covm, short[] covs, int cons, boolean jacket) {
+		//boolean scm = false;
+		//boolean sm = false;
+		CoverLib.PlacementValidator pv = new CoverLib.PlacementValidator(covm, covs);
 		return pv.checkPlacement(cons, jacket);
 	}
 	
@@ -645,7 +623,7 @@ public class CoverLib {
 		}
 	}
 	
-	private static int extractCoverSide(MovingObjectPosition src) {
+	public static int extractCoverSide(MovingObjectPosition src) {
 		byte tr = 0;
 		double rpx = src.hitVec.xCoord - (double) src.blockX - 0.5D;
 		double rpy = src.hitVec.yCoord - (double) src.blockY - 0.5D;
@@ -654,8 +632,7 @@ public class CoverLib {
 		switch (src.sideHit) {
 			case 0:
 			case 1:
-				if (rpz > (double) (-sbw) && rpz < (double) sbw
-						&& rpx > (double) (-sbw) && rpx < (double) sbw) {
+				if (rpz > (double) (-sbw) && rpz < (double) sbw && rpx > (double) (-sbw) && rpx < (double) sbw) {
 					return src.sideHit;
 				} else if (rpz > rpx) {
 					if (rpz > -rpx) {
@@ -667,31 +644,26 @@ public class CoverLib {
 					if (rpz > -rpx) {
 						return 5;
 					}
-					
 					return 2;
 				}
 			case 2:
 			case 3:
-				if (rpy > (double) (-sbw) && rpy < (double) sbw
-						&& rpx > (double) (-sbw) && rpx < (double) sbw) {
+				if (rpy > (double) (-sbw) && rpy < (double) sbw && rpx > (double) (-sbw) && rpx < (double) sbw) {
 					return src.sideHit;
 				} else if (rpy > rpx) {
 					if (rpy > -rpx) {
 						return 1;
 					}
-					
 					return 4;
 				} else {
 					if (rpy > -rpx) {
 						return 5;
 					}
-					
 					return 0;
 				}
 			case 4:
 			case 5:
-				if (rpy > (double) (-sbw) && rpy < (double) sbw
-						&& rpz > (double) (-sbw) && rpz < (double) sbw) {
+				if (rpy > (double) (-sbw) && rpy < (double) sbw && rpz > (double) (-sbw) && rpz < (double) sbw) {
 					return src.sideHit;
 				} else if (rpy > rpz) {
 					if (rpy > -rpz) {
@@ -703,7 +675,6 @@ public class CoverLib {
 					if (rpy > -rpz) {
 						return 3;
 					}
-					
 					return 0;
 				}
 			default:
@@ -711,12 +682,14 @@ public class CoverLib {
 		}
 	}
 	
-	private static int extractCoverAxis(MovingObjectPosition src) {
+	public static int extractCoverAxis(MovingObjectPosition src) {
 		switch (src.sideHit) {
 			case 0:
+				return 0;
 			case 1:
 				return src.hitVec.yCoord - (double) src.blockY > 0.5D ? 1 : 0;
 			case 2:
+				return 0;
 			case 3:
 				return src.hitVec.zCoord - (double) src.blockZ > 0.5D ? 1 : 0;
 			default:
@@ -768,10 +741,8 @@ public class CoverLib {
 		}
 	}
 	
-	public static MovingObjectPosition getPlacement(World world,
-			MovingObjectPosition src, int item) {
-		MovingObjectPosition tr = new MovingObjectPosition(src.blockX,
-				src.blockY, src.blockZ, src.sideHit, src.hitVec);
+	public static MovingObjectPosition getPlacement(World world, MovingObjectPosition src, int item) {
+		MovingObjectPosition tr = new MovingObjectPosition(src.blockX, src.blockY, src.blockZ, src.sideHit, src.hitVec);
 		int cval = damageToCoverValue(item);
 		int dir;
 		switch (item >> 8) {
@@ -799,7 +770,6 @@ public class CoverLib {
 						if (canAddCover(world, tr, cval)) {
 							return tr;
 						}
-						
 						return null;
 					}
 				} else {
@@ -821,7 +791,6 @@ public class CoverLib {
 						if (canAddCover(world, tr, cval)) {
 							return tr;
 						}
-						
 						return null;
 					}
 				}
@@ -969,24 +938,22 @@ public class CoverLib {
 					if (isClickOutside(src)) {
 						stepDir(tr);
 					}
-					
 					tr.subHit = (dir >> 1) + 26;
 					return canAddCover(world, tr, cval) ? tr : null;
 				}
 		}
 	}
 	
-	public static void replaceWithCovers(World world, int i, int j, int k,
-			int sides, short[] covers) {
-		BlockMultipart.removeMultipart(world, i, j, k);
+	public static void replaceWithCovers(World world, int x, int y, int z, int sides, short[] covers) {
+		BlockMultipart.removeMultipart(world, x, y, z);
 		if (blockCoverPlate != null) {
 			if (sides != 0) {
-				world.setBlock(i, j, k, blockCoverPlate, 0, 3);
-				TileCovered tc = (TileCovered) CoreLib.getTileEntity(world, i, j, k, TileCovered.class);
+				world.setBlock(x, y, z, blockCoverPlate, 0, 3);
+				TileCovered tc = (TileCovered) CoreLib.getTileEntity(world, x, y, z, TileCovered.class);
 				if (tc != null) {
 					tc.CoverSides = sides;
 					tc.Covers = covers;
-					RedPowerLib.updateIndirectNeighbors(world, i, j, k, blockCoverPlate);
+					RedPowerLib.updateIndirectNeighbors(world, x, y, z, blockCoverPlate);
 				}
 			}
 		}
@@ -1066,7 +1033,7 @@ public class CoverLib {
 		public int cornermask = 0;
 		public int fillcornermask = 0;
 		public int hollowcornermask = 0;
-		public int thickfaces = 0;
+		//public int thickfaces = 0;
 		public int covm;
 		public short[] covs;
 		public int[] quanta = new int[29];
@@ -1088,7 +1055,6 @@ public class CoverLib {
 					this.sidemask |= CoverLib.coverToStripMask(i);
 				}
 			}
-			
 			return true;
 		}
 		
@@ -1105,7 +1071,6 @@ public class CoverLib {
 					this.sidemask |= 1 << i;
 				}
 			}
-			
 			return true;
 		}
 		
@@ -1121,7 +1086,6 @@ public class CoverLib {
 					this.fillcornermask |= t;
 				}
 			}
-			
 			return true;
 		}
 		
@@ -1137,7 +1101,6 @@ public class CoverLib {
 					this.sidemask |= CoverLib.coverToStripMask(i);
 				}
 			}
-			
 			return true;
 		}
 		
@@ -1158,7 +1121,6 @@ public class CoverLib {
 					this.sidemask |= 1 << i;
 				}
 			}
-			
 			return true;
 		}
 		
@@ -1174,7 +1136,6 @@ public class CoverLib {
 					this.cornermask |= t;
 				}
 			}
-			
 			return true;
 		}
 		
@@ -1196,7 +1157,6 @@ public class CoverLib {
 					this.sidemask |= t;
 				}
 			}
-			
 			return true;
 		}
 		
@@ -1210,17 +1170,14 @@ public class CoverLib {
 					if ((this.cornermask & t) > 0) {
 						return false;
 					}
-					
 					ocm |= t;
 					t = CoverLib.coverToStripMask(i);
 					if ((this.sidemask & t) > 0) {
 						return false;
 					}
-					
 					osm |= t;
 				}
 			}
-			
 			this.cornermask |= ocm;
 			this.sidemask |= osm;
 			return true;
@@ -1235,7 +1192,6 @@ public class CoverLib {
 							this.covs[i]);
 				}
 			}
-			
 		}
 		
 		private boolean checkOverlap(int a, int b, int c, int d) {
@@ -1243,8 +1199,7 @@ public class CoverLib {
 			b = this.quanta[b];
 			c = this.quanta[c];
 			d = this.quanta[d];
-			return a + b > 8 || a + c > 8 || a + d > 8 || b + c > 8
-					|| b + d > 8 || c + d > 8;
+			return a + b > 8 || a + c > 8 || a + d > 8 || b + c > 8 || b + d > 8 || c + d > 8;
 		}
 		
 		public boolean checkImpingement() {
@@ -1354,7 +1309,6 @@ public class CoverLib {
 						}
 					}
 				}
-				
 				return true;
 			}
 		}

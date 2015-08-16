@@ -85,11 +85,9 @@ public class CoreProxyClient extends CoreProxy {
 			if (modelID == RedPowerCore.customBlockModel) {
 				RenderCustomBlock rcb = RenderLib.getInvRenderer(block, metadata);
 				if (rcb == null) {
-					System.out
-							.printf("Bad Render at %d:%d\n",
-									new Object[] { Integer
-											.valueOf(Integer.valueOf(Block.getIdFromBlock(block))), Integer
-											.valueOf(metadata) });
+					System.out.printf("Bad Render at %d:%d\n",
+						new Object[] { Integer.valueOf(Integer.valueOf(Block.getIdFromBlock(block))), 
+							Integer.valueOf(metadata) });
 				} else {
 					rcb.renderInvBlock(renderer, metadata);
 				}

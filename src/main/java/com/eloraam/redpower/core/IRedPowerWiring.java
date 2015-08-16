@@ -5,9 +5,9 @@ import com.eloraam.redpower.core.IWiring;
 
 public interface IRedPowerWiring extends IRedPowerConnectable, IWiring {
 	
-	int scanPoweringStrength(int var1, int var2);
+	int scanPoweringStrength(int cons, int ch);
 	
-	int getCurrentStrength(int var1, int var2);
+	int getCurrentStrength(int cons, int ch);
 	
 	void updateCurrentStrength();
 }

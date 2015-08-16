@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import com.eloraam.redpower.base.ContainerBusId;
 import com.eloraam.redpower.core.CoreProxy;
 import com.eloraam.redpower.core.IRedbusConnectable;
-import com.eloraam.redpower.network.PacketGuiEvent;
+import com.eloraam.redpower.core.PacketGuiEvent;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;

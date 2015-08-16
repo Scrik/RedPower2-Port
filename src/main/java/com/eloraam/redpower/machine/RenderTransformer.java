@@ -18,18 +18,20 @@ import net.minecraft.world.World;
 
 public class RenderTransformer extends RenderCustomBlock {
 	
-	protected RenderModel model = RenderModel.loadModel("/assets/rpmachine/models/transform.obj");
-	protected ResourceLocation modelRes = new ResourceLocation("rpmachine", "models/machine2.png");
+	protected RenderModel model;
+	protected ResourceLocation modelRes;
 	protected RenderContext context = new RenderContext();
 	
 	public RenderTransformer(Block bl) {
 		super(bl);
+		this.model = RenderModel.loadModel("/assets/rpmachine/models/transform.obj");
+		this.modelRes = new ResourceLocation("rpmachine", "models/machine2.png");
+		
 		this.model.scale(0.0625D);
 	}
 	
 	@Override
-	public void randomDisplayTick(World world, int i, int j, int k,
-			Random random) {
+	public void randomDisplayTick(World world, int i, int j, int k, Random random) {
 	}
 	
 	@Override
@@ -45,9 +47,10 @@ public class RenderTransformer extends RenderCustomBlock {
 			this.context.readGlobalLights(iba, i, j, k);
 			this.context.setBrightness(super.block.getMixedBrightnessForBlock(iba, i, j, k));
 
+			Minecraft.getMinecraft().renderEngine.bindTexture(modelRes);
+			
 			tess.startDrawingQuads();
 			
-			Minecraft.getMinecraft().renderEngine.bindTexture(modelRes);
 			this.context.bindModelOffset(this.model, 0.5D, 0.5D, 0.5D);
 			this.context.renderModelGroup(0, 0);
 			

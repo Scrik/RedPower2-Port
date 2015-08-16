@@ -6,15 +6,16 @@ import com.eloraam.redpower.core.CoreLib;
 import com.eloraam.redpower.core.CoverLib;
 import com.eloraam.redpower.core.IFrameLink;
 import com.eloraam.redpower.core.IFrameSupport;
+import com.eloraam.redpower.core.IHandlePackets;
 import com.eloraam.redpower.core.TileCoverable;
 import com.eloraam.redpower.core.WorldCoord;
 import com.eloraam.redpower.machine.BlockMachine;
-import com.eloraam.redpower.network.IHandlePackets;
 
 import io.netty.buffer.ByteBuf;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -96,7 +97,7 @@ public class TileFrame extends TileCoverable implements IHandlePackets, IFrameLi
 	}
 	
 	@Override
-	public void addHarvestContents(ArrayList<ItemStack> ist) {
+	public void addHarvestContents(List<ItemStack> ist) {
 		super.addHarvestContents(ist);
 		ist.add(new ItemStack(RedPowerMachine.blockFrame, 1));
 	}

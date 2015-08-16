@@ -445,71 +445,65 @@ public abstract class RenderWiring extends RenderCovers {
 		int ucons = 0;
 		indcon &= ~indconex;
 		if ((consides & 1) > 0) {
-			ucons |= 1118464;
+			ucons |= 0x111100;
 		}
 		
 		if ((consides & 2) > 0) {
-			ucons |= 2236928;
+			ucons |= 0x222200;
 		}
 		
 		if ((consides & 4) > 0) {
-			ucons |= 4456465;
+			ucons |= 0x440011;
 		}
 		
 		if ((consides & 8) > 0) {
-			ucons |= 8912930;
+			ucons |= 0x880022;
 		}
 		
 		if ((consides & 16) > 0) {
-			ucons |= 17476;
+			ucons |= 0x4444;
 		}
 		
 		if ((consides & 32) > 0) {
-			ucons |= '\u8888';
+			ucons |= 0x8888;
 		}
 		
 		if ((consides & 1) > 0) {
 			super.context.setOrientation(0, 0);
-			this.renderSideWires(RedPowerLib.mapConToLocal(cons, 0),
-					RedPowerLib.mapConToLocal(ucons, 0), 0);
+			this.renderSideWires(RedPowerLib.mapConToLocal(cons, 0), RedPowerLib.mapConToLocal(ucons, 0), 0);
 			this.renderEndCaps(RedPowerLib.mapConToLocal(indconex, 0), 0);
 		}
 		
 		if ((consides & 2) > 0) {
 			super.context.setOrientation(1, 0);
-			this.renderSideWires(RedPowerLib.mapConToLocal(cons, 1),
-					RedPowerLib.mapConToLocal(ucons, 1), 1);
+			this.renderSideWires(RedPowerLib.mapConToLocal(cons, 1), RedPowerLib.mapConToLocal(ucons, 1), 1);
 			this.renderEndCaps(RedPowerLib.mapConToLocal(indconex, 1), 1);
 		}
 		
 		if ((consides & 4) > 0) {
 			super.context.setOrientation(2, 0);
-			this.renderSideWires(RedPowerLib.mapConToLocal(cons, 2),
-					RedPowerLib.mapConToLocal(ucons, 2), 2);
+			this.renderSideWires(RedPowerLib.mapConToLocal(cons, 2), RedPowerLib.mapConToLocal(ucons, 2), 2);
 			this.renderEndCaps(RedPowerLib.mapConToLocal(indcon, 2) & 14, 2);
 			this.renderEndCaps(RedPowerLib.mapConToLocal(indconex, 2), 2);
 		}
 		
 		if ((consides & 8) > 0) {
 			super.context.setOrientation(3, 0);
-			this.renderSideWires(RedPowerLib.mapConToLocal(cons, 3),
-					RedPowerLib.mapConToLocal(ucons, 3), 3);
+			this.renderSideWires(RedPowerLib.mapConToLocal(cons, 3), RedPowerLib.mapConToLocal(ucons, 3), 3);
 			this.renderEndCaps(RedPowerLib.mapConToLocal(indcon, 3) & 14, 3);
 			this.renderEndCaps(RedPowerLib.mapConToLocal(indconex, 3), 3);
 		}
 		
 		if ((consides & 16) > 0) {
 			super.context.setOrientation(4, 0);
-			this.renderSideWires(RedPowerLib.mapConToLocal(cons, 4),
-					RedPowerLib.mapConToLocal(ucons, 4), 4);
+			this.renderSideWires(RedPowerLib.mapConToLocal(cons, 4), RedPowerLib.mapConToLocal(ucons, 4), 4);
 			this.renderEndCaps(RedPowerLib.mapConToLocal(indcon, 4) & 14, 4);
 			this.renderEndCaps(RedPowerLib.mapConToLocal(indconex, 4), 4);
 		}
 		
 		if ((consides & 32) > 0) {
 			super.context.setOrientation(5, 0);
-			this.renderSideWires(RedPowerLib.mapConToLocal(cons, 5),
-					RedPowerLib.mapConToLocal(ucons, 5), 5);
+			this.renderSideWires(RedPowerLib.mapConToLocal(cons, 5), RedPowerLib.mapConToLocal(ucons, 5), 5);
 			this.renderEndCaps(RedPowerLib.mapConToLocal(indcon, 5) & 14, 5);
 			this.renderEndCaps(RedPowerLib.mapConToLocal(indconex, 5), 5);
 		}
@@ -517,9 +511,9 @@ public abstract class RenderWiring extends RenderCovers {
 	
 	void setJacketIcons(int cons, IIcon[] tex, IIcon st) {
 		super.context.setIcon((cons & 1) > 0 ? st : tex[0],
-				(cons & 2) > 0 ? st : tex[1], (cons & 4) > 0 ? st : tex[2],
-				(cons & 8) > 0 ? st : tex[3], (cons & 16) > 0 ? st : tex[4],
-				(cons & 32) > 0 ? st : tex[5]);
+			(cons & 2) > 0 ? st : tex[1], (cons & 4) > 0 ? st : tex[2],
+			(cons & 8) > 0 ? st : tex[3], (cons & 16) > 0 ? st : tex[4],
+			(cons & 32) > 0 ? st : tex[5]);
 	}
 	
 	public void renderCenterBlock(int cons, IIcon[] icon, IIcon sidtex) {
@@ -543,47 +537,39 @@ public abstract class RenderWiring extends RenderCovers {
 				if (cons == 0) {
 					rc = 3;
 				}
-				
 				rc = (rc & 21) << 1 | (rc & 42) >> 1;
 				this.setJacketIcons(rc, icon, sidtex);
 			}
 			
-			super.context.renderBox(63 ^ cons, 0.25D, 0.25D, 0.25D, 0.75D,
-					0.75D, 0.75D);
+			super.context.renderBox(63 ^ cons, 0.25D, 0.25D, 0.25D, 0.75D, 0.75D, 0.75D);
 			if ((cons & 1) > 0) {
 				this.setJacketIcons(1, icon, sidtex);
-				super.context.renderBox(61, 0.25D, 0.0D, 0.25D, 0.75D, 0.25D,
-						0.75D);
+				super.context.renderBox(61, 0.25D, 0.0D, 0.25D, 0.75D, 0.25D, 0.75D);
 			}
 			
 			if ((cons & 2) > 0) {
 				this.setJacketIcons(2, icon, sidtex);
-				super.context.renderBox(62, 0.25D, 0.75D, 0.25D, 0.75D, 1.0D,
-						0.75D);
+				super.context.renderBox(62, 0.25D, 0.75D, 0.25D, 0.75D, 1.0D, 0.75D);
 			}
 			
 			if ((cons & 4) > 0) {
 				this.setJacketIcons(4, icon, sidtex);
-				super.context.renderBox(55, 0.25D, 0.25D, 0.0D, 0.75D, 0.75D,
-						0.25D);
+				super.context.renderBox(55, 0.25D, 0.25D, 0.0D, 0.75D, 0.75D, 0.25D);
 			}
 			
 			if ((cons & 8) > 0) {
 				this.setJacketIcons(8, icon, sidtex);
-				super.context.renderBox(59, 0.25D, 0.25D, 0.75D, 0.75D, 0.75D,
-						1.0D);
+				super.context.renderBox(59, 0.25D, 0.25D, 0.75D, 0.75D, 0.75D, 1.0D);
 			}
 			
 			if ((cons & 16) > 0) {
 				this.setJacketIcons(16, icon, sidtex);
-				super.context.renderBox(31, 0.0D, 0.25D, 0.25D, 0.25D, 0.75D,
-						0.75D);
+				super.context.renderBox(31, 0.0D, 0.25D, 0.25D, 0.25D, 0.75D, 0.75D);
 			}
 			
 			if ((cons & 32) > 0) {
 				this.setJacketIcons(32, icon, sidtex);
-				super.context.renderBox(47, 0.75D, 0.25D, 0.25D, 1.0D, 0.75D,
-						0.75D);
+				super.context.renderBox(47, 0.75D, 0.25D, 0.25D, 1.0D, 0.75D, 0.75D);
 			}
 			
 			//super.context.clearTexFiles(); //TODO:

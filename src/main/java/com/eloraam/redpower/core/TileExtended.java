@@ -3,11 +3,10 @@ package com.eloraam.redpower.core;
 import com.eloraam.redpower.RedPowerCore;
 import com.eloraam.redpower.core.CoreLib;
 import com.eloraam.redpower.core.RedPowerLib;
-import com.eloraam.redpower.network.INetworkDataProvider;
-import com.eloraam.redpower.network.PacketTileEntityUpdate;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -22,7 +21,7 @@ public abstract class TileExtended extends TileEntity implements INetworkDataPro
 	
 	protected long timeSched = -1L;
 	protected int updateRange = 16;
-	protected int updateDelay = 20;
+	protected int updateDelay = 1 * 20;
 	
 	public void onBlockNeighborChange(Block block) {
 	}
@@ -76,7 +75,7 @@ public abstract class TileExtended extends TileEntity implements INetworkDataPro
 	public void setExtendedMetadata(int md) {
 	}
 	
-	public void addHarvestContents(ArrayList<ItemStack> ist) {
+	public void addHarvestContents(List<ItemStack> ist) {
 		ist.add(new ItemStack(this.getBlockType(), 1, this.getExtendedID()));
 	}
 	
@@ -84,7 +83,7 @@ public abstract class TileExtended extends TileEntity implements INetworkDataPro
 		long tn = super.worldObj.getWorldTime() + time;
 		if (this.timeSched <= 0L || this.timeSched >= tn) {
 			this.timeSched = tn;
-			this.markDirty();
+			this.dirtyBlock();
 		}
 	}
 	
@@ -100,7 +99,7 @@ public abstract class TileExtended extends TileEntity implements INetworkDataPro
 		RedPowerLib.updateIndirectNeighbors(super.worldObj, super.xCoord, super.yCoord, super.zCoord, this.getBlockType());
 		super.worldObj.markBlockForUpdate(super.xCoord, super.yCoord, super.zCoord);
 		//CoreLib.markBlockDirty(super.worldObj, super.xCoord, super.yCoord, super.zCoord);
-		this.markDirty();
+		this.dirtyBlock();
 		this.sendPacket();
 	}
 	
@@ -108,12 +107,13 @@ public abstract class TileExtended extends TileEntity implements INetworkDataPro
 		//int md = super.worldObj.getBlockMetadata(super.xCoord, super.yCoord, super.zCoord);
 		super.worldObj.markBlockForUpdate(super.xCoord, super.yCoord, super.zCoord);
 		//CoreLib.markBlockDirty(super.worldObj, super.xCoord, super.yCoord, super.zCoord);
-		this.markDirty();
+		this.dirtyBlock();
 	}
 	
-	/*public void dirtyBlock() {
+	public void dirtyBlock() {
 		CoreLib.markBlockDirty(super.worldObj, super.xCoord, super.yCoord, super.zCoord);
-	}*/
+		this.markDirty();
+	}
 	
 	public void breakBlock() {
 		ArrayList<ItemStack> il = new ArrayList<ItemStack>();

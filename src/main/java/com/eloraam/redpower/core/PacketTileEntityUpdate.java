@@ -1,10 +1,8 @@
-package com.eloraam.redpower.network;
+package com.eloraam.redpower.core;
 
 import io.netty.buffer.ByteBuf;
 
 import java.util.ArrayList;
-
-import com.eloraam.redpower.core.DimCoord;
 
 import net.minecraft.tileentity.TileEntity;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
@@ -48,12 +46,6 @@ public class PacketTileEntityUpdate implements IMessageHandler<PacketTileEntityU
 			dataStream.writeInt(coord4D.zCoord);
 			dataStream.writeInt(coord4D.dimensionId);
 			
-			/*MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
-			
-			if(server != null) {
-				World world = server.worldServerForDimension(coord4D.dimensionId);
-				System.out.println("Sending TileEntityUpdatePacket from coords " + coord4D + " (" + coord4D.getTileEntity(world) + ")");
-			}*/
 			PacketHandler.encode(new Object[] {parameters}, dataStream);
 		}
 	

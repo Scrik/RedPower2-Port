@@ -159,7 +159,7 @@ public class TileRedstoneTube extends TileTube implements IRedPowerWiring {
 	@Override
 	protected void readFromPacket(ByteBuf buffer) {
 		super.readFromPacket(buffer);
-		this.PowerState = buffer.readShort();
+		this.PowerState = (short)(buffer.readByte() & 255);
 		this.ConMask = -1;
 	}
 	
@@ -167,6 +167,6 @@ public class TileRedstoneTube extends TileTube implements IRedPowerWiring {
 	@Override
 	protected void writeToPacket(ArrayList data) {
 		super.writeToPacket(data);
-		data.add(this.PowerState);
+		data.add((byte)this.PowerState);
 	}
 }

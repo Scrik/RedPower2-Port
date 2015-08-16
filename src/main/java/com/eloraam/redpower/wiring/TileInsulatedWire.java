@@ -33,8 +33,8 @@ public class TileInsulatedWire extends TileWiring implements IRedPowerWiring {
 			int dir = RedPowerLib.getConDirMask(side ^ 1);
 			dir &= this.getConnectableMask();
 			return dir == 0 ? false : (RedPowerLib.isBlockRedstone(
-					super.worldObj, super.xCoord, super.yCoord, super.zCoord,
-					side ^ 1) ? this.PowerState > 15 : this.PowerState > 0);
+				super.worldObj, super.xCoord, super.yCoord, super.zCoord, side ^ 1) ? 
+						this.PowerState > 15 : this.PowerState > 0);
 		}
 	}
 	
@@ -45,29 +45,24 @@ public class TileInsulatedWire extends TileWiring implements IRedPowerWiring {
 	
 	@Override
 	public int scanPoweringStrength(int cons, int ch) {
-		return RedPowerLib.isPowered(super.worldObj, super.xCoord,
-				super.yCoord, super.zCoord, cons, 0) ? 255 : 0;
+		return RedPowerLib.isPowered(super.worldObj, super.xCoord, super.yCoord, super.zCoord, cons, 0) ? 255 : 0;
 	}
 	
 	@Override
 	public int getCurrentStrength(int cons, int ch) {
-		return ch != 0 && ch != super.Metadata + 1 ? -1 : ((cons & this
-				.getConnectableMask()) == 0 ? -1 : this.PowerState);
+		return ch != 0 && ch != super.Metadata + 1 ? -1 : ((cons & this.getConnectableMask()) == 0 ? -1 : this.PowerState);
 	}
 	
 	@Override
 	public void updateCurrentStrength() {
 		this.PowerState = (short) RedPowerLib.updateBlockCurrentStrength(
-				super.worldObj, this, super.xCoord, super.yCoord, super.zCoord,
-				16777215, 1 | 2 << super.Metadata);
-		CoreLib.markBlockDirty(super.worldObj, super.xCoord, super.yCoord,
-				super.zCoord);
+			super.worldObj, this, super.xCoord, super.yCoord, super.zCoord, 0xFFFFFF, 1 | 2 << super.Metadata);
+		CoreLib.markBlockDirty(super.worldObj, super.xCoord, super.yCoord, super.zCoord);
 	}
 	
 	@Override
 	public int getPoweringMask(int ch) {
-		return this.PowerState == 0 ? 0 : (ch != 0 && ch != super.Metadata + 1 ? 0 : this
-				.getConnectableMask());
+		return this.PowerState == 0 ? 0 : (ch != 0 && ch != super.Metadata + 1 ? 0 : this.getConnectableMask());
 	}
 	
 	@Override
@@ -86,6 +81,7 @@ public class TileInsulatedWire extends TileWiring implements IRedPowerWiring {
 	protected void readFromPacket(ByteBuf buffer) {
 		super.readFromPacket(buffer);
 		this.PowerState = (short)buffer.readInt();
+		this.markDirty();
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })

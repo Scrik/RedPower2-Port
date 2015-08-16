@@ -5,12 +5,12 @@ import com.eloraam.redpower.core.BlockMultipart;
 import com.eloraam.redpower.core.CoreLib;
 import com.eloraam.redpower.core.IFrameLink;
 import com.eloraam.redpower.core.IFrameSupport;
+import com.eloraam.redpower.core.IHandlePackets;
 import com.eloraam.redpower.core.RedPowerLib;
 import com.eloraam.redpower.core.TileMultipart;
 import com.eloraam.redpower.core.WorldCoord;
 import com.eloraam.redpower.machine.TileFrameMoving;
 import com.eloraam.redpower.machine.TileMotor;
-import com.eloraam.redpower.network.IHandlePackets;
 
 import io.netty.buffer.ByteBuf;
 
@@ -96,7 +96,7 @@ public class TileFrameMoving extends TileMultipart implements IFrameLink, IHandl
 	}
 	
 	@Override
-	public void addHarvestContents(ArrayList<ItemStack> ist) {
+	public void addHarvestContents(List<ItemStack> ist) {
 		super.addHarvestContents(ist);
 	}
 	

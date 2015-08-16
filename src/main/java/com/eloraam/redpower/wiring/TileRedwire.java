@@ -40,8 +40,8 @@ public class TileRedwire extends TileWiring implements IRedPowerWiring {
 			dir |= RedPowerLib.getConDirMask(side ^ 1);
 			dir &= this.getConnectableMask();
 			return dir == 0 ? false : (RedPowerLib.isBlockRedstone(
-					super.worldObj, super.xCoord, super.yCoord, super.zCoord,
-					side ^ 1) ? this.PowerState > 15 : this.PowerState > 0);
+				super.worldObj, super.xCoord, super.yCoord, super.zCoord, side ^ 1) ? 
+					this.PowerState > 15 : this.PowerState > 0);
 		}
 	}
 	
@@ -57,22 +57,22 @@ public class TileRedwire extends TileWiring implements IRedPowerWiring {
 		} else {
 			int tr = super.getConnectableMask();
 			if ((super.ConSides & 1) > 0) {
-				tr |= 16777216;
+				tr |= 0x1000000;
 			}
 			if ((super.ConSides & 2) > 0) {
-				tr |= 33554432;
+				tr |= 0x2000000;
 			}
 			if ((super.ConSides & 4) > 0) {
-				tr |= 67108864;
+				tr |= 0x4000000;
 			}
 			if ((super.ConSides & 8) > 0) {
-				tr |= 134217728;
+				tr |= 0x8000000;
 			}
 			if ((super.ConSides & 16) > 0) {
-				tr |= 268435456;
+				tr |= 0x10000000;
 			}
 			if ((super.ConSides & 32) > 0) {
-				tr |= 536870912;
+				tr |= 0x20000000;
 			}
 			super.ConaMask = tr;
 			return tr;
@@ -86,17 +86,16 @@ public class TileRedwire extends TileWiring implements IRedPowerWiring {
 	
 	@Override
 	public int scanPoweringStrength(int cons, int ch) {
-		return ch != 0 ? 0 : (RedPowerLib.isPowered(super.worldObj,
-				super.xCoord, super.yCoord, super.zCoord, cons, super.ConSides) ? 255 : 0);
+		return ch != 0 ? 0 : 
+			(RedPowerLib.isPowered(super.worldObj, super.xCoord, super.yCoord, super.zCoord, cons, super.ConSides) ? 
+				255 : 0);
 	}
 	
 	@Override
 	public void updateCurrentStrength() {
 		this.PowerState = (short) RedPowerLib.updateBlockCurrentStrength(
-				super.worldObj, this, super.xCoord, super.yCoord, super.zCoord,
-				1073741823, 1);
-		CoreLib.markBlockDirty(super.worldObj, super.xCoord, super.yCoord,
-				super.zCoord);
+			super.worldObj, this, super.xCoord, super.yCoord, super.zCoord, 0x3FFFFFFF, 1);
+		CoreLib.markBlockDirty(super.worldObj, super.xCoord, super.yCoord, super.zCoord);
 	}
 	
 	@Override
@@ -107,13 +106,13 @@ public class TileRedwire extends TileWiring implements IRedPowerWiring {
 	@Override
 	public void readFromNBT(NBTTagCompound nbttagcompound) {
 		super.readFromNBT(nbttagcompound);
-		this.PowerState = (short) (nbttagcompound.getByte("pwr") & 255);
+		this.PowerState = /*(short) (*/nbttagcompound./*getByte*/getShort("pwr")/* & 255)*/;
 	}
 	
 	@Override
 	public void writeToNBT(NBTTagCompound nbttagcompound) {
 		super.writeToNBT(nbttagcompound);
-		nbttagcompound.setByte("pwr", (byte) this.PowerState);
+		nbttagcompound./*setByte*/setShort("pwr", /*(byte) */this.PowerState);
 	}
 	
 	@Override

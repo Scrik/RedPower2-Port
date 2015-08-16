@@ -144,7 +144,7 @@ public class TileBlueFurnace extends TileAppliance implements IInventory, ISided
 				this.contents[1].stackSize += ist.stackSize;
 			}
 			
-			if (this.contents[0].getItem().hasContainerItem()) {
+			if (this.contents[0].getItem().getContainerItem() != null) {
 				this.contents[0] = new ItemStack(this.contents[0].getItem()
 						.getContainerItem());
 			} else {

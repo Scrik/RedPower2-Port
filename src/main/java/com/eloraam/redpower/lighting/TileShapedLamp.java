@@ -3,13 +3,14 @@ package com.eloraam.redpower.lighting;
 import com.eloraam.redpower.RedPowerLighting;
 import com.eloraam.redpower.core.IConnectable;
 import com.eloraam.redpower.core.IFrameSupport;
+import com.eloraam.redpower.core.IHandlePackets;
 import com.eloraam.redpower.core.RedPowerLib;
 import com.eloraam.redpower.core.TileExtended;
-import com.eloraam.redpower.network.IHandlePackets;
 
 import io.netty.buffer.ByteBuf;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
@@ -91,7 +92,7 @@ public class TileShapedLamp extends TileExtended implements IHandlePackets, IFra
 	}
 	
 	@Override
-	public void addHarvestContents(ArrayList<ItemStack> ist) {
+	public void addHarvestContents(List<ItemStack> ist) {
 		ItemStack is = new ItemStack(this.getBlockType(), 1, (this.getExtendedID() << 10) + (this.Style << 5) + (this.Inverted ? 16 : 0) + this.Color);
 		ist.add(is);
 	}

@@ -1,15 +1,12 @@
 package com.eloraam.redpower.core;
 
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import com.eloraam.redpower.core.MathLib;
 import com.eloraam.redpower.core.Matrix3;
@@ -36,7 +33,6 @@ public class RenderContext {
 	public boolean lockTexture = false;
 	public boolean exactTextureCoordinates = false;
 	private int texFlags = 0;
-	private int rotation = 0;
 	public boolean useNormal = false;
 	public boolean forceFlat = false;
 	private float tintR = 1.0F;
@@ -65,7 +61,7 @@ public class RenderContext {
 	}
 	
 	public void bindBlockTexture() {
-		Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation("textures/atlas/blocks.png")); //TODO:
+		Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.locationBlocksTexture); //TODO:
 	}
 	
 	public void setPos(double x, double y, double z) {
@@ -92,59 +88,7 @@ public class RenderContext {
 		this.boxSize1.set(tx, ty, tz);
 		this.boxSize2.set(bx, by, bz);
 	}
-	
-	public void rotateRenderMatrix(ForgeDirection d) {
-        switch (d) {
-            case UP:
-                GL11.glRotatef(1, 0, 0, -90);
-                break;
-            case DOWN:
-                GL11.glRotatef(1, 0, 0, 90);
-                break;
-            case NORTH:
-                GL11.glRotatef(1, 0, -90, 0);
-                break;
-            case SOUTH:
-                GL11.glRotatef(1, 0, 90, 0);
-                break;
-            case WEST:
-                GL11.glRotatef(1, 0, 0, 180);
-                break;
-            case EAST:
-                GL11.glRotatef(1, 0, 0, 0);
-                break;
-            default:
-                break;
-        }
-    }
-	
-	public void rotateBlock(ForgeDirection direction) {
-		if (direction == ForgeDirection.UP) {
-		    GL11.glTranslated(16, 28, 16);
-		    GL11.glRotatef(180, 1, 0, 0);
-		}
-		if (direction == ForgeDirection.DOWN) {
-		    GL11.glTranslated(16, 4, 16);
-		    GL11.glRotatef(0, 0, 0, 0);
-		}
-		if (direction == ForgeDirection.EAST) {
-		    GL11.glTranslated(28, 16, 16);
-		    GL11.glRotatef(90, 0, 0, 1);
-		}
-		if (direction == ForgeDirection.WEST) {
-		    GL11.glTranslated(4, 16, 16);
-		    GL11.glRotatef(90, 0, 0, -1);
-		}
-		if (direction == ForgeDirection.NORTH) {
-		    GL11.glTranslated(16, 16, 4);
-		    GL11.glRotatef(90, 1, 0, 0);
-		}
-		if (direction == ForgeDirection.SOUTH) {
-		    GL11.glTranslated(16, 16, 28);
-		    GL11.glRotatef(90, -1, 0, 0);
-		}
-	}
-	
+
 	/*public void clearTexFiles() {
 		this.texBinds = null;
 		RenderLib.unbindTexture();
@@ -185,6 +129,59 @@ public class RenderContext {
 	
 	public void setTexFlags(int fl) {
 		this.texFlags = fl;
+	}
+	
+	public void setTexRotation(RenderBlocks renderBlocks, int rotation, boolean sides) {
+		switch (rotation) {
+            case 0:
+            	if(sides) {
+	            	renderBlocks.uvRotateEast = 3;
+	            	renderBlocks.uvRotateWest = 3;
+	            	renderBlocks.uvRotateSouth = 3;
+	            	renderBlocks.uvRotateNorth = 3;
+            	}
+                break;
+            case 1:
+                break;
+            case 2:
+            	if(sides) {
+            		renderBlocks.uvRotateSouth = 1;
+            		renderBlocks.uvRotateNorth = 2;
+            	}
+                break;
+            case 3:
+            	if(sides) {
+            		renderBlocks.uvRotateSouth = 2;
+            		renderBlocks.uvRotateNorth = 1;
+            	}
+            	renderBlocks.uvRotateTop = 3;
+            	renderBlocks.uvRotateBottom = 3;
+                break;
+            case 4:
+            	if(sides) {
+            		renderBlocks.uvRotateEast = 1;
+            		renderBlocks.uvRotateWest = 2;
+            	}
+            	renderBlocks.uvRotateTop = 2;
+            	renderBlocks.uvRotateBottom = 1;
+                break;
+            case 5:
+            	if(sides) {
+            		renderBlocks.uvRotateEast = 2;
+            		renderBlocks.uvRotateWest = 1;
+            	}
+                renderBlocks.uvRotateTop = 1;
+                renderBlocks.uvRotateBottom = 2;
+        }
+	}
+	
+	public void resetTexRotation(RenderBlocks renderBlocks) {
+		renderBlocks.uvRotateEast = 0;
+		renderBlocks.uvRotateWest = 0;
+		renderBlocks.uvRotateSouth = 0;
+		renderBlocks.uvRotateNorth = 0;
+		renderBlocks.uvRotateTop = 0;
+		renderBlocks.uvRotateBottom = 0;
 	}
 	
 	public void setIcon(IIcon a, IIcon b, IIcon c, IIcon d, IIcon e, IIcon f) {
@@ -275,7 +272,6 @@ public class RenderContext {
 		for (int i = 0; i < 6; ++i) {
 			this.brightLocal[i] = a;
 		}
-		
 	}
 	
 	public void startWorldRender(RenderBlocks rbl) {
@@ -324,32 +320,29 @@ public class RenderContext {
 		}
 	}
 	
-	public void setSideUV(int s, IIcon ti) {
-		if(ti == null) return;
-		double u1 = ti.getMinU(), u2 = ti.getMaxU(), v1 = ti.getMinV(), v2 = ti.getMaxV();
+	public void setSideUV(int s, double su1, double su2, double sv1, double sv2) {
+		if (!this.exactTextureCoordinates) {
+			su1 += 0.001D;
+			sv1 += 0.001D;
+			su2 -= 0.001D;
+			sv2 -= 0.001D;
+		}
 		
-		//int txl = this.texFlags >> s * 3;
-
-		/*if (!this.exactTextureCoordinates) {
-			u1 += 0.001D;
-			v1 += 0.001D;
-			u2 -= 0.001D;
-			v2 -= 0.001D;
-		}*/
+		/*int txl = this.texFlags >> s * 3;
 		
-		/*u1 *= 0.0625D;
-		u2 *= 0.0625D;
-		v1 *= 0.0625D;
-		v2 *= 0.0625D;*/
-		/*if ((txl & 1) > 0) {
-			u1 = 0.0625D - u1;
-			u2 = 0.0625D - u2;
+		su1 *= 0.0625D;
+		su2 *= 0.0625D;
+		sv1 *= 0.0625D;
+		sv2 *= 0.0625D;
+		if ((txl & 1) > 0) {
+			su1 = 0.0625D - su1;
+			su2 = 0.0625D - su2;
 		}
 		if ((txl & 2) > 0) {
-			v1 = 0.0625D - v1;
-			v2 = 0.0625D - v2;
+			sv1 = 0.0625D - sv1;
+			sv2 = 0.0625D - sv2;
 		}*/
-		/*IIcon *//*ti = this.texIndexBox[s];*/ //TODO: VEERY VERY WRONG
+		/*IIcon *//*int ti = this.texIndexBox[s];*/ //TODO: VEERY VERY WRONG
 		//double tx = (double) (ti & 15) * 0.0625D;
 		//double ty = (double) (ti >> 4) * 0.0625D;
 		//if ((txl & 4) > 0) {
@@ -361,10 +354,6 @@ public class RenderContext {
 			//this.cornerList[s][1].setUV(v2, u1);
 			//this.cornerList[s][2].setUV(v2, u2);
 			//this.cornerList[s][3].setUV(v1, u2);
-			this.cornerList[s][0].setUV(u1, v1);
-			this.cornerList[s][1].setUV(u1, v2);
-			this.cornerList[s][2].setUV(u2, v2);
-			this.cornerList[s][3].setUV(u2, v1);
 		//} else {
 			//u1 += tx;
 			//u2 += tx;
@@ -375,55 +364,74 @@ public class RenderContext {
 			//this.cornerList[s][2].setUV(u2, v2);
 			//this.cornerList[s][3].setUV(u2, v1);
 		//}
+		if(this.texIndex[s] != null) {
+			double u1 = this.texIndex[s].getMinU();
+			double v1 = this.texIndex[s].getMinV();
+			double u2 = this.texIndex[s].getMaxU();
+			double v2 = this.texIndex[s].getMaxV();
+			
+			double varU1 = u1 + ((u2 - u1) * (su1));
+			double varU2 = u2 - ((u2 - u1) * (1.0D - su2));
+			double varV1 = v1 + ((v2 - v1) * (sv1));
+			double varV2 = v2 - ((v2 - v1) * (1.0D - sv2));
+			
+			//System.out.println(this.texIndex[s].getIconName() + ": MinU - " + u1 + "; MaxU - " + u2 + "; MinV - " + v1 + "; MaxV - " + v2);
+			//System.out.println(this.texIndex[s].getIconName() + ": DMinU - " + varU1 + "; DMaxU - " + varU2 + "; DMinV - " + varV1 + "; DMaxV - " + varV2);
+			
+			this.cornerList[s][0].setUV(varU1, varV1);
+			this.cornerList[s][1].setUV(varU1, varV2);
+			this.cornerList[s][2].setUV(varU2, varV2);
+			this.cornerList[s][3].setUV(varU2, varV1);
+		}
 	}
 	
 	public void doMappingBox(int sides) {
 		this.cornerList = this.cornerListBox;
-		/*double u1;
+		double u1;
 		double u2;
 		double v1;
-		double v2;*/
+		double v2;
 		if ((sides & 3) > 0) {
-			//v1 = 1.0D - this.boxSize2.x;
-			//v2 = 1.0D - this.boxSize1.x;
+			v1 = 1.0D - this.boxSize2.x;
+			v2 = 1.0D - this.boxSize1.x;
 			if ((sides & 1) > 0) {
-				//u1 = 1.0D - this.boxSize2.z;
-				//u2 = 1.0D - this.boxSize1.z;
-				this.setSideUV(0, this.texIndex[0] != null ? this.texIndex[0] : null/*u1, u2, v1, v2*/);
+				u1 = 1.0D - this.boxSize2.z;
+				u2 = 1.0D - this.boxSize1.z;
+				this.setSideUV(0, u1, u2, v1, v2);
 			}
 			
 			if ((sides & 2) > 0) {
-				//u1 = this.boxSize1.z;
-				//u2 = this.boxSize2.z;
-				this.setSideUV(1, this.texIndex[1] != null ? this.texIndex[1] : null/*u1, u2, v1, v2*/);
+				u1 = this.boxSize1.z;
+				u2 = this.boxSize2.z;
+				this.setSideUV(1, u1, u2, v1, v2);
 			}
 		}
 		
 		if ((sides & 60) != 0) {
-			//v1 = 1.0D - this.boxSize2.y;
-			//v2 = 1.0D - this.boxSize1.y;
+			v1 = 1.0D - this.boxSize2.y;
+			v2 = 1.0D - this.boxSize1.y;
 			if ((sides & 4) > 0) {
-				//u1 = 1.0D - this.boxSize2.x;
-				//u2 = 1.0D - this.boxSize1.x;
-				this.setSideUV(2, this.texIndex[2] != null ? this.texIndex[2] : null/*u1, u2, v1, v2*/);
+				u1 = 1.0D - this.boxSize2.x;
+				u2 = 1.0D - this.boxSize1.x;
+				this.setSideUV(2, u1, u2, v1, v2);
 			}
 			
 			if ((sides & 8) > 0) {
-				//u1 = this.boxSize1.x;
-				//u2 = this.boxSize2.x;
-				this.setSideUV(3, this.texIndex[3] != null ? this.texIndex[3] : null/*u1, u2, v1, v2*/);
+				u1 = this.boxSize1.x;
+				u2 = this.boxSize2.x;
+				this.setSideUV(3, u1, u2, v1, v2);
 			}
 			
 			if ((sides & 16) > 0) {
-				//u1 = this.boxSize1.z;
-				//u2 = this.boxSize2.z;
-				this.setSideUV(4, this.texIndex[4] != null ? this.texIndex[4] : null/*u1, u2, v1, v2*/);
+				u1 = this.boxSize1.z;
+				u2 = this.boxSize2.z;
+				this.setSideUV(4, u1, u2, v1, v2);
 			}
 			
 			if ((sides & 32) > 0) {
-				//u1 = 1.0D - this.boxSize2.z;
-				//u2 = 1.0D - this.boxSize1.z;
-				this.setSideUV(5, this.texIndex[5] != null ? this.texIndex[5] : null/*u1, u2, v1, v2*/);
+				u1 = 1.0D - this.boxSize2.z;
+				u2 = 1.0D - this.boxSize1.z;
+				this.setSideUV(5, u1, u2, v1, v2);
 			}
 		}
 	}
@@ -445,7 +453,6 @@ public class RenderContext {
 	}
 	
 	public void orientTextures(int down) {
-		this.rotation=down;
 		switch (down) {
 			case 0:
 				break;
@@ -560,7 +567,6 @@ public class RenderContext {
 				this.swaptexfl(3, 5);
 				this.swaptexfl(3, 4);
 		}
-		
 	}
 	
 	public void orientTextureFl(int down) {
@@ -1082,7 +1088,6 @@ public class RenderContext {
 				this.lightSmoothFace(i);
 			}
 		}
-		
 	}
 	
 	private void doLightFlat(int sides) {
@@ -1095,12 +1100,9 @@ public class RenderContext {
 				c.brtex = this.brightLocal[i];
 			}
 		}
-		
 	}
 	
 	public void renderFlat(int sides) {
-		//bindBlockTexture();
-		//Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.locationBlocksTexture);
 		Tessellator tessellator = Tessellator.instance;
 		
 		for (int i = 0; i < this.cornerList.length; ++i) {
@@ -1130,11 +1132,9 @@ public class RenderContext {
 				}
 			}
 		}
-		//Minecraft.getMinecraft().renderEngine.deleteTexture(TextureMap.locationBlocksTexture);
 	}
 	
 	public void renderRangeFlat(int st, int ed) {
-		//bindBlockTexture();
 		Tessellator tessellator = Tessellator.instance;
 		
 		for (int i = st; i < ed; ++i) {
@@ -1162,11 +1162,6 @@ public class RenderContext {
 				tessellator.addVertexWithUV(v.x, v.y, v.z, c.u, c.v);
 			}
 		}
-		/*//TODO:
-		if (this.texBinds != null) {
-			RenderLib.unbindTexture();
-		}*/
-		
 	}
 	
 	public void renderAlpha(int sides, float alpha) {

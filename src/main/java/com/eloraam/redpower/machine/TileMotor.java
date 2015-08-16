@@ -8,13 +8,13 @@ import com.eloraam.redpower.core.FrameLib;
 import com.eloraam.redpower.core.IBluePowerConnectable;
 import com.eloraam.redpower.core.IFrameLink;
 import com.eloraam.redpower.core.IFrameSupport;
+import com.eloraam.redpower.core.IHandlePackets;
 import com.eloraam.redpower.core.IRotatable;
 import com.eloraam.redpower.core.RedPowerLib;
 import com.eloraam.redpower.core.TileExtended;
 import com.eloraam.redpower.core.WorldCoord;
 import com.eloraam.redpower.machine.TileFrameMoving;
 import com.eloraam.redpower.machine.TileMotor;
-import com.eloraam.redpower.network.IHandlePackets;
 
 import io.netty.buffer.ByteBuf;
 

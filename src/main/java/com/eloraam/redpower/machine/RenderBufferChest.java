@@ -7,8 +7,6 @@ import com.eloraam.redpower.core.RenderCustomBlock;
 
 import java.util.Random;
 
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
@@ -26,38 +24,16 @@ public class RenderBufferChest extends RenderCustomBlock {
 	}
 	
 	@Override
-	public void randomDisplayTick(World world, int i, int j, int k,
-			Random random) {
+	public void randomDisplayTick(World world, int i, int j, int k, Random random) {
 	}
 	
 	@Override
 	public void renderWorldBlock(RenderBlocks renderblocks, IBlockAccess iba, int i, int j, int k, int md) {
 		TileAppliance tb = (TileAppliance) CoreLib.getTileEntity(iba, i, j, k, TileAppliance.class);
 		if (tb != null) {
-			this.context.bindBlockTexture();
-			this.context.setDefaults();
-			this.context.setLocalLights(0.5F, 1.0F, 0.8F, 0.8F, 0.6F, 0.6F);
-			this.context.setPos(i, j, k);
-			this.context.readGlobalLights(iba, i, j, k);
-			IIcon sideIcon = getIcon(ForgeDirection.UNKNOWN.ordinal(), md);
-			IIcon topIcon = getIcon(ForgeDirection.UP.ordinal(), md);
-			IIcon bottomIcon = getIcon(ForgeDirection.DOWN.ordinal(), md);
-			this.context.setIcon(bottomIcon, topIcon, sideIcon, sideIcon, sideIcon, sideIcon);
-			this.context.setSize(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
-			this.context.setupBox();
-			this.context.transform();
-			System.out.println("Buffer Rotation: "+tb.Rotation);
-			Tessellator tess = Tessellator.instance;
-			tess.draw();
-			//GL11.glPushMatrix();
-			tess.setNormal(1.0F, -1.0F, 1.0F);
-			//this.context.rotateBlock(ForgeDirection.getOrientation(CoreLib.getFacing(tb.Rotation)));
-			//GL11.glPopMatrix();
-			tess.startDrawingQuads();
-			//this.context.orientTextures(tb.Rotation);
-			//RenderLib.bindTexture("/eloraam/machine/machine1.png");
-			this.context.renderGlobFaces(63);
-			//RenderLib.unbindTexture();
+			this.context.setTexRotation(renderblocks, CoreLib.getFacing(tb.Rotation), true);
+			renderblocks.renderStandardBlock(block, i, j, k);
+			this.context.resetTexRotation(renderblocks);
 		}
 	}
 	
@@ -68,7 +44,6 @@ public class RenderBufferChest extends RenderCustomBlock {
 		this.context.setDefaults();
 		this.context.setPos(-0.5D, -0.5D, -0.5D);
 		this.context.useNormal = true;
-		//RenderLib.bindTexture("/eloraam/machine/machine1.png");
 		Tessellator tessellator = Tessellator.instance;
 		tessellator.startDrawingQuads();
 		IIcon sideIcon = getIcon(ForgeDirection.UNKNOWN.ordinal(), md);
@@ -77,7 +52,6 @@ public class RenderBufferChest extends RenderCustomBlock {
 		this.context.setIcon(bottomIcon, topIcon, sideIcon, sideIcon, sideIcon, sideIcon);
 		this.context.renderBox(63, 0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
 		tessellator.draw();
-		//RenderLib.unbindTexture();
 		this.context.useNormal = false;
 	}
 }

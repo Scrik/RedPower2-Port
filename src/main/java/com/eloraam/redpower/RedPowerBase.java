@@ -220,7 +220,7 @@ public class RedPowerBase {
 		GameRegistry.addShapelessRecipe(new ItemStack(Items.dye, 4, 13), new Object[] { itemDyeIndigo, new ItemStack(Items.dye,1, 1), new ItemStack(Items.dye, 1, 1), new ItemStack(Items.dye, 1, 15) });
 		CraftLib.addShapelessOreRecipe(new ItemStack(itemLumar, 2, 11), new Object[] { Items.redstone, "dyeBlue", "dyeBlue", Items.glowstone_dust });
 		CraftLib.addOreRecipe(new ItemStack(itemBag, 1, 11), new Object[] { "CCC", "CDC", "CCC", Character.valueOf('C'), itemCanvas, Character.valueOf('D'), "dyeBlue" });
-		itemPlanBlank = (new Item()).setTextureName("redpower:itemPlanBlank");
+		itemPlanBlank = (new Item()).setTextureName("rpbase:itemPlanBlank");
 		itemPlanBlank.setUnlocalizedName("planBlank");
 		itemPlanBlank.setCreativeTab(CreativeTabs.tabMisc);
 		GameRegistry.addShapelessRecipe(new ItemStack(itemPlanBlank), new Object[] { Items.paper, itemDyeIndigo });

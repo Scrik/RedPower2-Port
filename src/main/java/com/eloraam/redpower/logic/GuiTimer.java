@@ -2,11 +2,10 @@ package com.eloraam.redpower.logic;
 
 import java.util.ArrayList;
 
-import com.eloraam.redpower.core.DimCoord;
 import com.eloraam.redpower.core.CoreProxy;
+import com.eloraam.redpower.core.PacketGuiEvent;
 import com.eloraam.redpower.logic.ContainerTimer;
 import com.eloraam.redpower.logic.TileLogicPointer;
-import com.eloraam.redpower.network.PacketGuiEvent;
 
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;

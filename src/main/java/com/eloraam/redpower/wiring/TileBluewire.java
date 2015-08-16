@@ -100,16 +100,13 @@ public class TileBluewire extends TileWiring implements IBluePowerConnectable {
 		if (super.ConMask >= 0) {
 			return super.ConMask;
 		} else {
-			super.ConMask = RedPowerLib.getConnections(super.worldObj, this,
-					super.xCoord, super.yCoord, super.zCoord);
+			super.ConMask = RedPowerLib.getConnections(super.worldObj, this, super.xCoord, super.yCoord, super.zCoord);
 			if (super.EConMask < 0) {
 				super.EConMask = RedPowerLib.getExtConnections(super.worldObj,
-						this, super.xCoord, super.yCoord, super.zCoord);
+					this, super.xCoord, super.yCoord, super.zCoord);
 				super.EConEMask = RedPowerLib.getExtConnectionExtras(
-						super.worldObj, this, super.xCoord, super.yCoord,
-						super.zCoord);
+					super.worldObj, this, super.xCoord, super.yCoord, super.zCoord);
 			}
-			
 			if (CoreLib.isClient(super.worldObj)) {
 				return super.ConMask;
 			} else {
@@ -124,16 +121,12 @@ public class TileBluewire extends TileWiring implements IBluePowerConnectable {
 		if (super.EConMask >= 0) {
 			return super.EConMask;
 		} else {
-			super.EConMask = RedPowerLib.getExtConnections(super.worldObj,
-					this, super.xCoord, super.yCoord, super.zCoord);
+			super.EConMask = RedPowerLib.getExtConnections(super.worldObj, this, super.xCoord, super.yCoord, super.zCoord);
 			super.EConEMask = RedPowerLib.getExtConnectionExtras(
-					super.worldObj, this, super.xCoord, super.yCoord,
-					super.zCoord);
+				super.worldObj, this, super.xCoord, super.yCoord, super.zCoord);
 			if (super.ConMask < 0) {
-				super.ConMask = RedPowerLib.getConnections(super.worldObj,
-						this, super.xCoord, super.yCoord, super.zCoord);
+				super.ConMask = RedPowerLib.getConnections(super.worldObj, this, super.xCoord, super.yCoord, super.zCoord);
 			}
-			
 			if (CoreLib.isClient(super.worldObj)) {
 				return super.EConMask;
 			} else {
@@ -154,23 +147,25 @@ public class TileBluewire extends TileWiring implements IBluePowerConnectable {
 			if (super.ConMask < 0 || super.EConMask < 0) {
 				if (super.ConMask < 0) {
 					super.ConMask = RedPowerLib.getConnections(super.worldObj,
-							this, super.xCoord, super.yCoord, super.zCoord);
+						this, super.xCoord, super.yCoord, super.zCoord);
 				}
-				
 				if (super.EConMask < 0) {
 					super.EConMask = RedPowerLib.getExtConnections(
-							super.worldObj, this, super.xCoord, super.yCoord,
-							super.zCoord);
+						super.worldObj, this, super.xCoord, super.yCoord, super.zCoord);
 					super.EConEMask = RedPowerLib.getExtConnectionExtras(
-							super.worldObj, this, super.xCoord, super.yCoord,
-							super.zCoord);
+						super.worldObj, this, super.xCoord, super.yCoord, super.zCoord);
 				}
-				
 				this.cond.recache(super.ConMask, super.EConMask);
 			}
 			
 			this.cond.iterate();
 			this.markDirty();
+
+			updateDelay--;
+			if(updateDelay == 0) {
+				this.sendPacket();
+				updateDelay = 20;
+			}
 		}
 	}
 	

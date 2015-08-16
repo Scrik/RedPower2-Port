@@ -362,7 +362,7 @@ public class TagFile {
 		}
 		
 		@Override
-		public Iterator iterator() {
+		public Iterator<Object> iterator() {
 			return new TagFile.Query.QueryIterator();
 		}
 		

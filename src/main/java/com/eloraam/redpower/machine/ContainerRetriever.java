@@ -1,10 +1,9 @@
 package com.eloraam.redpower.machine;
 
+import com.eloraam.redpower.core.IHandleGuiEvent;
+import com.eloraam.redpower.core.PacketGuiEvent;
 import com.eloraam.redpower.machine.TileRetriever;
-import com.eloraam.redpower.network.IHandleGuiEvent;
-import com.eloraam.redpower.network.PacketGuiEvent;
 
-import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ICrafting;

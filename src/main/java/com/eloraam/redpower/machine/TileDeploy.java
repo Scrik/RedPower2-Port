@@ -23,8 +23,7 @@ public class TileDeploy extends TileDeployBase implements IInventory, ISidedInve
 		} else if (CoreLib.isClient(super.worldObj)) {
 			return true;
 		} else {
-			player.openGui(RedPowerMachine.instance, 1, super.worldObj,
-					super.xCoord, super.yCoord, super.zCoord);
+			player.openGui(RedPowerMachine.instance, 1, super.worldObj, super.xCoord, super.yCoord, super.zCoord);
 			return true;
 		}
 	}
@@ -34,30 +33,23 @@ public class TileDeploy extends TileDeployBase implements IInventory, ISidedInve
 		for (int i = 0; i < 9; ++i) {
 			ItemStack ist = this.contents[i];
 			if (ist != null && ist.stackSize > 0) {
-				CoreLib.dropItem(super.worldObj, super.xCoord, super.yCoord,
-						super.zCoord, ist);
+				CoreLib.dropItem(super.worldObj, super.xCoord, super.yCoord, super.zCoord, ist);
 			}
 		}
-		
 	}
 	
 	protected void packInv(ItemStack[] bkup) {
 		for (int i = 0; i < 9; ++i) {
 			bkup[i] = TileDeployBase.fakePlayer.inventory.getStackInSlot(i);
-			TileDeployBase.fakePlayer.inventory.setInventorySlotContents(i,
-					this.contents[i]);
+			TileDeployBase.fakePlayer.inventory.setInventorySlotContents(i, this.contents[i]);
 		}
-		
 	}
 	
 	protected void unpackInv(ItemStack[] bkup) {
 		for (int i = 0; i < 9; ++i) {
-			this.contents[i] = TileDeployBase.fakePlayer.inventory
-					.getStackInSlot(i);
-			TileDeployBase.fakePlayer.inventory.setInventorySlotContents(i,
-					bkup[i]);
+			this.contents[i] = TileDeployBase.fakePlayer.inventory.getStackInSlot(i);
+			TileDeployBase.fakePlayer.inventory.setInventorySlotContents(i,bkup[i]);
 		}
-		
 	}
 	
 	@Override
@@ -68,17 +60,14 @@ public class TileDeploy extends TileDeployBase implements IInventory, ISidedInve
 		
 		for (int i = 0; i < 9; ++i) {
 			ItemStack ist = this.contents[i];
-			if (ist != null && ist.stackSize > 0
-					&& this.tryUseItemStack(ist, wc.x, wc.y, wc.z, i)) {
+			if (ist != null && ist.stackSize > 0 && this.tryUseItemStack(ist, wc.x, wc.y, wc.z, i)) {
 				if (TileDeployBase.fakePlayer.isUsingItem()) {
 					TileDeployBase.fakePlayer.stopUsingItem();
 				}
-				
 				this.unpackInv(bkup);
 				if (this.contents[i].stackSize == 0) {
 					this.contents[i] = null;
 				}
-				
 				this.markDirty();
 				return;
 			}

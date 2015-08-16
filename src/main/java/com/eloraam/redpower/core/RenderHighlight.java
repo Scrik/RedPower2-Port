@@ -21,9 +21,9 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.MovingObjectPosition.MovingObjectType;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
 
@@ -40,8 +40,7 @@ public class RenderHighlight {
 	
 	@SubscribeEvent
 	public void highlightEvent(DrawBlockHighlightEvent ev) {
-		this.onBlockHighlight(ev.context, ev.player, ev.target, ev.subID,
-				ev.currentItem, ev.partialTicks);
+		this.onBlockHighlight(ev.context, ev.player, ev.target, ev.subID, ev.currentItem, ev.partialTicks);
 	}
 	
 	@SuppressWarnings("rawtypes") //TODO: Костыль...
@@ -55,13 +54,11 @@ public class RenderHighlight {
 			while (plp.hasNext()) {
 				Object o = plp.next();
 				DestroyBlockProgress drb = (DestroyBlockProgress) o;
-				if (drb.getPartialBlockX() == mop.blockX
-						&& drb.getPartialBlockY() == mop.blockY
-						&& drb.getPartialBlockZ() == mop.blockZ) {
+				if (drb.getPartialBlockX() == mop.blockX && drb.getPartialBlockY() == mop.blockY && 
+						drb.getPartialBlockZ() == mop.blockZ) {
 					if (bid instanceof BlockExtended) {
-						this.drawBreaking(player.worldObj, renderglobal,
-								(BlockExtended) bid, player,
-								mop, f, drb.getPartialBlockDamage());
+						this.drawBreaking(player.worldObj, renderglobal, (BlockExtended) bid, player, mop, f, 
+							drb.getPartialBlockDamage());
 						renderglobal.drawSelectionBox(player, mop, i/*, ist*/, f);
 						return true;
 					}
@@ -78,11 +75,9 @@ public class RenderHighlight {
 				switch (ist.getItemDamage() >> 8) {
 					case 45: //TODO: Может напортачил...
 						this.drawSideBox(world, player, mop, f);
-						plp1 = CoverLib.getPlacement(world, mop,
-								ist.getItemDamage());
+						plp1 = CoverLib.getPlacement(world, mop, ist.getItemDamage());
 						if (plp1 != null) {
-							this.drawPreview(player, plp1, f,
-									ist.getItemDamage());
+							this.drawPreview(player, plp1, f, ist.getItemDamage());
 						}
 						break;
 					default:
@@ -129,18 +124,17 @@ public class RenderHighlight {
 			default:
 				this.context.setRelPos(0.0D, mop.blockX - mop.hitVec.xCoord + 1.0D, 0.0D);
 		}
-		
 	}
 	
 	public void drawCornerBox(World world, EntityPlayer player, MovingObjectPosition mop, float f) {
-		GL11.glEnable(3042);
-		GL11.glBlendFunc(770, 771);
+		GL11.glEnable(GL11.GL_BLEND);
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		GL11.glColor4f(0.0F, 0.0F, 0.0F, 0.9F);
 		GL11.glLineWidth(3.0F);
-		GL11.glDisable(3553);
+		GL11.glDisable(GL11.GL_TEXTURE_2D);
 		GL11.glDepthMask(false);
 		float sx = 0.002F;
-		float sbs = 0.25F;
+		//float sbs = 0.25F;
 		Block bid = world.getBlock(mop.blockX, mop.blockY, mop.blockZ);
 		if (bid != Blocks.air) {
 			this.context.setSize(0.0D, (-sx), 0.0D, 1.0D, (-sx), 1.0D);
@@ -161,18 +155,17 @@ public class RenderHighlight {
 		}
 		
 		GL11.glDepthMask(true);
-		GL11.glEnable(3553);
-		GL11.glDisable(3042);
+		GL11.glEnable(GL11.GL_TEXTURE_2D);
+		GL11.glDisable(GL11.GL_BLEND);
 		this.context.setRelPos(0.0D, 0.0D, 0.0D);
 	}
 	
-	public void drawSideBox(World world, EntityPlayer player,
-			MovingObjectPosition mop, float f) {
-		GL11.glEnable(3042);
-		GL11.glBlendFunc(770, 771);
+	public void drawSideBox(World world, EntityPlayer player, MovingObjectPosition mop, float f) {
+		GL11.glEnable(GL11.GL_BLEND);
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		GL11.glColor4f(0.0F, 0.0F, 0.0F, 0.9F);
 		GL11.glLineWidth(3.0F);
-		GL11.glDisable(3553);
+		GL11.glDisable(GL11.GL_TEXTURE_2D);
 		GL11.glDepthMask(false);
 		float sx = 0.002F;
 		float sbs = 0.25F;
@@ -199,41 +192,34 @@ public class RenderHighlight {
 		}
 		
 		GL11.glDepthMask(true);
-		GL11.glEnable(3553);
-		GL11.glDisable(3042);
+		GL11.glEnable(GL11.GL_TEXTURE_2D);
+		GL11.glDisable(GL11.GL_BLEND);
 		this.context.setRelPos(0.0D, 0.0D, 0.0D);
 	}
 	
-	public void drawBreaking(World world, RenderGlobal rg, BlockExtended bex,
-			EntityPlayer player, MovingObjectPosition mop, float f, int dmg) {
+	public void drawBreaking(World world, RenderGlobal rg, BlockExtended bex, EntityPlayer player, 
+			MovingObjectPosition mop, float f, int dmg) {
 		if (bex instanceof BlockMultipart) {
 			BlockMultipart j = (BlockMultipart) bex;
-			j.setPartBounds(world, mop.blockX, mop.blockY, mop.blockZ,
-					mop.subHit);
+			j.setPartBounds(world, mop.blockX, mop.blockY, mop.blockZ, mop.subHit);
 		}
 		
 		GL11.glEnable(3042);
-		GL11.glBlendFunc(774, 768);
-		//int j1 = rg.renderEngine.getTexture("/terrain.png"); //TODO: Figure this out
-		//GL11.glBindTexture(3553, j1);
-		//Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation("textures/atlas/blocks.png"));
+	    GL11.glBlendFunc(774, 768);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.5F);
 		GL11.glPolygonOffset(-3.0F, -3.0F);
 		GL11.glEnable('\u8037');
-		double x = player.lastTickPosX + (player.posX - player.lastTickPosX)
-				* f;
-		double y = player.lastTickPosY + (player.posY - player.lastTickPosY)
-				* f;
-		double z = player.lastTickPosZ + (player.posZ - player.lastTickPosZ)
-				* f;
+		double x = player.lastTickPosX + (player.posX - player.lastTickPosX) * f;
+		double y = player.lastTickPosY + (player.posY - player.lastTickPosY) * f;
+		double z = player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * f;
 		GL11.glEnable(3008);
 		this.context.setPos(mop.blockX - x, mop.blockY - y, mop.blockZ - z);
-		//this.context.setTex(240 + dmg);
+		//TODO: Hook to get destroying icons
+		IIcon[] destroyIcons = ReflectionHelper.getPrivateValue(RenderGlobal.class, Minecraft.getMinecraft().renderGlobal, new String[] { "destroyBlockIcons", "field_94141_F" });
+		this.context.setIcon(destroyIcons[dmg]);
 		Tessellator.instance.startDrawingQuads();
-		this.context.setSize(bex.getBlockBoundsMinX(),
-				bex.getBlockBoundsMinY(), bex.getBlockBoundsMinZ(),
-				bex.getBlockBoundsMaxX(), bex.getBlockBoundsMaxY(),
-				bex.getBlockBoundsMaxZ());
+		this.context.setSize(bex.getBlockBoundsMinX(), bex.getBlockBoundsMinY(), bex.getBlockBoundsMinZ(),
+			bex.getBlockBoundsMaxX(), bex.getBlockBoundsMaxY(), bex.getBlockBoundsMaxZ());
 		this.context.setupBox();
 		this.context.transform();
 		this.context.renderFaces(63);
@@ -247,13 +233,12 @@ public class RenderHighlight {
 		this.coverRenderer.start();
 		this.coverRenderer.setupCorners();
 		this.coverRenderer.setSize(mop.subHit, CoverLib.getThickness(mop.subHit, CoverLib.damageToCoverValue(item)));
-		//this.context.setTexFile(CoverLib.coverTextureFiles[item & 255]); //TODO: Это тоже проверить...
 		this.context.setIcon(CoverLib.coverIcons[item & 255]);
-		GL11.glEnable(3042);
-		GL11.glBlendFunc(770, 1);
+		GL11.glEnable(GL11.GL_BLEND);
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, 1);
 		GL11.glDepthMask(false);
 		GL11.glPolygonOffset(-3.0F, -3.0F);
-		GL11.glEnable('\u8037');
+		GL11.glEnable(GL11.GL_POLYGON_OFFSET_FILL);
 		Tessellator.instance.startDrawingQuads();
 		this.context.setupBox();
 		this.context.transform();
@@ -261,8 +246,8 @@ public class RenderHighlight {
 		this.context.doLightLocal(63);
 		this.context.renderAlpha(63, 0.8F);
 		Tessellator.instance.draw();
-		GL11.glDisable('\u8037');
+		GL11.glDisable(GL11.GL_POLYGON_OFFSET_FILL);
 		GL11.glDepthMask(true);
-		GL11.glDisable(3042);
+		GL11.glDisable(GL11.GL_BLEND);
 	}
 }

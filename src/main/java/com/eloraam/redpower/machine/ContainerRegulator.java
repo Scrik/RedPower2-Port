@@ -1,8 +1,8 @@
 package com.eloraam.redpower.machine;
 
+import com.eloraam.redpower.core.IHandleGuiEvent;
+import com.eloraam.redpower.core.PacketGuiEvent;
 import com.eloraam.redpower.machine.TileRegulator;
-import com.eloraam.redpower.network.IHandleGuiEvent;
-import com.eloraam.redpower.network.PacketGuiEvent;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;

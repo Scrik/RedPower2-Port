@@ -13,6 +13,7 @@ import org.lwjgl.opengl.GL11;
 public class GuiWindTurbine extends GuiContainer {
 	
 	TileWindTurbine tileWT;
+	protected ResourceLocation guiTex = new ResourceLocation("rpmachine", "textures/gui/windgui.png");
 	
 	public GuiWindTurbine(InventoryPlayer pli, TileWindTurbine wt) {
 		super(new ContainerWindTurbine(pli, wt));
@@ -34,7 +35,7 @@ public class GuiWindTurbine extends GuiContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float f, int p1, int p2) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		super.mc.renderEngine.bindTexture(new ResourceLocation("rpmachine", "texutres/gui/windgui.png"));
+		super.mc.renderEngine.bindTexture(guiTex);
 		int j = (super.width - super.xSize) / 2;
 		int k = (super.height - super.ySize) / 2;
 		this.drawTexturedModalRect(j, k, 0, 0, super.xSize, super.ySize);

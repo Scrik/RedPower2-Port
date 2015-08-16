@@ -97,21 +97,16 @@ public class TileGrate extends TileMachinePanel implements IPipeConnectable {
 			if (!this.isTickScheduled()) {
 				this.scheduleTick(5);
 			}
-			
 			WorldCoord wc = new WorldCoord(this);
 			wc.step(super.Rotation);
-			Integer pr = PipeLib.getPressure(super.worldObj, wc,
-					super.Rotation ^ 1);
+			Integer pr = PipeLib.getPressure(super.worldObj, wc, super.Rotation ^ 1);
 			if (pr != null) {
 				this.pressure = pr.intValue() - Integer.signum(pr.intValue());
 			}
-			
 			if (this.searchState == 1) {
 				this.searchPath.tryMapFluid(400);
 			}
-			
-			PipeLib.movePipeLiquid(super.worldObj, this, new WorldCoord(this),
-					1 << super.Rotation);
+			PipeLib.movePipeLiquid(super.worldObj, this, new WorldCoord(this), 1 << super.Rotation);
 		}
 	}
 	
@@ -198,7 +193,6 @@ public class TileGrate extends TileMachinePanel implements IPipeConnectable {
 					}
 				}
 			}
-			
 		}
 	}
 	

@@ -3,14 +3,16 @@ package com.eloraam.redpower.machine;
 import com.eloraam.redpower.RedPowerMachine;
 import com.eloraam.redpower.core.BlockMultipart;
 import com.eloraam.redpower.core.IFrameSupport;
+import com.eloraam.redpower.core.IHandlePackets;
 import com.eloraam.redpower.core.IRotatable;
+import com.eloraam.redpower.core.RedPowerLib;
 import com.eloraam.redpower.core.TileMultipart;
 import com.eloraam.redpower.machine.BlockMachinePanel;
-import com.eloraam.redpower.network.IHandlePackets;
 
 import io.netty.buffer.ByteBuf;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
@@ -65,6 +67,8 @@ public class TileMachinePanel extends TileMultipart implements IHandlePackets, I
 	@Override
 	public void onBlockPlaced(ItemStack ist, int side, EntityLivingBase ent) {
 		this.Rotation = (int) Math.floor(ent.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+		RedPowerLib.updateIndirectNeighbors(this.worldObj, this.xCoord, this.yCoord, this.zCoord, this.blockType);
+		this.sendPacket();
 	}
 	
 	@Override
@@ -73,7 +77,7 @@ public class TileMachinePanel extends TileMultipart implements IHandlePackets, I
 	}
 	
 	@Override
-	public void addHarvestContents(ArrayList<ItemStack> ist) {
+	public void addHarvestContents(List<ItemStack> ist) {
 		ist.add(new ItemStack(this.getBlockType(), 1, this.getExtendedID()));
 	}
 	
@@ -101,12 +105,12 @@ public class TileMachinePanel extends TileMultipart implements IHandlePackets, I
 	
 	@Override
 	public int getSolidPartsMask() {
-		return 1;
+		return 0x1;
 	}
 	
 	@Override
 	public int getPartsMask() {
-		return 1;
+		return 0x1;
 	}
 	
 	@Override
@@ -176,7 +180,7 @@ public class TileMachinePanel extends TileMultipart implements IHandlePackets, I
 	
 	protected void readFromPacket(ByteBuf buffer) {
 		this.Rotation = buffer.readInt();
-		int ps = buffer.readInt();
+		int ps = buffer.readByte();
 		this.Active = (ps & 1) > 0;
 		this.Powered = (ps & 2) > 0;
 		this.Delay = (ps & 4) > 0;
@@ -185,9 +189,9 @@ public class TileMachinePanel extends TileMultipart implements IHandlePackets, I
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	protected void writeToPacket(ArrayList data) {
-		data.add(this.Rotation);
+		data.add((int)this.Rotation);
 		int ps = (this.Active ? 1 : 0) | (this.Powered ? 2 : 0) | (this.Delay ? 4 : 0) | (this.Charged ? 8 : 0);
-		data.add(Integer.valueOf(ps));
+		data.add((byte)ps);
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })

@@ -16,7 +16,7 @@ public class ItemWindmill extends Item {
 	public int windmillType;
 	
 	public ItemWindmill(int tp) {
-		this.setTextureName("rpmachine:windmill");
+		this.setTextureName("rpmachine:itemWindTurbine");
 		this.setMaxStackSize(1);
 		this.setMaxDamage(1000);
 		this.setUnlocalizedName("windTurbineWood");
@@ -50,9 +50,5 @@ public class ItemWindmill extends Item {
 			default:
 				return null;
 		}
-	}/*
-	
-	public String getTextureFile() {
-		return "/eloraam/base/items1.png";
-	}*/
+	}
 }

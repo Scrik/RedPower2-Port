@@ -114,7 +114,7 @@ public class RedPowerMachine {
 	
 	private static void setupItems() {
 		itemVoltmeter = new ItemVoltmeter();
-		itemBatteryEmpty = new ItemTextured("rpmachine:itemEmptyBattery").setUnlocalizedName("btbattery").setCreativeTab(CreativeTabs.tabRedstone);
+		itemBatteryEmpty = new ItemTextured("rpmachine:itemBattery").setUnlocalizedName("btbattery").setCreativeTab(CreativeTabs.tabRedstone);
 		itemBatteryPowered = new ItemBattery();
 		CraftLib.addOreRecipe(
 				new ItemStack(itemVoltmeter),
@@ -138,13 +138,12 @@ public class RedPowerMachine {
 								.valueOf('B'), itemBatteryEmpty });
 		GameRegistry.registerItem(itemSonicDriver, "sonicDriver");
 		itemWoodTurbine = new ItemWindmill(1);
-		itemWoodWindmill = new ItemWindmill(2).setUnlocalizedName("windmillWood").setTextureName("windmillWood");
+		itemWoodWindmill = new ItemWindmill(2).setUnlocalizedName("windmillWood").setTextureName("rpmachine:itemWindmill");
 		itemMachineParts = new ItemParts();
-		itemMachineParts.addItem(0, "windSailWood", "item.windSailWood");
+		itemMachineParts.addItem(0, "rpmachine:itemWindSailWood", "item.windSailWood");
 		itemWoodSail = new ItemStack(itemMachineParts, 1, 0);
 		GameRegistry.registerItem(itemMachineParts, "machineParts");
-		CraftLib.addOreRecipe(
-				itemWoodSail,
+		CraftLib.addOreRecipe(itemWoodSail,
 				new Object[] { "CCS", "CCW", "CCS", Character.valueOf('C'), RedPowerBase.itemCanvas, Character
 						.valueOf('W'), "plankWood", Character.valueOf('S'), Items.stick });
 		GameRegistry
@@ -169,22 +168,22 @@ public class RedPowerMachine {
 		blockMachine = new BlockMachine();
 		blockMachine.setBlockName("rpmachine");
 		GameRegistry.registerBlock(blockMachine, ItemExtended.class, "machine");
-		blockMachine.setBlockName(0, "rpdeploy"); // 0
-		blockMachine.setBlockName(1, "rpbreaker"); // 1
-		blockMachine.setBlockName(2, "rptranspose"); // 2
-		blockMachine.setBlockName(3, "rpfilter"); // 3
-		blockMachine.setBlockName(4, "rpitemdet"); // 4
-		blockMachine.setBlockName(5, "rpsorter"); // 5
-		blockMachine.setBlockName(6, "rpbatbox"); // 6
-		blockMachine.setBlockName(7, "rpmotor"); // 7
-		blockMachine.setBlockName(8, "rpretriever"); // 8
-		blockMachine.setBlockName(9, "rpkgen"); // 9
-		blockMachine.setBlockName(10, "rpregulate"); // 10
-		blockMachine.setBlockName(11, "rpthermo"); // 11
-		blockMachine.setBlockName(12, "rpignite"); // 12
-		blockMachine.setBlockName(13, "rpassemble"); // 13
-		blockMachine.setBlockName(14, "rpeject"); // 14
-		blockMachine.setBlockName(15 ,"rprelay"); // 15
+		blockMachine.setBlockName(0, "rpdeploy");
+		blockMachine.setBlockName(1, "rpbreaker");
+		blockMachine.setBlockName(2, "rptranspose");
+		blockMachine.setBlockName(3, "rpfilter");
+		blockMachine.setBlockName(4, "rpitemdet");
+		blockMachine.setBlockName(5, "rpsorter");
+		blockMachine.setBlockName(6, "rpbatbox");
+		blockMachine.setBlockName(7, "rpmotor");
+		blockMachine.setBlockName(8, "rpretriever");
+		blockMachine.setBlockName(9, "rpkgen");
+		blockMachine.setBlockName(10, "rpregulate");
+		blockMachine.setBlockName(11, "rpthermo");
+		blockMachine.setBlockName(12, "rpignite");
+		blockMachine.setBlockName(13, "rpassemble");
+		blockMachine.setBlockName(14, "rpeject");
+		blockMachine.setBlockName(15 ,"rprelay");
 		GameRegistry.registerTileEntity(TileWindTurbine.class, "RPWind");
 		GameRegistry.registerTileEntity(TilePipe.class, "RPPipe");
 		GameRegistry.registerTileEntity(TilePump.class, "RPPump");
@@ -227,8 +226,8 @@ public class RedPowerMachine {
 		blockMachine2 = new BlockMachine();
 		blockMachine.setBlockName("rpmachine2");
 		GameRegistry.registerBlock(blockMachine2, ItemExtended.class, "machine2");
-		blockMachine2.setBlockName(0, "rpsortron"); // 0
-		blockMachine2.setBlockName(1, "rpmanager"); // 1
+		blockMachine2.setBlockName(0, "rpsortron");
+		blockMachine2.setBlockName(1, "rpmanager");
 		GameRegistry.registerTileEntity(TileSortron.class, "RPSortron");
 		GameRegistry.registerTileEntity(TileManager.class, "RPManager");
 		blockMachine2.addTileEntityMapping(0, TileSortron.class);
@@ -243,29 +242,29 @@ public class RedPowerMachine {
 		blockMachinePanel.addTileEntityMapping(2, TileAccel.class);
 		blockMachinePanel.addTileEntityMapping(3, TileGrate.class);
 		blockMachinePanel.addTileEntityMapping(4, TileTransformer.class);
-		blockMachinePanel.setBlockName(0, "rpsolar"); // 0
-		blockMachinePanel.setBlockName(1, "rppump"); // 1
-		blockMachinePanel.setBlockName(2, "rpaccel"); // 2
-		blockMachinePanel.setBlockName(3, "rpgrate"); // 3
-		blockMachinePanel.setBlockName(4, "rptransformer"); // 4
+		blockMachinePanel.setBlockName(0, "rpsolar");
+		blockMachinePanel.setBlockName(1, "rppump");
+		blockMachinePanel.setBlockName(2, "rpaccel");
+		blockMachinePanel.setBlockName(3, "rpgrate");
+		blockMachinePanel.setBlockName(4, "rptransformer");
 		GameRegistry.registerTileEntity(TileBlueFurnace.class, "RPBFurnace");
 		GameRegistry.registerTileEntity(TileBufferChest.class, "RPBuffer");
 		GameRegistry.registerTileEntity(TileBlueAlloyFurnace.class, "RPBAFurnace");
 		GameRegistry.registerTileEntity(TileChargingBench.class, "RPCharge");
-		RedPowerBase.blockAppliance.setBlockName(1, "rpbfurnace"); // 1
+		RedPowerBase.blockAppliance.setBlockName(1, "rpbfurnace");
 		RedPowerBase.blockAppliance.addTileEntityMapping(1, TileBlueFurnace.class);
-		RedPowerBase.blockAppliance.setBlockName(2, "rpbuffer"); // 2
+		RedPowerBase.blockAppliance.setBlockName(2, "rpbuffer");
 		RedPowerBase.blockAppliance.addTileEntityMapping(2, TileBufferChest.class);
-		RedPowerBase.blockAppliance.setBlockName(4, "rpbafurnace"); // 4
+		RedPowerBase.blockAppliance.setBlockName(4, "rpbafurnace");
 		RedPowerBase.blockAppliance.addTileEntityMapping(4, TileBlueAlloyFurnace.class);
-		RedPowerBase.blockAppliance.setBlockName(5, "rpcharge"); // 5
+		RedPowerBase.blockAppliance.setBlockName(5, "rpcharge");
 		RedPowerBase.blockAppliance.addTileEntityMapping(5, TileChargingBench.class);
 		blockFrame = new BlockFrame();
 		GameRegistry.registerBlock(blockFrame, ItemExtended.class, "frame");
 		blockFrame.setBlockName("rpframe");
-		blockFrame.setBlockName(0, "rpframe"); // 0
-		blockFrame.setBlockName(2, "rptframe"); // 2
-		blockFrame.setBlockName(3, "rprtframe"); // 3
+		blockFrame.setBlockName(0, "rpframe");
+		blockFrame.setBlockName(2, "rptframe");
+		blockFrame.setBlockName(3, "rprtframe");
 		GameRegistry.registerTileEntity(TileFrame.class, "RPFrame");
 		GameRegistry.registerTileEntity(TileFrameMoving.class, "RPMFrame");
 		GameRegistry.registerTileEntity(TileFrameTube.class, "RPTFrame");
@@ -529,15 +528,15 @@ public class RedPowerMachine {
 								.valueOf('M'), RedPowerBase.itemMotor });
 	}
 	
-	public static void initAchievements() { //TODO: Strange...
-		AchieveLib.registerAchievement("117283", "rpTranspose", -2, 2, new ItemStack(blockMachine, 1, 2), AchievementList.acquireIron);
-		AchieveLib.registerAchievement("117284", "rpBreaker", -2, 4, new ItemStack(blockMachine, 1, 1), AchievementList.acquireIron);
-		AchieveLib.registerAchievement("117285", "rpDeploy", -2, 6, new ItemStack(blockMachine, 1, 0), AchievementList.acquireIron);
+	public static void initAchievements() {
+		AchieveLib.registerAchievement("0x1CA23", "rpTranspose", -2, 2, new ItemStack(blockMachine, 1, 2), AchievementList.acquireIron);
+		AchieveLib.registerAchievement("0x1CA24", "rpBreaker", -2, 4, new ItemStack(blockMachine, 1, 1), AchievementList.acquireIron);
+		AchieveLib.registerAchievement("0x1CA25", "rpDeploy", -2, 6, new ItemStack(blockMachine, 1, 0), AchievementList.acquireIron);
 		AchieveLib.addCraftingAchievement(new ItemStack(blockMachine, 1, 2), "rpTranspose");
 		AchieveLib.addCraftingAchievement(new ItemStack(blockMachine, 1, 1), "rpBreaker");
 		AchieveLib.addCraftingAchievement(new ItemStack(blockMachine, 1, 0), "rpDeploy");
-		AchieveLib.registerAchievement("117286", "rpFrames", 4, 4, new ItemStack(blockMachine, 1, 7), "rpIngotBlue");
-		AchieveLib.registerAchievement("117287", "rpPump", 4, 5, new ItemStack(blockMachinePanel, 1, 1), "rpIngotBlue");
+		AchieveLib.registerAchievement("0x1CA26", "rpFrames", 4, 4, new ItemStack(blockMachine, 1, 7), "rpIngotBlue");
+		AchieveLib.registerAchievement("0x1CA27", "rpPump", 4, 5, new ItemStack(blockMachinePanel, 1, 1), "rpIngotBlue");
 		AchieveLib.addCraftingAchievement(new ItemStack(blockMachine, 1, 7), "rpFrames");
 		AchieveLib.addCraftingAchievement(new ItemStack(blockMachinePanel, 1, 1), "rpPump");
 	}

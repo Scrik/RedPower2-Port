@@ -10,6 +10,7 @@ import com.eloraam.redpower.machine.TileRedstoneTube;
 import io.netty.buffer.ByteBuf;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -70,7 +71,7 @@ public class TileFrameRedstoneTube extends TileRedstoneTube implements
 	}
 	
 	@Override
-	public void addHarvestContents(ArrayList<ItemStack> ist) {
+	public void addHarvestContents(List<ItemStack> ist) {
 		this.addCoverableHarvestContents(ist);
 		ist.add(new ItemStack(this.getBlockType(), 1, 3));
 	}

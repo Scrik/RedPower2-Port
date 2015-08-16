@@ -33,7 +33,6 @@ public class TileWindTurbineRenderer extends TileEntitySpecialRenderer {
 			if (twt.hasBlades) {
 				byte wtt = twt.windmillType;
 				Tessellator tessellator = Tessellator.instance;
-				//this.bindTextureByName("/eloraam/machine/vawt.png");
 				Minecraft.getMinecraft().renderEngine.bindTexture(modelRes);
 				tessellator.startDrawingQuads();
 				WorldCoord wc = new WorldCoord(te);
@@ -44,15 +43,12 @@ public class TileWindTurbineRenderer extends TileEntitySpecialRenderer {
 				if (twt.hasBrakes) {
 					f = (float) (f * 0.1D);
 				}
-				
 				double tm = f * twt.speed + twt.phase;
 				if (wtt == 2) {
 					tm = -tm;
 				}
-				
 				this.context.setOrientation(twt.Rotation, 0);
-				this.context.basis = Matrix3.getRotY(-4.0E-6D * tm).multiply(
-						this.context.basis);
+				this.context.basis = Matrix3.getRotY(-4.0E-6D * tm).multiply(this.context.basis);
 				this.context.setPos(x, y, z);
 				this.context.setRelPos(0.5D, 0.875D, 0.5D);
 				switch (wtt) {
@@ -67,7 +63,6 @@ public class TileWindTurbineRenderer extends TileEntitySpecialRenderer {
 					default:
 						return;
 				}
-				
 				this.context.setTint(1.0F, 1.0F, 1.0F);
 				this.context.renderModelGroup(0, 0);
 				if (wtt == 1) {
@@ -87,7 +82,6 @@ public class TileWindTurbineRenderer extends TileEntitySpecialRenderer {
 					this.context.renderModelGroup(1, 2);
 					this.context.renderModelGroup(1, 4);
 				}
-				
 				tessellator.draw();
 			}
 		}

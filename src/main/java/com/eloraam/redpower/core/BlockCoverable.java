@@ -4,9 +4,14 @@ import com.eloraam.redpower.core.BlockMultipart;
 import com.eloraam.redpower.core.CoreLib;
 import com.eloraam.redpower.core.TileCoverable;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
@@ -47,4 +52,26 @@ public abstract class BlockCoverable extends BlockMultipart {
 			}
 		}
 	}
+	
+	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z, EntityPlayer player) {
+		TileCoverable tile = (TileCoverable)CoreLib.getTileEntity(world, x, y, z, TileCoverable.class);
+		if(tile != null) {
+			return tile.getCover(target.subHit, target.sideHit);
+		}
+        return null;
+    }
+	
+	/*@SideOnly(Side.CLIENT)
+    public boolean addHitEffects(World worldObj, MovingObjectPosition target, EffectRenderer effectRenderer) {
+        return false;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public boolean addDestroyEffects(World world, int x, int y, int z, int meta, EffectRenderer effectRenderer) {
+    	TileMultipart tile = (TileMultipart)CoreLib.getTileEntity(world, x, y, z, TileMultipart.class);
+    	if(tile != null) {
+    		tile.
+    	}
+    	return false;
+    }*/
 }

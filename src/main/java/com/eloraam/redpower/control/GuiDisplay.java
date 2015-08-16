@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import com.eloraam.redpower.control.ContainerDisplay;
 import com.eloraam.redpower.control.TileDisplay;
 import com.eloraam.redpower.core.CoreProxy;
-import com.eloraam.redpower.network.PacketGuiEvent;
+import com.eloraam.redpower.core.PacketGuiEvent;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.Tessellator;
@@ -57,13 +57,14 @@ public class GuiDisplay extends GuiContainer {
 				case 200:
 					this.sendKey(128 | m);
 					break;
-				/*case 201:
+				case 201:
 				case 202:
 				case 204:
 				case 206:
-				case 209:*/
+				case 209:
 				default:
 					if (c > 0 && c <= 127) {
+						System.out.println("key: " + c);
 						this.sendKey(c);
 					}
 					break;
@@ -88,7 +89,7 @@ public class GuiDisplay extends GuiContainer {
 	@Override
 	public void drawGuiContainerBackgroundLayer(float f, int i, int j) {
 		ResourceLocation res = new ResourceLocation("rpcontrol", "textures/gui/displaygui.png");
-		//FontRenderer fontrenderer = super.mc.fontRenderer;
+		//FontRenderer fontRendererObj = super.mc.fontRenderer;
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		super.mc.renderEngine.bindTexture(res);
 		int l = (super.width - super.xSize) / 2;

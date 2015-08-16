@@ -86,8 +86,7 @@ public class TilePump extends TileMachinePanel implements IPipeConnectable, IBlu
 	@Override
 	public void onBlockNeighborChange(Block bl) {
 		this.ConMask = -1;
-		if (RedPowerLib.isPowered(super.worldObj, super.xCoord, super.yCoord,
-				super.zCoord, 16777215, 63)) {
+		if (RedPowerLib.isPowered(super.worldObj, super.xCoord, super.yCoord, super.zCoord, 0xFFFFFF, 63)) {
 			if (!super.Powered) {
 				super.Powered = true;
 				this.markDirty();

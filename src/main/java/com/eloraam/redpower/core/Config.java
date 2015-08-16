@@ -46,13 +46,13 @@ public class Config {
 		config.commentFile("RedPower 2 Configuration");
 		
 		String entry;
-		Iterator file1;
+		Iterator<?> file1;
 		for (file1 = config.query("blocks.%.%.id").iterator(); file1.hasNext(); reservedIds[config.getInt(entry)] = true) {
-			entry = (String) file1.next();
+			entry = (String)file1.next();
 		}
 		
 		for (file1 = config.query("items.%.%.id").iterator(); file1.hasNext(); reservedIds[config.getInt(entry) + 256] = true) {
-			entry = (String) file1.next();
+			entry = (String)file1.next();
 		}
 		
 		if (rpTranslateTable == null) {
@@ -73,7 +73,7 @@ public class Config {
 		file1 = rpTranslateTable.entrySet().iterator();
 		
 		while (file1.hasNext()) {
-			Entry entry2 = (Entry) file1.next();
+			Entry<?, ?> entry2 = (Entry<?, ?>) file1.next();
 			LanguageRegistry.instance().addStringLocalization((String) entry2.getKey(), (String) entry2.getValue());
 		}
 		
@@ -106,7 +106,7 @@ public class Config {
 		addName(bl.getUnlocalizedName() + ".name", name);
 	}
 	
-	private static void die(String msg) {
+	public static void die(String msg) {
 		throw new RuntimeException("RedPowerCore: " + msg);
 	}
 	

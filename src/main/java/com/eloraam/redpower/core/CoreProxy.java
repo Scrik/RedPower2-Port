@@ -1,7 +1,5 @@
 package com.eloraam.redpower.core;
 
-import java.util.List;
-
 import com.eloraam.redpower.RedPowerCore;
 
 import cpw.mods.fml.common.SidedProxy;
@@ -10,10 +8,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.item.Item;
 import net.minecraft.network.Packet;
-import net.minecraft.server.management.PlayerManager;
 import net.minecraft.util.IIcon;
-import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
 
 public class CoreProxy {
 	

@@ -1,6 +1,5 @@
 package com.eloraam.redpower.logic;
 
-import com.eloraam.redpower.core.CoreProxyClient;
 import com.eloraam.redpower.core.MathLib;
 import com.eloraam.redpower.core.PowerLib;
 import com.eloraam.redpower.core.Quat;

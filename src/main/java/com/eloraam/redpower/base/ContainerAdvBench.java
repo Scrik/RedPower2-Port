@@ -6,8 +6,8 @@ import com.eloraam.redpower.base.InventorySubCraft;
 import com.eloraam.redpower.base.SlotCraftRefill;
 import com.eloraam.redpower.base.TileAdvBench;
 import com.eloraam.redpower.core.CoreLib;
-import com.eloraam.redpower.network.IHandleGuiEvent;
-import com.eloraam.redpower.network.PacketGuiEvent;
+import com.eloraam.redpower.core.IHandleGuiEvent;
+import com.eloraam.redpower.core.PacketGuiEvent;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;

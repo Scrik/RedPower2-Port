@@ -8,7 +8,6 @@ import com.eloraam.redpower.base.TileAppliance;
 import com.eloraam.redpower.core.CoreLib;
 import com.eloraam.redpower.core.IRotatable;
 
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -28,7 +27,7 @@ public class TileBufferChest extends TileAppliance implements IInventory, ISided
 	
 	@Override
 	public boolean canUpdate() {
-		return false;
+		return true;
 	}
 	
 	@Override
@@ -46,28 +45,17 @@ public class TileBufferChest extends TileAppliance implements IInventory, ISided
 	
 	public int getFacing(EntityLivingBase ent) {
 		int yawrx = (int) Math.floor(ent.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
-		if (Math.abs(ent.posX - super.xCoord) < 2.0D
-				&& Math.abs(ent.posZ - super.zCoord) < 2.0D) {
+		if (Math.abs(ent.posX - super.xCoord) < 2.0D && Math.abs(ent.posZ - super.zCoord) < 2.0D) {
 			double p = ent.posY + 1.82D - ent.yOffset - super.yCoord;
 			if (p > 2.0D) {
-				return 0;
+				return 4;
 			}
 			
 			if (p < 0.0D) {
-				return 1;
+				return 5;
 			}
 		}
-		
-		switch (yawrx) {
-			case 0:
-				return 3;
-			case 1:
-				return 4;
-			case 2:
-				return 2;
-			default:
-				return 5;
-		}
+		return yawrx;
 	}
 	
 	@Override

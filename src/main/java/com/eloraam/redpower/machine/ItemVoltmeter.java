@@ -16,7 +16,7 @@ public class ItemVoltmeter extends Item {
    public ItemVoltmeter() {
       this.setMaxStackSize(1);
       this.setCreativeTab(CreativeTabs.tabTools);
-      this.setTextureName("redpowermachine:itemVoltmeter");
+      this.setTextureName("rpmachine:itemVoltmeter");
       this.setUnlocalizedName("voltmeter");
    }
 

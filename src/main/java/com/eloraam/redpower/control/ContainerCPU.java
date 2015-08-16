@@ -1,8 +1,8 @@
 package com.eloraam.redpower.control;
 
 import com.eloraam.redpower.control.TileCPU;
-import com.eloraam.redpower.network.IHandleGuiEvent;
-import com.eloraam.redpower.network.PacketGuiEvent;
+import com.eloraam.redpower.core.IHandleGuiEvent;
+import com.eloraam.redpower.core.PacketGuiEvent;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;

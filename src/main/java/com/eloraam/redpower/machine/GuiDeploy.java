@@ -4,7 +4,6 @@ import com.eloraam.redpower.machine.ContainerDeploy;
 import com.eloraam.redpower.machine.TileDeploy;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.gui.inventory.GuiDispenser;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.util.ResourceLocation;
@@ -13,6 +12,7 @@ import org.lwjgl.opengl.GL11;
 
 public class GuiDeploy extends GuiContainer {
 	
+	@SuppressWarnings("unused")
 	private int inventoryRows = 3;
 	
 	public GuiDeploy(InventoryPlayer pli, TileDeploy td) {

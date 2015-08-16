@@ -46,8 +46,8 @@ public class BlockAppliance extends BlockExtended {
 	IIcon sideBTChargerIcon;
 	IIcon sideBTChargerOnIcon;
 	IIcon[] frontBTChargerIcon = new IIcon[6];
-	IIcon[] frontBTChargerPoweredIcon = new IIcon[6];
-	IIcon[] frontBTChargerActiveIcon = new IIcon[6];
+	IIcon[] frontBTChargerPoweredIcon = new IIcon[5];
+	IIcon[] frontBTChargerActiveIcon = new IIcon[5];
 	
 	IIcon topBufferIcon;
 	IIcon bottomBufferIcon;
@@ -87,13 +87,13 @@ public class BlockAppliance extends BlockExtended {
 		this.bottomBTChargerIcon = reg.registerIcon("rpmachine:blockBTChargerBottom");
 		this.sideBTChargerIcon = reg.registerIcon("rpmachine:blockBTChargerSide");
 		this.sideBTChargerOnIcon = reg.registerIcon("rpmachine:blockBTChargerSideOn");
-		for(int i = 0; i < 6; i ++) {
+		for(int i = 0; i < 5; i ++) {
 			this.frontBTChargerIcon[i] = reg.registerIcon("rpmachine:blockBTChargerFront"+i);
 		}
-		for(int i = 0; i < 6; i ++) {
+		for(int i = 0; i < 5; i ++) {
 			this.frontBTChargerPoweredIcon[i] = reg.registerIcon("rpmachine:blockBTChargerFrontPowered"+i);
 		}
-		for(int i = 0; i < 6; i ++) {
+		for(int i = 0; i < 5; i ++) {
 			this.frontBTChargerActiveIcon[i] = reg.registerIcon("rpmachine:blockBTChargerFrontActive"+i);
 		}
 		
@@ -143,12 +143,8 @@ public class BlockAppliance extends BlockExtended {
 					if(tile instanceof TileBufferChest) {
 						TileBufferChest bfchest = (TileBufferChest)tile;
 						switch(ForgeDirection.getOrientation(side)) {
-							case UP:
-								return this.topBufferIcon;
-							case DOWN:
-								return this.bottomBufferIcon;
 							default:
-								return this.sideBufferIcon;	
+								return side == facing ? this.topBufferIcon : (side == ForgeDirection.getOrientation(facing).getOpposite().ordinal()? this.bottomBufferIcon : this.sideBufferIcon);	
 						}
 					}
 				}

@@ -6,15 +6,16 @@ import com.eloraam.redpower.base.ItemScrewdriver;
 import com.eloraam.redpower.core.BlockMultipart;
 import com.eloraam.redpower.core.CoreLib;
 import com.eloraam.redpower.core.IFrameSupport;
+import com.eloraam.redpower.core.IHandlePackets;
 import com.eloraam.redpower.core.IRedPowerConnectable;
 import com.eloraam.redpower.core.IRedbusConnectable;
 import com.eloraam.redpower.core.RedPowerLib;
 import com.eloraam.redpower.core.TileMultipart;
-import com.eloraam.redpower.network.IHandlePackets;
 
 import io.netty.buffer.ByteBuf;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
@@ -72,7 +73,6 @@ public class TileIOExpander extends TileMultipart implements IRedbusConnectable,
 				this.WBufNew = this.WBufNew & 255 | dat << 8;
 				this.scheduleTick(2);
 		}
-		
 	}
 	
 	@Override
@@ -92,13 +92,14 @@ public class TileIOExpander extends TileMultipart implements IRedbusConnectable,
 	
 	@Override
 	public int getPoweringMask(int ch) {
-		return ch == 0 ? 0 : ((this.WBuf & 1 << ch - 1) > 0 ? RedPowerLib
-				.mapRotToCon(8, this.Rotation) : 0);
+		return ch == 0 ? 0 : ((this.WBuf & 1 << ch - 1) > 0 ? RedPowerLib.mapRotToCon(8, this.Rotation) : 0);
 	}
 	
 	@Override
 	public void onBlockPlaced(ItemStack ist, int side, EntityLivingBase ent) {
 		this.Rotation = (int) Math.floor(ent.rotationYaw * 4.0F / 360.0F + 0.5D) + 1 & 3;
+		this.sendPacket();
+		this.markDirty();
 	}
 	
 	@Override
@@ -165,7 +166,7 @@ public class TileIOExpander extends TileMultipart implements IRedbusConnectable,
 	}
 	
 	@Override
-	public void addHarvestContents(ArrayList<ItemStack> ist) {
+	public void addHarvestContents(List<ItemStack> ist) {
 		//super.addHarvestContents(ist);
 		ist.add(new ItemStack(this.getBlockType(), 1, 0));
 	}

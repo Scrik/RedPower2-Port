@@ -13,14 +13,14 @@ public class TexVertex {
 	public TexVertex() {
 	}
 	
-	public TexVertex(int vti, int tn, double ui, double vi) {
+	/*public TexVertex(int vti, int tn, double ui, double vi) {
 		this.vtx = vti;
 		this.u = (tn & 15) * 0.0625D + ui * 0.0625D;
 		this.v = (tn >> 4) * 0.0625D + vi * 0.0625D;
 		this.r = 1.0F;
 		this.g = 1.0F;
 		this.b = 1.0F;
-	}
+	}*/
 	
 	public TexVertex(int vti, double ui, double vi) {
 		this.vtx = vti;

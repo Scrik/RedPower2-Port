@@ -1,4 +1,4 @@
-package com.eloraam.redpower.network;
+package com.eloraam.redpower.core;
 
 import java.util.ArrayList;
 

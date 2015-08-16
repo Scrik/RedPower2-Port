@@ -1,7 +1,6 @@
 package com.eloraam.redpower.core;
 
 import com.eloraam.redpower.core.TubeItem;
-import com.eloraam.redpower.network.PacketHandler;
 
 import io.netty.buffer.ByteBuf;
 

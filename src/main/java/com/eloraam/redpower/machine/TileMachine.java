@@ -2,12 +2,12 @@ package com.eloraam.redpower.machine;
 
 import com.eloraam.redpower.RedPowerMachine;
 import com.eloraam.redpower.core.IFrameSupport;
+import com.eloraam.redpower.core.IHandlePackets;
 import com.eloraam.redpower.core.IRotatable;
 import com.eloraam.redpower.core.MachineLib;
 import com.eloraam.redpower.core.TileExtended;
 import com.eloraam.redpower.core.TubeItem;
 import com.eloraam.redpower.core.WorldCoord;
-import com.eloraam.redpower.network.IHandlePackets;
 
 import io.netty.buffer.ByteBuf;
 

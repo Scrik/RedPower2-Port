@@ -10,12 +10,12 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockRedstoneLight;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public class BlockLamp extends Block {
 	
@@ -47,9 +47,14 @@ public class BlockLamp extends Block {
 		return true;
 	}
 	
-	public boolean isACube() {
+	@Override
+	public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side) {
 		return true;
 	}
+	
+	/*public boolean isACube() {
+		return true;
+	}*/
 	
 	@Override
 	public boolean canProvidePower() {
@@ -73,12 +78,12 @@ public class BlockLamp extends Block {
 	
 	private void checkPowerState(World world, int i, int j, int k) {
 		int md;
-		if (!this.powered && /*RedPowerLib.isPowered(world, i, j, k, 16777215, 63)*/world.isBlockIndirectlyGettingPowered(i, j, k)) {
+		if (!this.powered && RedPowerLib.isPowered(world, i, j, k, 0xFFFFFF, 63)/*world.isBlockIndirectlyGettingPowered(i, j, k)*/) {
 			md = world.getBlockMetadata(i, j, k);
 			world.setBlock(i, j, k, this.onBlock, md, 3); //And notify
 			world.markBlockForUpdate(i, j, k);
 			System.out.println("KO1");
-		} else if (this.powered && /*!RedPowerLib.isPowered(world, i, j, k, 16777215, 63)*/!world.isBlockIndirectlyGettingPowered(i, j, k)) {
+		} else if (this.powered && !RedPowerLib.isPowered(world, i, j, k, 0xFFFFFF, 63)/*!world.isBlockIndirectlyGettingPowered(i, j, k)*/) {
 			md = world.getBlockMetadata(i, j, k);
 			world.setBlock(i, j, k, this.offBlock, md, 3); //And notify
 			world.markBlockForUpdate(i, j, k);
@@ -100,14 +105,7 @@ public class BlockLamp extends Block {
 		return RedPowerCore.customBlockModel;
 	}
 	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings({ "rawtypes" })
 	public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List itemList) {
-		Iterator<ItemStack> iter = itemList.iterator();
-		while(iter.hasNext()) {
-			ItemStack iStack = iter.next();
-			if(Block.getBlockFromItem(iStack.getItem()) == this){
-				itemList.remove(iStack);
-			}
-		}
 	}
 }

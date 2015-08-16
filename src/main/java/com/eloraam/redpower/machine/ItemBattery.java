@@ -18,7 +18,7 @@ public class ItemBattery extends Item {
 		this.setNoRepair();
 		this.setMaxDamage(1500);
 		this.setCreativeTab(CreativeTabs.tabRedstone);
-		this.setTextureName("rpmachine:itemEmptyBatterry");
+		this.setTextureName("rpmachine:itemBattery");
 		this.setUnlocalizedName("btbattery");
 	}
 	

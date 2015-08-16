@@ -4,8 +4,8 @@ import com.eloraam.redpower.control.ContainerDisplay;
 import com.eloraam.redpower.control.TileDisplay;
 import com.eloraam.redpower.core.DimCoord;
 import com.eloraam.redpower.core.CoreProxy;
-import com.eloraam.redpower.network.IHandleGuiEvent;
-import com.eloraam.redpower.network.PacketGuiEvent;
+import com.eloraam.redpower.core.IHandleGuiEvent;
+import com.eloraam.redpower.core.PacketGuiEvent;
 
 import io.netty.buffer.ByteBuf;
 

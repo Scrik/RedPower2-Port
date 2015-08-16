@@ -57,20 +57,13 @@ public class ItemMicro extends ItemBlock {
 					return false;
 				} else {
 					ICoverable icv = (ICoverable) te;
-					if (icv.tryAddCover(pos.subHit,
-							CoverLib.damageToCoverValue(ist.getItemDamage()))) {
+					if (icv.tryAddCover(pos.subHit, CoverLib.damageToCoverValue(ist.getItemDamage()))) {
 						--ist.stackSize;
-						CoreLib.placeNoise(
-								world,
-								pos.blockX,
-								pos.blockY,
-								pos.blockZ,
-								CoverLib.getBlock(ist.getItemDamage() & 255));
-						RedPowerLib.updateIndirectNeighbors(world, pos.blockX,
-								pos.blockY, pos.blockZ,
-								RedPowerBase.blockMicro);
-						world.markBlockForUpdate(pos.blockX, pos.blockY,
-								pos.blockZ);
+						CoreLib.placeNoise(world, pos.blockX, pos.blockY, pos.blockZ, 
+							CoverLib.getBlock(ist.getItemDamage() & 255));
+						RedPowerLib.updateIndirectNeighbors(world, pos.blockX, pos.blockY, pos.blockZ, 
+							RedPowerBase.blockMicro);
+						world.markBlockForUpdate(pos.blockX, pos.blockY, pos.blockZ);
 						return true;
 					} else {
 						return false;
@@ -92,11 +85,10 @@ public class ItemMicro extends ItemBlock {
 	}
 	
 	@Override
-	public boolean onItemUseFirst(ItemStack ist, EntityPlayer player,
-			World world, int i, int j, int k, int l, float xp, float yp,
-			float zp) {
-		return CoreLib.isClient(world) ? false : (!player.isSneaking() ? false : this
-				.itemUseShared(ist, player, world, i, j, k, l));
+	public boolean onItemUseFirst(ItemStack ist, EntityPlayer player, 
+			World world, int i, int j, int k, int l, float xp, float yp, float zp) {
+		return CoreLib.isClient(world) ? false : (!player.isSneaking() ? 
+			false : this.itemUseShared(ist, player, world, i, j, k, l));
 	}
 	
 	private boolean itemUseShared(ItemStack ist, EntityPlayer player, World world, int i, int j, int k, int l) {
@@ -112,7 +104,7 @@ public class ItemMicro extends ItemBlock {
 		switch (hb) {
 			case 0:
 				return "rpcover";
-			/*case 1:
+			case 1:
 			case 2:
 			case 3:
 			case 4:
@@ -126,7 +118,7 @@ public class ItemMicro extends ItemBlock {
 			case 12:
 			case 13:
 			case 14:
-			case 15:*/
+			case 15:
 			default:
 				return null;
 			case 16:

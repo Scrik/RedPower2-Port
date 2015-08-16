@@ -8,6 +8,7 @@ import com.eloraam.redpower.core.IMultipart;
 import com.eloraam.redpower.core.TileMultipart;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -46,12 +47,11 @@ public abstract class TileCoverable extends TileMultipart implements ICoverable,
 		} else {
 			int c = this.getCover(side);
 			int n = c >> 8;
-			return !CoverLib.isTransparent(c & 255)
-					&& (n < 3 || n >= 6 && n <= 9);
+			return !CoverLib.isTransparent(c & 255) && (n < 3 || n >= 6 && n <= 9);
 		}
 	}
 	
-	public void addCoverableHarvestContents(ArrayList<ItemStack> ist) {
+	public void addCoverableHarvestContents(List<ItemStack> ist) {
 		if (CoverLib.blockCoverPlate != null) {
 			for (int i = 0; i < 29; ++i) {
 				int j = this.getCover(i);
@@ -63,7 +63,7 @@ public abstract class TileCoverable extends TileMultipart implements ICoverable,
 	}
 	
 	@Override
-	public void addHarvestContents(ArrayList<ItemStack> ist) {
+	public void addHarvestContents(List<ItemStack> ist) {
 		this.addCoverableHarvestContents(ist);
 	}
 	
@@ -78,6 +78,8 @@ public abstract class TileCoverable extends TileMultipart implements ICoverable,
 				this.deleteBlock();
 			}
 		}
+		this.markDirty();
+		this.sendPacket();
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -184,18 +186,15 @@ public abstract class TileCoverable extends TileMultipart implements ICoverable,
 				bl.setBlockBounds(1.0F - th, 1.0F - th, 0.0F, 1.0F, 1.0F, 1.0F);
 				break;
 			case 26:
-				bl.setBlockBounds(0.5F - th, 0.0F, 0.5F - th, 0.5F + th, 1.0F,
-						0.5F + th);
+				bl.setBlockBounds(0.5F - th, 0.0F, 0.5F - th, 0.5F + th, 1.0F, 0.5F + th);
 				break;
 			case 27:
-				bl.setBlockBounds(0.5F - th, 0.5F - th, 0.0F, 0.5F + th,
-						0.5F + th, 1.0F);
+				bl.setBlockBounds(0.5F - th, 0.5F - th, 0.0F, 0.5F + th, 0.5F + th, 1.0F);
 				break;
 			case 28:
-				bl.setBlockBounds(0.0F, 0.5F - th, 0.5F - th, 1.0F, 0.5F + th,
-						0.5F + th);
+				bl.setBlockBounds(0.0F, 0.5F - th, 0.5F - th, 1.0F, 0.5F + th, 0.5F + th);
+				break;
 		}
-		
 	}
 	
 	@Override
@@ -212,6 +211,17 @@ public abstract class TileCoverable extends TileMultipart implements ICoverable,
 		ItemStack ist = CoverLib.convertCoverPlate(side, cov);
 		if (ist != null) {
 			CoreLib.dropItem(super.worldObj, super.xCoord, super.yCoord, super.zCoord, ist);
+		}
+	}
+	
+	public ItemStack getCover(int part, int side) {
+		int i = this.getCover(part);
+		if(i >= 0) {
+			return CoverLib.convertCoverPlate(side, i);
+		} else {
+			List<ItemStack> ist = new ArrayList<ItemStack>();
+			this.addHarvestContents(ist);
+			return ist.size() >= 1 ? ist.get(0) : null;
 		}
 	}
 	

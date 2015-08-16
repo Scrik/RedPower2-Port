@@ -31,8 +31,7 @@ public class RenderRedwire extends RenderWiring {
 	}
 	
 	@Override
-	public void randomDisplayTick(World world, int i, int j, int k,
-			Random random) {
+	public void randomDisplayTick(World world, int i, int j, int k, Random random) {
 	}
 	
 	@Override
@@ -50,7 +49,6 @@ public class RenderRedwire extends RenderWiring {
 					super.context.lockTexture = true;
 					super.context.forceFlat = true;
 				}
-				
 				super.context.readGlobalLights(iba, i, j, k);
 				this.renderCovers(tc.CoverSides, tc.Covers);
 				super.context.forceFlat = false;
@@ -80,7 +78,6 @@ public class RenderRedwire extends RenderWiring {
 					} else {
 						this.setSideTex(super.block.getIcon(63 + tw.Metadata, md), super.block.getIcon(79 + tw.Metadata, md), super.block.getIcon(3, md));
 					}
-					
 					this.setWireSize(0.375F, 0.25F);
 				} else if (md == 5) {
 					super.context.setTint(1.0F, 1.0F, 1.0F);

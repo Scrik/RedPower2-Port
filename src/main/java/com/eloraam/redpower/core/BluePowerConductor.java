@@ -125,8 +125,7 @@ public abstract class BluePowerConductor {
 	
 	public void applyPower(double P) {
 		double t = Math.sqrt(this.Vcap * this.Vcap + 0.1D * P
-				* this.getInvCap())
-				- this.Vcap;
+				* this.getInvCap()) - this.Vcap;
 		this.applyDirect(20.0D * t / this.getInvCap());
 	}
 	
@@ -156,8 +155,8 @@ public abstract class BluePowerConductor {
 				wc.step(facing);
 			}
 			
-			IBluePowerConnectable var16 = (IBluePowerConnectable) CoreLib
-					.getTileEntity(world, wc, IBluePowerConnectable.class);
+			IBluePowerConnectable var16 = (IBluePowerConnectable) 
+					CoreLib.getTileEntity(world, wc, IBluePowerConnectable.class);
 			if (var16 == null) {
 				++s;
 			} else {

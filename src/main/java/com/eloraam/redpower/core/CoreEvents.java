@@ -3,6 +3,8 @@ package com.eloraam.redpower.core;
 import com.eloraam.redpower.core.CoreLib;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent.Phase;
+import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -10,6 +12,16 @@ import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
 import net.minecraftforge.oredict.OreDictionary.OreRegisterEvent;
 
 public class CoreEvents {
+	
+	@SubscribeEvent
+	public void onServerTick(ServerTickEvent event) {
+		if(event.phase == Phase.START) {
+			for(TileLoadEventListener listener : CoreLib.tileList) {
+				listener.onLoadComplete();
+			}
+			CoreLib.tileList.clear();
+		}
+	}
 	
 	@SubscribeEvent
 	public void toolDestroyed(PlayerDestroyItemEvent ev) {

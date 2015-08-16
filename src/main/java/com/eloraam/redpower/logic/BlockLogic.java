@@ -2,7 +2,6 @@ package com.eloraam.redpower.logic;
 
 import com.eloraam.redpower.core.BlockCoverable;
 import com.eloraam.redpower.core.CoreLib;
-import com.eloraam.redpower.core.CoreProxyClient;
 import com.eloraam.redpower.core.CreativeExtraTabs;
 import com.eloraam.redpower.core.IRedPowerConnectable;
 import com.eloraam.redpower.core.RedPowerLib;
@@ -17,7 +16,7 @@ import net.minecraft.world.IBlockAccess;
 
 public class BlockLogic extends BlockCoverable {
 	
-	private IIconRegister reg;
+	//private IIconRegister reg;
 	
 	public BlockLogic() {
 		super(CoreLib.materialRedpower);
@@ -30,7 +29,7 @@ public class BlockLogic extends BlockCoverable {
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void registerBlockIcons(IIconRegister reg) {
-		this.reg=reg;
+		//this.reg=reg;
 	}
 	
 	@SideOnly(Side.CLIENT)

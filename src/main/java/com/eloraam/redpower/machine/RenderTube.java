@@ -1,5 +1,6 @@
 package com.eloraam.redpower.machine;
 
+import com.eloraam.redpower.base.BlockMicro;
 import com.eloraam.redpower.core.CoreLib;
 import com.eloraam.redpower.core.RenderCovers;
 import com.eloraam.redpower.core.TubeLib;
@@ -28,7 +29,7 @@ public class RenderTube extends RenderCovers {
 	
 	@Override
 	public void renderWorldBlock(RenderBlocks renderblocks, IBlockAccess iba, int i, int j, int k, int md) {
-		boolean cons = false;
+		//boolean cons = false;
 		TileTube tt = (TileTube) CoreLib.getTileEntity(iba, i, j, k, TileTube.class);
 		if (tt != null) {
 			super.context.exactTextureCoordinates = true;
@@ -46,25 +47,24 @@ public class RenderTube extends RenderCovers {
 			super.context.setPos(i, j, k);
 			//RenderLib.bindTexture("/eloraam/machine/machine1.png");
 			if (md == 10) {
-				this.renderCenterBlock(cons1, super.block.getIcon(76, md), super.block.getIcon(77,md));
+				this.renderCenterBlock(cons1, BlockMachine.restrictTubeSideIcon, BlockMachine.restrictTubeFaceIcon);
 			} else if (md == 11) {
 				if (this.renderMagFins(cons1, md)) {
-					this.renderCenterBlock(cons1, super.block.getIcon(23, md), super.block.getIcon(22, md));
+					this.renderCenterBlock(cons1, BlockMachine.magTubeFaceIcon, BlockMachine.magTubeRingIcon);
 				} else {
-					this.renderCenterBlock(cons1, super.block.getIcon(21, md), super.block.getIcon(22, md));
+					this.renderCenterBlock(cons1, BlockMachine.magTubeSideIcon, BlockMachine.magTubeRingIcon);
 				}
 			} else {
-				this.renderCenterBlock(cons1, super.block.getIcon(64, md), super.block.getIcon(65, md));
+				this.renderCenterBlock(cons1, BlockMachine.baseTubeSideIcon, BlockMachine.baseTubeFaceIcon);
 			}
 			
 			if (tt.paintColor > 0) {
 				int tc = this.paintColors[tt.paintColor - 1];
-				super.context.setTint((tc >> 16) / 255.0F,
-						(tc >> 8 & 255) / 255.0F, (tc & 255) / 255.0F);
+				super.context.setTint((tc >> 16) / 255.0F, (tc >> 8 & 255) / 255.0F, (tc & 255) / 255.0F);
 				if (md == 10) {
-					this.renderBlockPaint(cons1, 78, md);
+					this.renderBlockPaint(cons1, BlockMachine.restrictTubeFaceColorIcon, BlockMachine.restrictTubeSideColorIcon, md);
 				} else {
-					this.renderBlockPaint(cons1, 66, md);
+					this.renderBlockPaint(cons1, BlockMachine.baseTubeFaceColorIcon, BlockMachine.baseTubeSideColorIcon, md);
 				}
 			}
 			//RenderLib.unbindTexture();
@@ -82,18 +82,13 @@ public class RenderTube extends RenderCovers {
 		Tessellator tessellator = Tessellator.instance;
 		tessellator.startDrawingQuads();
 		super.context.useNormal = true;
-		IIcon icon65 = super.block.getIcon(65, md);
 		if (md >> 8 == 10) {
-			IIcon icon76 = super.block.getIcon(76, md);
-			super.context.setIcon(icon65, icon65, icon76, icon76, icon76, icon76);
+			super.context.setIcon(BlockMachine.baseTubeFaceIcon, BlockMachine.baseTubeFaceIcon, BlockMachine.restrictTubeSideIcon, BlockMachine.restrictTubeSideIcon, BlockMachine.restrictTubeSideIcon, BlockMachine.restrictTubeSideIcon);
 		} else if (md >> 8 == 11) {
-			IIcon icon21 = super.block.getIcon(21, md);
-			IIcon icon22 = super.block.getIcon(22, md);
 			this.renderMagFins(3, md);
-			super.context.setIcon(icon22, icon22, icon21, icon21, icon21, icon21);
+			super.context.setIcon(BlockMachine.magTubeFaceNRIcon, BlockMachine.magTubeFaceNRIcon, BlockMachine.magTubeSideNRIcon, BlockMachine.magTubeSideNRIcon, BlockMachine.magTubeSideNRIcon, BlockMachine.magTubeSideNRIcon);
 		} else {
-			IIcon icon64 = super.block.getIcon(64, md);
-			super.context.setIcon(icon65, icon65, icon64, icon64, icon64, icon64);
+			super.context.setIcon(BlockMachine.baseTubeFaceIcon, BlockMachine.baseTubeFaceIcon, BlockMachine.baseTubeSideIcon, BlockMachine.baseTubeSideIcon, BlockMachine.baseTubeSideIcon, BlockMachine.baseTubeSideIcon);
 		}
 		
 		super.context.renderBox(63, 0.25D, 0.0D, 0.25D, 0.75D, 1.0D, 0.75D);
@@ -113,23 +108,21 @@ public class RenderTube extends RenderCovers {
 	}
 	
 	public boolean renderMagFins(int cons, int md) {
-		IIcon icon24 = super.block.getIcon(24, md);
-		IIcon icon25 = super.block.getIcon(25, md);
 		if (cons == 3) {
 			super.context.setTexFlags(0);
-			super.context.setIcon(icon25, icon25, icon24, icon24, icon24, icon24);
+			super.context.setIcon(BlockMachine.magTubeFaceIcon, BlockMachine.magTubeFaceIcon, BlockMachine.magTubeRingIcon, BlockMachine.magTubeRingIcon, BlockMachine.magTubeRingIcon, BlockMachine.magTubeRingIcon);
 			super.context.renderBox(63, 0.125D, 0.125D, 0.125D, 0.875D, 0.375D, 0.875D);
 			super.context.renderBox(63, 0.125D, 0.625D, 0.125D, 0.875D, 0.875D, 0.875D);
 			return true;
 		} else if (cons == 12) {
 			super.context.setTexFlags(147492);
-			super.context.setIcon(icon24, icon24, icon25, icon25, icon24, icon24);
+			super.context.setIcon(BlockMachine.magTubeRingIcon, BlockMachine.magTubeRingIcon, BlockMachine.magTubeFaceIcon, BlockMachine.magTubeFaceIcon, BlockMachine.magTubeRingIcon, BlockMachine.magTubeRingIcon);
 			super.context.renderBox(63, 0.125D, 0.125D, 0.125D, 0.875D, 0.875D, 0.375D);
 			super.context.renderBox(63, 0.125D, 0.125D, 0.625D, 0.875D, 0.875D, 0.875D);
 			return true;
 		} else if (cons == 48) {
 			super.context.setTexFlags(2304);
-			super.context.setIcon(icon24, icon24, icon24, icon24, icon25, icon25);
+			super.context.setIcon(BlockMachine.magTubeRingIcon, BlockMachine.magTubeRingIcon, BlockMachine.magTubeRingIcon, BlockMachine.magTubeRingIcon, BlockMachine.magTubeFaceIcon, BlockMachine.magTubeFaceIcon);
 			super.context.renderBox(63, 0.125D, 0.125D, 0.125D, 0.375D, 0.875D, 0.875D);
 			super.context.renderBox(63, 0.625D, 0.125D, 0.125D, 0.875D, 0.875D, 0.875D);
 			return true;
@@ -196,67 +189,58 @@ public class RenderTube extends RenderCovers {
 		}
 	}
 	
-	public void renderBlockPaint(int cons, int tx1, int meta) {
-		IIcon tex1 = super.block.getIcon(tx1, meta);
-		IIcon tex2 = super.block.getIcon(tx1 + 1, meta);
+	public void renderBlockPaint(int cons, IIcon faceIcon, IIcon sideIcon, int meta) {
 		if (cons != 0) {
 			if (cons == 3) {
 				super.context.setTexFlags(1773);
-				super.context.setIcon(null, null, tex2, tex2, tex2, tex2);
+				super.context.setIcon(null, null, sideIcon, sideIcon, sideIcon, sideIcon);
 				this.doubleBox(60, 0.25F, 0.0F, 0.25F, 0.75F, 1.0F, 0.75F);
 			} else if (cons == 12) {
 				super.context.setTexFlags(184365);
-				super.context.setIcon(tex2, tex2, null, null, tex2, tex2);
+				super.context.setIcon(sideIcon, sideIcon, null, null, sideIcon, sideIcon);
 				this.doubleBox(51, 0.25F, 0.25F, 0.0F, 0.75F, 0.75F, 1.0F);
 			} else if (cons == 48) {
 				super.context.setTexFlags(187200);
-				super.context.setIcon(tex2, tex2, tex2, tex2, null, null);
+				super.context.setIcon(sideIcon, sideIcon, sideIcon, sideIcon, null, null);
 				this.doubleBox(15, 0.0F, 0.25F, 0.25F, 1.0F, 0.75F, 0.75F);
 			} else {
-				super.context.setIcon(tex1);
-				this.doubleBox(63 ^ cons, 0.25F, 0.25F, 0.25F, 0.75F, 0.75F,
-						0.75F);
+				super.context.setIcon(faceIcon);
+				this.doubleBox(63 ^ cons, 0.25F, 0.25F, 0.25F, 0.75F, 0.75F, 0.75F);
 				if ((cons & 1) > 0) {
 					super.context.setTexFlags(1773);
-					super.context.setIcon(tex1, tex1, tex2, tex2, tex2,
-							tex2);
+					super.context.setIcon(faceIcon, faceIcon, sideIcon, sideIcon, sideIcon, sideIcon);
 					this.doubleBox(60, 0.25F, 0.0F, 0.25F, 0.75F, 0.25F, 0.75F);
 				}
 				
 				if ((cons & 2) > 0) {
 					super.context.setTexFlags(1773);
-					super.context.setIcon(tex1, tex1, tex2, tex2, tex2, tex2);
+					super.context.setIcon(faceIcon, faceIcon, sideIcon, sideIcon, sideIcon, sideIcon);
 					this.doubleBox(60, 0.25F, 0.75F, 0.25F, 0.75F, 1.0F, 0.75F);
 				}
 				
 				if ((cons & 4) > 0) {
 					super.context.setTexFlags(184365);
-					super.context.setIcon(tex2, tex2, tex1, tex1, tex2,
-							tex2);
+					super.context.setIcon(sideIcon, sideIcon, faceIcon, faceIcon, sideIcon, sideIcon);
 					this.doubleBox(51, 0.25F, 0.25F, 0.0F, 0.75F, 0.75F, 0.25F);
 				}
 				
 				if ((cons & 8) > 0) {
 					super.context.setTexFlags(184365);
-					super.context.setIcon(tex2, tex2, tex1, tex1, tex2,
-							tex2);
+					super.context.setIcon(sideIcon, sideIcon, faceIcon, faceIcon, sideIcon, sideIcon);
 					this.doubleBox(51, 0.25F, 0.25F, 0.75F, 0.75F, 0.75F, 1.0F);
 				}
 				
 				if ((cons & 16) > 0) {
 					super.context.setTexFlags(187200);
-					super.context.setIcon(tex2, tex2, tex2, tex2,
-							tex1, tex1);
+					super.context.setIcon(sideIcon, sideIcon, sideIcon, sideIcon, faceIcon, faceIcon);
 					this.doubleBox(15, 0.0F, 0.25F, 0.25F, 0.25F, 0.75F, 0.75F);
 				}
 				
 				if ((cons & 32) > 0) {
 					super.context.setTexFlags(187200);
-					super.context.setIcon(tex2, tex2, tex2, tex2,
-							tex1, tex1);
+					super.context.setIcon(sideIcon, sideIcon, sideIcon, sideIcon, faceIcon, faceIcon);
 					this.doubleBox(15, 0.75F, 0.25F, 0.25F, 1.0F, 0.75F, 0.75F);
 				}
-				
 			}
 		}
 	}

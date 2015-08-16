@@ -5,9 +5,9 @@ import com.eloraam.redpower.RedPowerControl;
 import com.eloraam.redpower.base.ItemScrewdriver;
 import com.eloraam.redpower.core.CoreLib;
 import com.eloraam.redpower.core.IFrameSupport;
+import com.eloraam.redpower.core.IHandlePackets;
 import com.eloraam.redpower.core.IRedbusConnectable;
 import com.eloraam.redpower.core.TileExtended;
-import com.eloraam.redpower.network.IHandlePackets;
 
 import io.netty.buffer.ByteBuf;
 
@@ -155,7 +155,7 @@ public class TileDisplay extends TileExtended implements IRedbusConnectable, IHa
 	
 	@Override
 	public int getConnectableMask() {
-		return 16777215;
+		return 0xFFFFFF;
 	}
 	
 	@Override
@@ -170,7 +170,10 @@ public class TileDisplay extends TileExtended implements IRedbusConnectable, IHa
 	
 	@Override
 	public void onBlockPlaced(ItemStack ist, int side, EntityLivingBase ent) {
-		this.Rotation = (int) Math.floor(ent.rotationYaw * 4.0F / 360.0F + 0.5D) + 1 & 3;
+		//this.Rotation = MathHelper.floor_double((double)(ent.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
+		this.Rotation = (int) Math.floor(ent.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+		this.sendPacket();
+		this.markDirty();
 	}
 	
 	@Override
@@ -225,6 +228,11 @@ public class TileDisplay extends TileExtended implements IRedbusConnectable, IHa
 	@Override
 	public void updateEntity() {
 		this.runblitter();
+		updateDelay--;
+		if(updateDelay == 0) {
+			this.sendPacket();
+			updateDelay = 20;
+		}
 	}
 	
 	private void runblitter() {
@@ -251,8 +259,7 @@ public class TileDisplay extends TileExtended implements IRedbusConnectable, IHa
 					case 2:
 						for (soffs = 0; soffs < h; ++soffs) {
 							for (j = 0; j < w; ++j) {
-								this.screen[doffs + 80 * soffs + j] = (byte) (this.screen[doffs
-										+ 80 * soffs + j] ^ 128);
+								this.screen[doffs + 80 * soffs + j] = (byte) (this.screen[doffs + 80 * soffs + j] ^ 128);
 							}
 						}
 						

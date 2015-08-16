@@ -2,8 +2,8 @@ package com.eloraam.redpower.base;
 
 import com.eloraam.redpower.RedPowerBase;
 import com.eloraam.redpower.core.IFrameSupport;
+import com.eloraam.redpower.core.IHandlePackets;
 import com.eloraam.redpower.core.TileExtended;
-import com.eloraam.redpower.network.IHandlePackets;
 
 import io.netty.buffer.ByteBuf;
 

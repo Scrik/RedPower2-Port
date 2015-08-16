@@ -24,11 +24,11 @@ public class CoverRenderer {
 	public int covmaskt;
 	public int covmaskh;
 	public int covmasko;
-	protected static IIcon[][] coverIcons = CoverLib.coverIcons;
-	//protected static String[] coverTextureFiles = CoverLib.coverTextureFiles;
+	protected static IIcon[][] coverIcons;
 	protected RenderContext context;
 	
 	public CoverRenderer(RenderContext ctx) {
+		coverIcons = CoverLib.coverIcons;
 		this.context = ctx;
 	}
 	
@@ -57,20 +57,16 @@ public class CoverRenderer {
 				if (s == 0) {
 					this.context.boxSize2.x = 0.25D;
 				}
-				
 				if (s == 1) {
 					this.context.boxSize1.x = 0.75D;
 				}
-				
 				if (s > 1) {
 					this.context.boxSize1.x = 0.25D;
 					this.context.boxSize2.x = 0.75D;
 				}
-				
 				if (s == 2) {
 					this.context.boxSize2.z = 0.25D;
 				}
-				
 				if (s == 3) {
 					this.context.boxSize1.z = 0.75D;
 				}
@@ -80,20 +76,16 @@ public class CoverRenderer {
 				if (s == 0) {
 					this.context.boxSize2.x = 0.25D;
 				}
-				
 				if (s == 1) {
 					this.context.boxSize1.x = 0.75D;
 				}
-				
 				if (s > 1) {
 					this.context.boxSize1.x = 0.25D;
 					this.context.boxSize2.x = 0.75D;
 				}
-				
 				if (s == 2) {
 					this.context.boxSize2.y = 0.25D;
 				}
-				
 				if (s == 3) {
 					this.context.boxSize1.y = 0.75D;
 				}
@@ -102,25 +94,20 @@ public class CoverRenderer {
 				if (s == 0) {
 					this.context.boxSize2.z = 0.25D;
 				}
-				
 				if (s == 1) {
 					this.context.boxSize1.z = 0.75D;
 				}
-				
 				if (s > 1) {
 					this.context.boxSize1.z = 0.25D;
 					this.context.boxSize2.z = 0.75D;
 				}
-				
 				if (s == 2) {
 					this.context.boxSize2.y = 0.25D;
 				}
-				
 				if (s == 3) {
 					this.context.boxSize1.y = 0.75D;
 				}
 		}
-		
 	}
 	
 	int innerFace(int part, int s) {
@@ -137,7 +124,6 @@ public class CoverRenderer {
 			default:
 				m = 16909320;
 		}
-		
 		return m >> s * 8;
 	}
 	
@@ -410,7 +396,6 @@ public class CoverRenderer {
 			this.y2[i] = this.cy2;
 			this.z2[i] = this.cz2;
 		}
-		
 	}
 	
 	public void initMasks(int uc, short[] cv) {
@@ -431,7 +416,6 @@ public class CoverRenderer {
 				}
 			}
 		}
-		
 		this.covmasko = this.covmask & ~this.covmaskt & ~this.covmaskh;
 	}
 	
@@ -439,9 +423,7 @@ public class CoverRenderer {
 		this.initMasks(uc, cv);
 		this.start();
 		this.renderShell();
-		if ((uc & -64) == 0) {
-			//this.context.clearTexFiles();
-		} else {
+		if ((uc & -64) != 0) {
 			this.renderOthers();
 		}
 	}
@@ -450,33 +432,21 @@ public class CoverRenderer {
 		this.initMasks(uc, cv);
 		this.startShrink(sh);
 		this.renderShell();
-		if ((uc & -64) == 0) {
-			//this.context.clearTexFiles();
-		} else {
+		if ((uc & -64) != 0) {
 			this.renderOthers();
 		}
 	}
 	
-	/*private String getTerrain(String fn) {
-		return fn == null ? "/terrain.png" : fn;
-	}*/
-	
 	public void setIcon(int cn) {
 		this.context.setIcon(coverIcons[cn]);
-		/*this.context.setIconFile(this.getTerrain(coverTextureFiles[cn]));*/
 	}
 	
 	public void setIcon(int c1, int c2, int c3, int c4, int c5, int c6) {
 		try {
-			this.context.setIcon(coverIcons[c1][0], coverIcons[c2][1],
+			this.context.setIcon(coverIcons[c1]);
+			/*[0], coverIcons[c2][1],
 					coverIcons[c3][2], coverIcons[c4][3],
-					coverIcons[c5][4], coverIcons[c6][5]);
-			/*this.context.setIconFiles(this.getTerrain(coverTextureFiles[c1]),
-					this.getTerrain(coverTextureFiles[c2]),
-					this.getTerrain(coverTextureFiles[c3]),
-					this.getTerrain(coverTextureFiles[c4]),
-					this.getTerrain(coverTextureFiles[c5]),
-					this.getTerrain(coverTextureFiles[c6]));*/
+					coverIcons[c5][4], coverIcons[c6][5]*/
 		} catch(Throwable thr) {
 			thr.printStackTrace();
 		}
@@ -487,9 +457,8 @@ public class CoverRenderer {
 		this.context.setLocalLights(0.5F, 1.0F, 0.8F, 0.8F, 0.6F, 0.6F);
 		if (this.covmasko > 0) {
 			this.context.setSize(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
-			this.setIcon(this.covs[0] & 255, this.covs[1] & 255,
-					this.covs[2] & 255, this.covs[3] & 255, this.covs[4] & 255,
-					this.covs[5] & 255);
+			this.setIcon(this.covs[0] & 255, this.covs[1] & 255, this.covs[2] & 255, this.covs[3] & 255, 
+				this.covs[4] & 255, this.covs[5] & 255);
 			this.context.setTexFlags(55);
 			this.context.calcBoundsGlobal();
 			this.context.renderGlobFaces(this.covmasko);
@@ -512,12 +481,10 @@ public class CoverRenderer {
 						this.context.renderGlobFaces(vf);
 					} else {
 						for (j = 0; j < 4; ++j) {
-							this.setSize(i,
-									CoverLib.getThickness(i, this.covs[i]));
+							this.setSize(i, CoverLib.getThickness(i, this.covs[i]));
 							this.sizeHollow(i, j);
 							this.context.calcBoundsGlobal();
-							this.context.renderGlobFaces(vf
-									| this.innerFace(i, j));
+							this.context.renderGlobFaces(vf | this.innerFace(i, j));
 						}
 					}
 				}
@@ -536,18 +503,15 @@ public class CoverRenderer {
 						this.context.renderGlobFaces(vf);
 					} else {
 						for (j = 0; j < 4; ++j) {
-							this.setSize(i,
-									CoverLib.getThickness(i, this.covs[i]));
+							this.setSize(i, CoverLib.getThickness(i, this.covs[i]));
 							this.sizeHollow(i, j);
 							this.context.calcBoundsGlobal();
-							this.context.renderGlobFaces(vf
-									| this.innerFace(i, j));
+							this.context.renderGlobFaces(vf | this.innerFace(i, j));
 						}
 					}
 				}
 			}
 		}
-		
 	}
 	
 	public void renderOthers() {
@@ -570,8 +534,7 @@ public class CoverRenderer {
 		if (colc > 1) {
 			this.setIcon(this.covs[coln] & 255);
 			this.context.setSize(0.5D - (double) cth, 0.5D - (double) cth,
-					0.5D - (double) cth, 0.5D + (double) cth,
-					0.5D + (double) cth, 0.5D + (double) cth);
+				0.5D - (double) cth, 0.5D + (double) cth, 0.5D + (double) cth, 0.5D + (double) cth);
 			this.context.calcBoundsGlobal();
 			this.context.renderGlobFaces(63);
 			
@@ -610,18 +573,13 @@ public class CoverRenderer {
 		
 		for (j = 6; j >= 0; --j) {
 			for (int var6 = 14; var6 < 26; ++var6) {
-				if ((this.covmasko & 1 << var6) != 0
-						&& this.covs[var6] >> 8 == j) {
-					this.setSize(var6,
-							CoverLib.getThickness(var6, this.covs[var6]));
+				if ((this.covmasko & 1 << var6) != 0 && this.covs[var6] >> 8 == j) {
+					this.setSize(var6, CoverLib.getThickness(var6, this.covs[var6]));
 					this.context.calcBoundsGlobal();
 					this.setIcon(this.covs[var6] & 255);
 					this.context.renderGlobFaces(63);
 				}
 			}
 		}
-		
-		//this.context.clearTexFiles();
 	}
-	
 }

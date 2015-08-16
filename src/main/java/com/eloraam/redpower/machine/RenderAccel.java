@@ -18,12 +18,14 @@ import net.minecraft.world.World;
 
 public class RenderAccel extends RenderCustomBlock {
 	
-	protected RenderModel model = RenderModel.loadModel("/assets/rpmachine/models/accel.obj");
-	protected ResourceLocation modelRes = new ResourceLocation("rpmachine", "models/machine1.png"); 
+	protected RenderModel model;
+	protected ResourceLocation modelRes; 
 	protected RenderContext context = new RenderContext();
 	
 	public RenderAccel(Block bl) {
 		super(bl);
+		this.model = RenderModel.loadModel("/assets/rpmachine/models/accel.obj");
+		this.modelRes = new ResourceLocation("rpmachine", "models/machine1.png");
 	}
 	
 	@Override

@@ -115,8 +115,7 @@ public abstract class TileDeployBase extends TileMachine implements IFrameLink, 
 	@SuppressWarnings("rawtypes")
 	protected static Entity traceEntities(World world, Entity exclude, Vec3 vs, Vec3 vlook) {
 		AxisAlignedBB aabb = AxisAlignedBB.getBoundingBox(vs.xCoord, vs.yCoord, vs.zCoord, vs.xCoord, vs.yCoord, vs.zCoord);
-		List elist = world.getEntitiesWithinAABBExcludingEntity(exclude,
-				aabb.addCoord(vlook.xCoord, vlook.yCoord, vlook.zCoord).expand(1.0D, 1.0D, 1.0D));
+		List elist = world.getEntitiesWithinAABBExcludingEntity(exclude, aabb.addCoord(vlook.xCoord, vlook.yCoord, vlook.zCoord).expand(1.0D, 1.0D, 1.0D));
 		Vec3 v2 = vs.addVector(vlook.xCoord, vlook.yCoord, vlook.zCoord);
 		Entity entHit = null;
 		double edis = 0.0D;
@@ -141,7 +140,6 @@ public abstract class TileDeployBase extends TileMachine implements IFrameLink, 
 				}
 			}
 		}
-		
 		return entHit;
 	}
 	
@@ -202,8 +200,7 @@ public abstract class TileDeployBase extends TileMachine implements IFrameLink, 
 	@Override
 	public void onBlockNeighborChange(Block bl) {
 		int cm = this.getConnectableMask();
-		if (!RedPowerLib.isPowered(super.worldObj, super.xCoord, super.yCoord,
-				super.zCoord, cm, cm >> 24)) {
+		if (!RedPowerLib.isPowered(super.worldObj, super.xCoord, super.yCoord, super.zCoord, cm, cm >> 24)) {
 			if (super.Active) {
 				this.scheduleTick(5);
 			}

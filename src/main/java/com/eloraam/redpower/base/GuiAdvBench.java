@@ -6,7 +6,7 @@ import com.eloraam.redpower.RedPowerBase;
 import com.eloraam.redpower.base.ContainerAdvBench;
 import com.eloraam.redpower.base.TileAdvBench;
 import com.eloraam.redpower.core.CoreProxy;
-import com.eloraam.redpower.network.PacketGuiEvent;
+import com.eloraam.redpower.core.PacketGuiEvent;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.OpenGlHelper;

@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public class RenderFrame extends RenderCovers {
 	
@@ -19,20 +20,19 @@ public class RenderFrame extends RenderCovers {
 	}
 	
 	@Override
-	public void randomDisplayTick(World world, int i, int j, int k,
-			Random random) {
+	public void randomDisplayTick(World world, int i, int j, int k, Random random) {
 	}
 	
 	@Override
-	public void renderWorldBlock(RenderBlocks renderblocks, IBlockAccess iba, int i, int j, int k, int md) {
+	public void renderWorldBlock(RenderBlocks renderblocks, IBlockAccess iba, int x, int y, int z, int md) {
 		//boolean cons = false;
-		TileFrame tc = (TileFrame) CoreLib.getTileEntity(iba, i, j, k, TileFrame.class);
+		TileFrame tc = (TileFrame) CoreLib.getTileEntity(iba, z, y, z, TileFrame.class);
 		if (tc != null) {
 			super.context.setDefaults();
 			super.context.setTint(1.0F, 1.0F, 1.0F);
-			super.context.setPos(i, j, k);
+			super.context.setPos(x, y, z);
 			super.context.setLocalLights(0.5F, 1.0F, 0.8F, 0.8F, 0.6F, 0.6F);
-			super.context.readGlobalLights(iba, i, j, k);
+			super.context.readGlobalLights(iba, x, y, z);
 			int m;
 			if (tc.CoverSides > 0) {
 				short[] n = new short[6];
@@ -48,26 +48,26 @@ public class RenderFrame extends RenderCovers {
 			}
 			
 			super.context.exactTextureCoordinates = true;
-			//RenderLib.bindTexture("/eloraam/machine/machine1.png", 1);
-			super.context.setIcon(getIcon(2, md));
+			//RenderLib.bindTexture("/eloraam/machine/machine1.png", 1); //TODO: Strange int param
+			super.context.setIcon(getIcon(ForgeDirection.NORTH.ordinal(), md));
 			
-			for (int var12 = 0; var12 < 6; ++var12) {
-				m = 1 << var12;
-				byte var13 = 1;
+			for (int side = 0; side < 6; ++side) {
+				m = 1 << side;
+				int index = ForgeDirection.UNKNOWN.ordinal();
 				super.coverRenderer.start();
 				if ((tc.CoverSides & m) > 0) {
 					if ((tc.StickySides & m) > 0) {
-						var13 = 4;
+						index = ForgeDirection.SOUTH.ordinal();
 					} else {
-						var13 = 2;
+						index = ForgeDirection.NORTH.ordinal();
 					}
 				} else {
-					m |= 1 << (var12 ^ 1);
-					super.context.setIconNum(var12 ^ 1, getIcon(1, md));
+					m |= 1 << (side ^ 1);
+					super.context.setIconNum(side ^ 1, getIcon(ForgeDirection.UNKNOWN.ordinal(), md));
 				}
 				
-				super.context.setIconNum(var12, getIcon(var13, md));
-				super.coverRenderer.setSize(var12, 0.0625F);
+				super.context.setIconNum(side, getIcon(index, md));
+				super.coverRenderer.setSize(side, 0.0625F);
 				super.context.calcBoundsGlobal();
 				super.context.renderGlobFaces(m);
 			}
@@ -87,7 +87,7 @@ public class RenderFrame extends RenderCovers {
 		//RenderLib.bindTexture("/eloraam/machine/machine1.png");
 		Tessellator tessellator = Tessellator.instance;
 		tessellator.startDrawingQuads();
-		super.context.setIcon(getIcon(1, md));
+		super.context.setIcon(getIcon(ForgeDirection.UNKNOWN.ordinal(), md));
 		this.doubleBox(63, 0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F, 0.01F);
 		tessellator.draw();
 		//RenderLib.unbindTexture();

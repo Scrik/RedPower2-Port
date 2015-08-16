@@ -13,6 +13,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public class RenderFrameRedstoneTube extends RenderTube {
 	
@@ -21,14 +22,13 @@ public class RenderFrameRedstoneTube extends RenderTube {
 	}
 	
 	@Override
-	public void randomDisplayTick(World world, int i, int j, int k,
-			Random random) {
+	public void randomDisplayTick(World world, int i, int j, int k, Random random) {
 	}
 	
 	@Override
 	public void renderWorldBlock(RenderBlocks renderblocks, IBlockAccess iba,
 			int i, int j, int k, int md) {
-		boolean cons = false;
+		//boolean cons = false;
 		TileFrameRedstoneTube tc = (TileFrameRedstoneTube) CoreLib
 				.getTileEntity(iba, i, j, k, TileFrameRedstoneTube.class);
 		if (tc != null) {
@@ -53,11 +53,10 @@ public class RenderFrameRedstoneTube extends RenderTube {
 				super.coverRenderer.render(tc.CoverSides, sides);
 			}
 			
-			int var13 = TubeLib.getConnections(iba, i, j, k)
-					| tc.getConnectionMask() >> 24;
+			int var13 = TubeLib.getConnections(iba, i, j, k) | tc.getConnectionMask() >> 24;
 			super.context.exactTextureCoordinates = true;
 			//RenderLib.bindTexture("/eloraam/machine/machine1.png", 1);
-			super.context.setIcon(getIcon(2, md));
+			super.context.setIcon(getIcon(ForgeDirection.NORTH.ordinal(), md));
 			int var14 = tc.CoverSides | var13;
 			
 			for (ps = 0; ps < 6; ++ps) {
@@ -83,15 +82,14 @@ public class RenderFrameRedstoneTube extends RenderTube {
 			
 			super.context.exactTextureCoordinates = false;
 			//RenderLib.unbindTexture();
-			super.context.setBrightness(super.block.getMixedBrightnessForBlock( iba, i, j, k));
+			super.context.setBrightness(super.block.getMixedBrightnessForBlock(iba, i, j, k));
 			//RenderLib.bindTexture("/eloraam/machine/machine1.png");
 			ps = (tc.PowerState + 84) / 85;
-			this.renderCenterBlock(var13, getIcon(68 + ps, md), getIcon(72 + ps, md));
+			this.renderCenterBlock(var13, BlockMachine.redstoneTubeSideIcons[ps], BlockMachine.redstoneTubeFaceIcons[ps]);
 			if (tc.paintColor > 0) {
 				pc = super.paintColors[tc.paintColor - 1];
-				super.context.setTint((pc >> 16) / 255.0F,
-						(pc >> 8 & 255) / 255.0F, (pc & 255) / 255.0F);
-				this.renderBlockPaint(var13, 66, md);
+				super.context.setTint((pc >> 16) / 255.0F, (pc >> 8 & 255) / 255.0F, (pc & 255) / 255.0F);
+				this.renderBlockPaint(var13, BlockMachine.baseTubeFaceColorIcon, BlockMachine.baseTubeSideColorIcon, md);
 			}
 			//RenderLib.unbindTexture();
 		}

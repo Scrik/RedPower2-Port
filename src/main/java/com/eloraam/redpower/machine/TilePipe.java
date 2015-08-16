@@ -15,6 +15,7 @@ import com.eloraam.redpower.machine.TilePipe;
 import io.netty.buffer.ByteBuf;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -241,7 +242,7 @@ public class TilePipe extends TileCovered implements IPipeConnectable {
 	}
 	
 	@Override
-	public void addHarvestContents(ArrayList<ItemStack> ist) {
+	public void addHarvestContents(List<ItemStack> ist) {
 		super.addHarvestContents(ist);
 		ist.add(new ItemStack(RedPowerBase.blockMicro, 1, this.getExtendedID() << 8));
 	}

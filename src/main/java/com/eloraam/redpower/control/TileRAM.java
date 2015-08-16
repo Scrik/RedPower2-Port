@@ -6,6 +6,7 @@ import com.eloraam.redpower.core.BlockMultipart;
 import com.eloraam.redpower.core.CoreLib;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -37,8 +38,8 @@ public class TileRAM extends TileBackplane {
 	}
 	
 	@Override
-	public void addHarvestContents(ArrayList<ItemStack> ist) {
-		super.addHarvestContents(ist);
+	public void addHarvestContents(List<ItemStack> ist) {
+		//super.addHarvestContents(ist);
 		ist.add(new ItemStack(RedPowerControl.blockBackplane, 1, 1));
 	}
 	

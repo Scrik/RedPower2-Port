@@ -13,6 +13,7 @@ import io.netty.buffer.ByteBuf;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -42,8 +43,7 @@ public abstract class TileWiring extends TileCovered implements IWiring {
 	
 	public void uncache() {
 		if (this.ConaMask >= 0 || this.EConMask >= 0 || this.ConMask >= 0) {
-			super.worldObj.markBlockForUpdate(super.xCoord, super.yCoord,
-					super.zCoord);
+			super.worldObj.markBlockForUpdate(super.xCoord, super.yCoord, super.zCoord);
 		}
 		
 		this.ConaMask = -1;
@@ -55,29 +55,29 @@ public abstract class TileWiring extends TileCovered implements IWiring {
 	private static int stripBlockConMask(int side) {
 		switch (side) {
 			case 0:
-				return 257;
+				return 0x101;
 			case 1:
-				return 4098;
+				return 0x1002;
 			case 2:
-				return 65540;
+				return 0x10004;
 			case 3:
-				return 1048584;
+				return 0x100008;
 			case 4:
-				return 263168;
+				return 0x40400;
 			case 5:
-				return 540672;
+				return 0x84000;
 			case 6:
-				return 4196352;
+				return 0x400800;
 			case 7:
-				return 8421376;
+				return 0x808000;
 			case 8:
-				return 528;
+				return 0x210;
 			case 9:
-				return 8224;
+				return 0x2020;
 			case 10:
-				return 131136;
+				return 0x20040;
 			default:
-				return 2097280;
+				return 0x200080;
 		}
 	}
 	
@@ -88,27 +88,27 @@ public abstract class TileWiring extends TileCovered implements IWiring {
 		} else {
 			int tr = 0;
 			if ((this.ConSides & 1) > 0) {
-				tr |= 15;
+				tr |= 0xF;
 			}
 			
 			if ((this.ConSides & 2) > 0) {
-				tr |= 240;
+				tr |= 0xF0;
 			}
 			
 			if ((this.ConSides & 4) > 0) {
-				tr |= 3840;
+				tr |= 0xF00;
 			}
 			
 			if ((this.ConSides & 8) > 0) {
-				tr |= '\uf000';
+				tr |= 0xF000;
 			}
 			
 			if ((this.ConSides & 16) > 0) {
-				tr |= 983040;
+				tr |= 0xF0000;
 			}
 			
 			if ((this.ConSides & 32) > 0) {
-				tr |= 15728640;
+				tr |= 0xF00000;
 			}
 			
 			if ((super.CoverSides & 1) > 0) {
@@ -143,7 +143,7 @@ public abstract class TileWiring extends TileCovered implements IWiring {
 			}
 			
 			if ((this.ConSides & 64) > 0) {
-				tr |= 1056964608;
+				tr |= 0x3F000000;
 				
 				for (i = 0; i < 6; ++i) {
 					if ((super.CoverSides & 1 << i) > 0) {
@@ -158,7 +158,6 @@ public abstract class TileWiring extends TileCovered implements IWiring {
 					}
 				}
 			}
-			
 			this.ConaMask = tr;
 			return tr;
 		}
@@ -169,8 +168,7 @@ public abstract class TileWiring extends TileCovered implements IWiring {
 		if (this.ConMask >= 0) {
 			return this.ConMask;
 		} else {
-			this.ConMask = RedPowerLib.getConnections(super.worldObj, this,
-					super.xCoord, super.yCoord, super.zCoord);
+			this.ConMask = RedPowerLib.getConnections(super.worldObj, this, super.xCoord, super.yCoord, super.zCoord);
 			return this.ConMask;
 		}
 	}
@@ -180,10 +178,8 @@ public abstract class TileWiring extends TileCovered implements IWiring {
 		if (this.EConMask >= 0) {
 			return this.EConMask;
 		} else {
-			this.EConMask = RedPowerLib.getExtConnections(super.worldObj, this,
-					super.xCoord, super.yCoord, super.zCoord);
-			this.EConEMask = RedPowerLib.getExtConnectionExtras(super.worldObj,
-					this, super.xCoord, super.yCoord, super.zCoord);
+			this.EConMask = RedPowerLib.getExtConnections(super.worldObj, this, super.xCoord, super.yCoord, super.zCoord);
+			this.EConEMask = RedPowerLib.getExtConnectionExtras(super.worldObj, this, super.xCoord, super.yCoord, super.zCoord);
 			return this.EConMask;
 		}
 	}
@@ -196,17 +192,12 @@ public abstract class TileWiring extends TileCovered implements IWiring {
 	@Override
 	public void onFrameRefresh(IBlockAccess iba) {
 		if (this.ConMask < 0) {
-			this.ConMask = RedPowerLib.getConnections(iba, this, super.xCoord,
-					super.yCoord, super.zCoord);
+			this.ConMask = RedPowerLib.getConnections(iba, this, super.xCoord, super.yCoord, super.zCoord);
 		}
-		
 		if (this.EConMask < 0) {
-			this.EConMask = RedPowerLib.getExtConnections(iba, this,
-					super.xCoord, super.yCoord, super.zCoord);
-			this.EConEMask = RedPowerLib.getExtConnectionExtras(iba, this,
-					super.xCoord, super.yCoord, super.zCoord);
+			this.EConMask = RedPowerLib.getExtConnections(iba, this, super.xCoord, super.yCoord, super.zCoord);
+			this.EConEMask = RedPowerLib.getExtConnectionExtras(iba, this, super.xCoord, super.yCoord, super.zCoord);
 		}
-		
 	}
 	
 	@Override
@@ -214,12 +205,13 @@ public abstract class TileWiring extends TileCovered implements IWiring {
 		if (this.EConMask >= 0 || this.ConMask >= 0) {
 			super.worldObj.markBlockForUpdate(super.xCoord, super.yCoord, super.zCoord);
 		}
-		
 		this.ConMask = -1;
 		this.EConMask = -1;
 		this.EConEMask = -1;
 		this.refreshBlockSupport();
 		RedPowerLib.updateCurrent(super.worldObj, super.xCoord, super.yCoord, super.zCoord);
+		this.markDirty();
+		this.sendPacket();
 	}
 	
 	@Override
@@ -241,8 +233,7 @@ public abstract class TileWiring extends TileCovered implements IWiring {
 		} else {
 			short[] test = Arrays.copyOf(super.Covers, 29);
 			test[side] = (short) cover;
-			return CoverLib.checkPlacement(super.CoverSides | 1 << side, test,
-					this.ConSides, (this.ConSides & 64) > 0);
+			return CoverLib.checkPlacement(super.CoverSides | 1 << side, test, this.ConSides, (this.ConSides & 64) > 0);
 		}
 	}
 	
@@ -277,7 +268,7 @@ public abstract class TileWiring extends TileCovered implements IWiring {
 	}
 	
 	@Override
-	public void addHarvestContents(ArrayList<ItemStack> ist) {
+	public void addHarvestContents(List<ItemStack> ist) {
 		super.addHarvestContents(ist);
 		for (int s = 0; s < 6; ++s) {
 			if ((this.ConSides & 1 << s) != 0) {
@@ -294,18 +285,16 @@ public abstract class TileWiring extends TileCovered implements IWiring {
 			}
 			ist.add(new ItemStack(RedPowerBase.blockMicro, 1, td));
 		}
-		
 	}
 	
 	@Override
 	public int getPartsMask() {
-		return super.CoverSides | this.ConSides & 63
-				| (this.ConSides & 64) << 23;
+		return super.CoverSides | this.ConSides & 0x3F | (this.ConSides & 0x40) << 0x17;
 	}
 	
 	@Override
 	public int getSolidPartsMask() {
-		return super.CoverSides | (this.ConSides & 64) << 23;
+		return super.CoverSides | (this.ConSides & 0x40) << 0x17;
 	}
 	
 	public boolean refreshBlockSupport() {
@@ -316,18 +305,12 @@ public abstract class TileWiring extends TileCovered implements IWiring {
 		}
 		
 		for (s = 0; s < 6; ++s) {
-			if ((this.ConSides & 1 << s) != 0
-					&& (all || !RedPowerLib.canSupportWire(super.worldObj,
-							super.xCoord, super.yCoord, super.zCoord, s))) {
+			if ((this.ConSides & 1 << s) != 0 && 
+					(all || !RedPowerLib.canSupportWire(super.worldObj, super.xCoord, super.yCoord, super.zCoord, s))) {
 				this.uncache();
-				CoreLib.markBlockDirty(super.worldObj, super.xCoord,
-						super.yCoord, super.zCoord);
-				CoreLib.dropItem(
-						super.worldObj,
-						super.xCoord,
-						super.yCoord,
-						super.zCoord,
-						new ItemStack(RedPowerBase.blockMicro, 1, this.getExtendedID() * 256 + this.Metadata));
+				CoreLib.markBlockDirty(super.worldObj, super.xCoord, super.yCoord, super.zCoord);
+				CoreLib.dropItem(super.worldObj, super.xCoord, super.yCoord, super.zCoord,
+					new ItemStack(RedPowerBase.blockMicro, 1, this.getExtendedID() * 256 + this.Metadata));
 				this.ConSides &= ~(1 << s);
 			}
 		}
@@ -338,7 +321,6 @@ public abstract class TileWiring extends TileCovered implements IWiring {
 			} else {
 				this.deleteBlock();
 			}
-			
 			return false;
 		} else {
 			return true;
@@ -349,7 +331,7 @@ public abstract class TileWiring extends TileCovered implements IWiring {
 	public void onHarvestPart(EntityPlayer player, int part) {
 		//boolean change = false;
 		if (part == 29 && (this.ConSides & 64) > 0) {
-			int td = 16384 + this.CenterPost;
+			int td = 0x4000 + this.CenterPost;
 			if (this.getExtendedID() == 3) {
 				td += 256;
 			}
@@ -358,21 +340,17 @@ public abstract class TileWiring extends TileCovered implements IWiring {
 				td += 512;
 			}
 			
-			CoreLib.dropItem(super.worldObj, super.xCoord, super.yCoord,
-					super.zCoord, new ItemStack(RedPowerBase.blockMicro, 1, td));
-			this.ConSides &= 63;
+			CoreLib.dropItem(super.worldObj, super.xCoord, super.yCoord, super.zCoord, 
+				new ItemStack(RedPowerBase.blockMicro, 1, td));
+			this.ConSides &= 0x3F;
 		} else {
 			if ((this.ConSides & 1 << part) <= 0) {
 				super.onHarvestPart(player, part);
 				return;
 			}
 			
-			CoreLib.dropItem(
-					super.worldObj,
-					super.xCoord,
-					super.yCoord,
-					super.zCoord,
-					new ItemStack(RedPowerBase.blockMicro, 1, this.getExtendedID() * 256 + this.Metadata));
+			CoreLib.dropItem(super.worldObj, super.xCoord, super.yCoord, super.zCoord,
+				new ItemStack(RedPowerBase.blockMicro, 1, this.getExtendedID() * 256 + this.Metadata));
 			this.ConSides &= ~(1 << part);
 		}
 		
@@ -385,19 +363,18 @@ public abstract class TileWiring extends TileCovered implements IWiring {
 			}
 		}
 		
-		CoreLib.markBlockDirty(super.worldObj, super.xCoord, super.yCoord,
-				super.zCoord);
-		RedPowerLib.updateIndirectNeighbors(super.worldObj, super.xCoord,
-				super.yCoord, super.zCoord, RedPowerBase.blockMicro);
+		CoreLib.markBlockDirty(super.worldObj, super.xCoord, super.yCoord, super.zCoord);
+		RedPowerLib.updateIndirectNeighbors(super.worldObj, super.xCoord, super.yCoord, super.zCoord, 
+			RedPowerBase.blockMicro);
 	}
 	
 	@SuppressWarnings("deprecation")
 	@Override
 	public float getPartStrength(EntityPlayer player, int part) {
 		BlockMicro bl = RedPowerBase.blockMicro;
-		return part == 29 && (this.ConSides & 64) > 0 ? player
-				.getBreakSpeed(bl, false, 0) / (bl.getHardness() * 30.0F) : ((this.ConSides & 1 << part) > 0 ? player
-				.getBreakSpeed(bl, false, 0) / (bl.getHardness() * 30.0F) : super.getPartStrength(player, part));
+		return part == 29 && (this.ConSides & 64) > 0 ? 
+			player.getBreakSpeed(bl, false, 0) / (bl.getHardness() * 30.0F) : ((this.ConSides & 1 << part) > 0 ? 
+				player.getBreakSpeed(bl, false, 0) / (bl.getHardness() * 30.0F) : super.getPartStrength(player, part));
 	}
 	
 	@Override
@@ -434,6 +411,7 @@ public abstract class TileWiring extends TileCovered implements IWiring {
 				break;
 			case 29:
 				bl.setBlockBounds(0.25F, 0.25F, 0.25F, 0.75F, 0.75F, 0.75F);
+				break;
 		}
 		
 	}
@@ -441,22 +419,21 @@ public abstract class TileWiring extends TileCovered implements IWiring {
 	@Override
 	public void readFromNBT(NBTTagCompound nbttagcompound) {
 		super.readFromNBT(nbttagcompound);
-		this.ConSides = nbttagcompound.getByte("cons") & 255;
-		this.Metadata = nbttagcompound.getByte("md") & 255;
-		this.CenterPost = (short) (nbttagcompound.getShort("post") & 255);
+		this.ConSides = nbttagcompound./*getByte*/getInteger("cons")/* & 255*/;
+		this.Metadata = nbttagcompound./*getByte*/getInteger("md")/* & 255*/;
+		this.CenterPost = /*(short) (*/nbttagcompound./*getByte*/getShort("post")/* & 255)*/;
 	}
 	
 	@Override
 	public void writeToNBT(NBTTagCompound nbttagcompound) {
 		super.writeToNBT(nbttagcompound);
-		nbttagcompound.setByte("cons", (byte) this.ConSides);
-		nbttagcompound.setByte("md", (byte) this.Metadata);
+		nbttagcompound./*setByte*/setInteger("cons", /*(byte) */this.ConSides);
+		nbttagcompound./*setByte*/setInteger("md", /*(byte) */this.Metadata);
 		nbttagcompound.setShort("post", this.CenterPost);
 	}
 	
 	@Override
 	protected void readFromPacket(ByteBuf pkt) {
-		super.readFromPacket(pkt);
 		this.Metadata = pkt.readInt();
 		this.ConSides = pkt.readInt();
 		if ((this.ConSides & 64) > 0) {
@@ -466,16 +443,17 @@ public abstract class TileWiring extends TileCovered implements IWiring {
 		this.EConMask = -1;
 		this.EConEMask = -1;
 		this.ConMask = -1;
+		super.readFromPacket(pkt);
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	protected void writeToPacket(ArrayList data) {
-		super.writeToPacket(data);
 		data.add(this.Metadata);
 		data.add(this.ConSides);
 		if ((this.ConSides & 64) > 0) {
 			data.add((int)this.CenterPost);
 		}
+		super.writeToPacket(data);
 	}
 }

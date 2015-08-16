@@ -1,8 +1,8 @@
 package com.eloraam.redpower.base;
 
+import com.eloraam.redpower.core.IHandleGuiEvent;
 import com.eloraam.redpower.core.IRedbusConnectable;
-import com.eloraam.redpower.network.IHandleGuiEvent;
-import com.eloraam.redpower.network.PacketGuiEvent;
+import com.eloraam.redpower.core.PacketGuiEvent;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;

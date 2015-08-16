@@ -183,8 +183,7 @@ public class MachineLib {
 	public static void ejectItem(World world, WorldCoord wc, ItemStack ist, int dir) {
 		wc = wc.copy();
 		wc.step(dir);
-		EntityItem item = new EntityItem(world, wc.x + 0.5D, wc.y + 0.5D,
-				wc.z + 0.5D, ist);
+		EntityItem item = new EntityItem(world, wc.x + 0.5D, wc.y + 0.5D, wc.z + 0.5D, ist);
 		item.motionX = 0.0D;
 		item.motionY = 0.0D;
 		item.motionZ = 0.0D;

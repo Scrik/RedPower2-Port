@@ -9,6 +9,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
@@ -36,6 +37,12 @@ import net.minecraftforge.oredict.OreDictionary;
 
 public class CoreLib {
 	
+	public static List<TileLoadEventListener> tileList = new ArrayList<TileLoadEventListener>();
+	
+	public static void registerTileListener(TileLoadEventListener tile) {
+		tileList.add(tile);
+	}
+	
 	public static Comparator<ItemStack> itemStackComparator = new Comparator<ItemStack>() {
 		public int compare(ItemStack o1, ItemStack o2) {
 			return CoreLib.compareItemStack(o1, o2);
@@ -44,7 +51,7 @@ public class CoreLib {
 	private static TreeMap<ItemStack, String> oreMap = new TreeMap<ItemStack, String>(itemStackComparator);
 	public static String[] rawColorNames = new String[] { "white", "orange", "magenta", "lightBlue", "yellow", "lime", "pink", "gray", "silver", "cyan", "purple", "blue", "brown", "green", "red", "black" };
 	public static String[] enColorNames = new String[] { "White", "Orange", "Magenta", "Light Blue", "Yellow", "Lime", "Pink", "Gray", "Light Gray", "Cyan", "Purple", "Blue", "Brown", "Green", "Red", "Black" };
-	public static int[] paintColors = new int[] { 16777215, 16744448, 16711935, 7110911, 16776960, '\uff00', 16737408, 5460819, 9671571, '\uffff', 8388863, 255, 5187328, '\u8000', 16711680, 2039583 };
+	public static int[] paintColors = new int[] { 0xFFFFFF, 0xFF8000, 0xFF00FF, 0x6C80FF, 0xFFFF00, 0xFF00, 0xFF6480, 0x535353, 0x939393, 0xFFFF, 0x8000FF, 0xFF, 0x4F2700, 0x8000, 0xFF0000, 0x1F1F1F };
 	public static final Material materialRedpower = new Material(MapColor.woodColor);
 	
 	public static boolean isClient(World world) {
@@ -61,23 +68,21 @@ public class CoreLib {
 		Class<?> cl;
 		try {
 			cl = Class.forName(name);
-		} catch (ClassNotFoundException var8) {
+		} catch (ClassNotFoundException cnfe) {
 			return;
 		}
 		
 		Method mth;
 		try {
 			mth = cl.getDeclaredMethod("initialize", new Class[0]);
-		} catch (NoSuchMethodException var7) {
+		} catch (NoSuchMethodException nsme) {
 			return;
 		}
 		
 		try {
 			mth.invoke((Object) null, new Object[0]);
-		} catch (IllegalAccessException var5) {
-			;
-		} catch (InvocationTargetException var6) {
-			;
+		} catch (IllegalAccessException ilae) {
+		} catch (InvocationTargetException ite) {
 		}
 	}
 	
@@ -153,8 +158,7 @@ public class CoreLib {
 	public static boolean matchItemStackOre(ItemStack a, ItemStack b) {
 		String s1 = getOreClass(a);
 		String s2 = getOreClass(b);
-		return s1 != null && s2 != null && s1.equals(s2) ? true : compareItemStack(
-				a, b) == 0;
+		return s1 != null && s2 != null && s1.equals(s2) ? true : compareItemStack(a, b) == 0;
 	}
 	
 	public static void dropItem(World world, int i, int j, int k, ItemStack ist) {
@@ -192,7 +196,9 @@ public class CoreLib {
 			case 1: return 5;
 			case 2: return 3;
 			case 3: return 4;
-			default: return 2;
+			case 4: return 1;
+			case 5: return 0;
+			default: return 0;
 		}
 	}
 	
@@ -212,9 +218,8 @@ public class CoreLib {
 	}
 	
 	public static void placeNoise(World world, int i, int j, int k, Block block) {
-		world.playSoundEffect(i + 0.5F, j + 0.5F, k + 0.5F, "step.stone",
-				(block.stepSound.getVolume() + 1.0F) / 2.0F,
-				block.stepSound.getPitch() * 0.8F);
+		world.playSoundEffect(i + 0.5F, j + 0.5F, k + 0.5F, block.stepSound.func_150496_b(),
+			(block.stepSound.getVolume() + 1.0F) / 2.0F, block.stepSound.getPitch() * 0.8F);
 	}
 	
 	public static int getBurnTime(ItemStack ist) {
@@ -274,14 +279,4 @@ public class CoreLib {
         }
         throw new UnableToFindFieldException(fieldNames, failed);
     }
-	
-	/*static void setFinalStatic(Field field, Object newValue) throws Exception {
-		field.setAccessible(true);
-		
-		Field modifiersField = Field.class.getDeclaredField("modifiers");
-		modifiersField.setAccessible(true);
-		modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
-		
-		field.set(null, newValue);
-	}*/
 }

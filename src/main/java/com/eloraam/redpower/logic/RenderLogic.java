@@ -1,7 +1,6 @@
 package com.eloraam.redpower.logic;
 
 import com.eloraam.redpower.core.CoreLib;
-import com.eloraam.redpower.core.CoreProxyClient;
 import com.eloraam.redpower.core.RenderCovers;
 import com.eloraam.redpower.core.Vector3;
 import com.eloraam.redpower.logic.RenderLogic;
@@ -18,7 +17,6 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 

@@ -48,58 +48,57 @@ public class RenderShapedLamp extends RenderCustomBlock {
 	public void renderWorldBlock(RenderBlocks renderblocks, IBlockAccess iba, int i, int j, int k, int md) {
 		TileShapedLamp tsl = (TileShapedLamp) CoreLib.getTileEntity(iba, i, j, k, TileShapedLamp.class);
 		if (tsl != null) {
-			//Tessellator tess = Tessellator.instance;
+			Tessellator tess = Tessellator.instance;
 			//tess.draw();
-			
-			boolean lit = tsl.Powered != tsl.Inverted;
-			this.context.setDefaults();
-			this.context.setPos(i, j, k);
-			this.context.setOrientation(tsl.Rotation, 0);
-			this.context.readGlobalLights(iba, i, j, k);
-			switch (tsl.Style) {
-				case 0:
-					this.context.bindModelOffset(this.modelLamp1, 0.5D, 0.5D, 0.5D);
-					break;
-				case 1:
-					this.context.bindModelOffset(this.modelLamp2, 0.5D, 0.5D, 0.5D);
-			}
-			
-			int tc;
-			
-			if (MinecraftForgeClient.getRenderPass() != 1) {
-				System.out.println("UNLIT");
-				tc = super.block.getMixedBrightnessForBlock(iba, i, j, k);
-				//this.context.bindTexture("/eloraam/lighting/lighting1.png");
+			try {
+				boolean lit = tsl.Powered != tsl.Inverted;
+				this.context.setDefaults();
+				this.context.setPos(i, j, k);
+				this.context.setOrientation(tsl.Rotation, 0);
+				this.context.readGlobalLights(iba, i, j, k);
+				switch (tsl.Style) {
+					case 0:
+						this.context.bindModelOffset(this.modelLamp1, 0.5D, 0.5D, 0.5D);
+						break;
+					case 1:
+						this.context.bindModelOffset(this.modelLamp2, 0.5D, 0.5D, 0.5D);
+				}
+				
+				int tc;
+				
 				Minecraft.getMinecraft().renderEngine.bindTexture(lampRes);
 				
-				//tess.startDrawingQuads();
-				this.context.setBrightness(tc);
-				this.context.renderModelGroup(0, 0);
-				if (lit) {
-					this.context.setTintHex(this.lightColors[tsl.Color & 15]);
-					this.context.setBrightness(15728880);
-				} else {
-					this.context.setTintHex(this.lightColorsOff[tsl.Color & 15]);
+				if (MinecraftForgeClient.getRenderPass() != 1) {
+					tc = super.block.getMixedBrightnessForBlock(iba, i, j, k);
+					
+					this.context.setBrightness(tc);
+					
+					this.context.renderModelGroup(0, 0);
+					
+					if (lit) {
+						this.context.setTintHex(this.lightColors[tsl.Color & 15]);
+						this.context.setBrightness(15728880);
+					} else {
+						this.context.setTintHex(this.lightColorsOff[tsl.Color & 15]);
+					}
+					
+					this.context.renderModelGroup(1, 0);
+				} else if (lit) {
+					tc = this.lightColors[tsl.Color & 15];
+					this.context.setTint((tc >> 16) / 255.0F, (tc >> 8 & 255) / 255.0F, (tc & 255) / 255.0F);
+					this.context.setAlpha(0.3F);
+					
+					//tess.startDrawingQuads();
+					
+					this.context.renderModelGroup(2, 0);
+					
+					//tess.draw();
 				}
-				this.context.renderModelGroup(1, 0);
-				//tess.draw();
-				//this.context.unbindTexture();
-			} else if (lit) {
-				System.out.println("LIT");
+			} catch(Throwable t) {
 				
-				Minecraft.getMinecraft().renderEngine.bindTexture(lampRes); //TODO: Strange int param...
-				
-				//tess.startDrawingQuads();
-				
-				tc = this.lightColors[tsl.Color & 15];
-				this.context.setTint((tc >> 16) / 255.0F, (tc >> 8 & 255) / 255.0F, (tc & 255) / 255.0F);
-				this.context.setAlpha(0.3F);
-				this.context.renderModelGroup(2, 0);
-				
-				//tess.draw();
 			}
 			
-			//this.context.bindBlockTexture();
+			this.context.bindBlockTexture();
 			//tess.startDrawingQuads();
 		}
 	}
@@ -108,7 +107,7 @@ public class RenderShapedLamp extends RenderCustomBlock {
 	public void renderInvBlock(RenderBlocks renderblocks, int md) {
 		Tessellator tessellator = Tessellator.instance;
 		super.block.setBlockBoundsForItemRender();
-		boolean lit = false;
+		//boolean lit = false;
 		this.context.setDefaults();
 		this.context.setPos(-0.5D, -0.5D, -0.5D);
 		//this.context.bindTexture("/eloraam/lighting/lighting1.png");

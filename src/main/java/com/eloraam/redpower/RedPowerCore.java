@@ -5,7 +5,7 @@ import com.eloraam.redpower.core.CoreEvents;
 import com.eloraam.redpower.core.CoreLib;
 import com.eloraam.redpower.core.CoreProxy;
 import com.eloraam.redpower.core.CoverRecipe;
-import com.eloraam.redpower.network.PacketHandler;
+import com.eloraam.redpower.core.PacketHandler;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;

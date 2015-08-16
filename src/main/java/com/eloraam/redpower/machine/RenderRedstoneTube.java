@@ -47,7 +47,7 @@ public class RenderRedstoneTube extends RenderTube {
 			if (tt.paintColor > 0) {
 				int tc = super.paintColors[tt.paintColor - 1];
 				super.context.setTint((tc >> 16) / 255.0F, (tc >> 8 & 255) / 255.0F, (tc & 255) / 255.0F);
-				this.renderBlockPaint(cons1, 66, md);
+				this.renderBlockPaint(cons1, BlockMachine.baseTubeFaceColorIcon, BlockMachine.baseTubeSideColorIcon, md);
 			}
 			//RenderLib.unbindTexture();
 		}

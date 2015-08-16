@@ -4,11 +4,11 @@ import com.eloraam.redpower.RedPowerControl;
 import com.eloraam.redpower.control.TileBackplane;
 import com.eloraam.redpower.core.CoreLib;
 import com.eloraam.redpower.core.IFrameSupport;
+import com.eloraam.redpower.core.IHandlePackets;
 import com.eloraam.redpower.core.IRedbusConnectable;
 import com.eloraam.redpower.core.RedbusLib;
 import com.eloraam.redpower.core.TileExtended;
 import com.eloraam.redpower.core.WorldCoord;
-import com.eloraam.redpower.network.IHandlePackets;
 
 import io.netty.buffer.ByteBuf;
 
@@ -22,6 +22,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 
 public class TileCPU extends TileExtended implements IRedbusConnectable, IHandlePackets, IFrameSupport {
@@ -164,7 +165,10 @@ public class TileCPU extends TileExtended implements IRedbusConnectable, IHandle
 	
 	@Override
 	public void onBlockPlaced(ItemStack ist, int side, EntityLivingBase ent) {
-		this.Rotation = (int) Math.floor(ent.rotationYaw * 4.0F / 360.0F + 0.5D) + 1 & 3;
+		//this.Rotation = MathHelper.floor_double((double)(ent.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
+		this.Rotation = (int) Math.floor(ent.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+		this.sendPacket();
+		this.markDirty();
 	}
 	
 	@Override
@@ -174,8 +178,7 @@ public class TileCPU extends TileExtended implements IRedbusConnectable, IHandle
 		} else if (CoreLib.isClient(super.worldObj)) {
 			return true;
 		} else {
-			player.openGui(RedPowerControl.instance, 2, super.worldObj,
-					super.xCoord, super.yCoord, super.zCoord);
+			player.openGui(RedPowerControl.instance, 2, super.worldObj, super.xCoord, super.yCoord, super.zCoord);
 			return true;
 		}
 	}
@@ -234,7 +237,11 @@ public class TileCPU extends TileExtended implements IRedbusConnectable, IHandle
 				--this.sliceCycles;
 				this.executeInsn();
 			}
-			
+		}
+		updateDelay--;
+		if(updateDelay == 0) {
+			this.sendPacket();
+			updateDelay = 20;
 		}
 	}
 	

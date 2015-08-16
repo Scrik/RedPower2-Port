@@ -153,6 +153,7 @@ public class TileAdvBench extends TileAppliance implements IInventory, ISidedInv
 				this.contents[j] = ItemStack.loadItemStackFromNBT(item);
 			}
 		}
+		this.markDirty();
 	}
 	
 	@Override

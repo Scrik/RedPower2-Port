@@ -5,10 +5,10 @@ import com.eloraam.redpower.core.BluePowerConductor;
 import com.eloraam.redpower.core.CoreLib;
 import com.eloraam.redpower.core.IBluePowerConnectable;
 import com.eloraam.redpower.core.IFrameSupport;
+import com.eloraam.redpower.core.IHandlePackets;
 import com.eloraam.redpower.core.RedPowerLib;
 import com.eloraam.redpower.core.TileExtended;
 import com.eloraam.redpower.machine.TileBatteryBox;
-import com.eloraam.redpower.network.IHandlePackets;
 
 import io.netty.buffer.ByteBuf;
 
@@ -75,7 +75,7 @@ public class TileBatteryBox extends TileExtended implements IHandlePackets, IInv
 	}
 	
 	@Override
-	public void addHarvestContents(ArrayList<ItemStack> ist) {
+	public void addHarvestContents(List<ItemStack> ist) {
 		ItemStack is = new ItemStack(this.getBlockType(), 1, this.getExtendedID());
 		if (this.Storage > 0) {
 			is.setTagCompound(new NBTTagCompound());

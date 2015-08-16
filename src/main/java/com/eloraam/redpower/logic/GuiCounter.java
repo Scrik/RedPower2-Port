@@ -3,9 +3,9 @@ package com.eloraam.redpower.logic;
 import java.util.ArrayList;
 
 import com.eloraam.redpower.core.CoreProxy;
+import com.eloraam.redpower.core.PacketGuiEvent;
 import com.eloraam.redpower.logic.ContainerCounter;
 import com.eloraam.redpower.logic.TileLogicStorage;
-import com.eloraam.redpower.network.PacketGuiEvent;
 
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
